@@ -1,0 +1,14 @@
+{
+  "name": "ddz",
+  "version": "0.0.1",
+  "description": "ddz game frontend",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ddz",
+    "game"
+  ],
+  "author": "",
+  "license": "ISC"
+}
