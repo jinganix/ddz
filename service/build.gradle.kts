@@ -1,5 +1,7 @@
 plugins {
     java
+    jacoco
+    checkstyle
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.1.0"
 }
@@ -22,4 +24,32 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "1".toBigDecimal()
+            }
+        }
+    }
+}
+
+checkstyle {
+    isIgnoreFailures = false
+    maxErrors = 0
+    maxWarnings = 0
+    configFile = file("${rootDir}/service/checkstyle/checkstyle.xml")
+    configProperties = mapOf(
+        "org.checkstyle.google.suppressionfilter.config" to "${rootDir}/service/checkstyle/suppressions.xml"
+    )
 }
