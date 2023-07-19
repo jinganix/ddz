@@ -1,0 +1,36 @@
+{
+  "name": "ddz",
+  "version": "0.0.1",
+  "description": "ddz",
+  "license": "Apache-2.0",
+  "scripts": {
+    "cz": "cz",
+    "postinstall": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "~17.6.7",
+    "@commitlint/cz-commitlint": "~17.6.7",
+    "commitizen": "~4.3.0",
+    "commitlint": "~17.6.7",
+    "husky": "~8.0.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "commitlint": {
+    "extends": "@commitlint/config-conventional",
+    "rules": {
+      "scope-enum": [
+        2,
+        "always",
+        [
+          "docs",
+          "frontend",
+          "service"
+        ]
+      ]
+    }
+  }
+}
