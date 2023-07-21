@@ -44,7 +44,12 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
+jacoco {
+    toolVersion = "0.8.9"
+}
+
 checkstyle {
+    toolVersion = "10.12.1"
     isIgnoreFailures = false
     maxErrors = 0
     maxWarnings = 0
