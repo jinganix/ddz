@@ -26,6 +26,7 @@
         2,
         "always",
         [
+          "deps",
           "docs",
           "frontend",
           "service"
