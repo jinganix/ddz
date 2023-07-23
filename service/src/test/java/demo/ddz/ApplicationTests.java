@@ -12,15 +12,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @DisplayName("DdzApplication")
-class DdzApplicationTests {
+class ApplicationTests {
 
   @Test
   @DisplayName("contextLoads")
   void contextLoads() {
-    assertDoesNotThrow(DdzApplication::new);
+    assertDoesNotThrow(Application::new);
     try (MockedStatic<SpringApplication> application = mockStatic(SpringApplication.class)) {
       assertNotNull(application);
-      DdzApplication.main(null);
+      Application.main(null);
     }
   }
 }
