@@ -25,7 +25,7 @@ public enum PokerHand implements Enumeration<Integer> {
   /**
    * Three same cards and one other card, eg: 3335.
    */
-  THREE_WITH_SINGLE(4), // eg. 3335
+  THREE_WITH_SINGLE(4),
 
   /**
    * Three same cards and two other same cards, eg: 33344.
