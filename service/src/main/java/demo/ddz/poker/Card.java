@@ -22,25 +22,28 @@ public class Card implements Comparable<Card> {
    * @param id card id
    */
   public Card(int id) {
+    if (id < 1 || id > 54) {
+      throw new IllegalArgumentException("Card id should be from 1 to 54");
+    }
     this.id = id;
-    this.suit = CardSuit.values()[(id - 1) / 13];
+    this.suit = CardSuit.fromValue((id - 1) / 13 + 1);
     if (id == 53) {
       this.rank = CardRank.JOKER_1;
     } else if (id == 54) {
       this.rank = CardRank.JOKER_2;
     } else {
-      this.rank = CardRank.values()[(id - 1) % 13 + 1];
+      this.rank = CardRank.fromValue((id - 1) % 13 + 1);
     }
     if (rank == CardRank.ACE) {
-      this.value = CardRank.QUEEN.ordinal() + 2;
+      this.value = CardRank.KING.getValue() + 1;
     } else if (rank == CardRank.RANK_2) {
-      this.value = CardRank.QUEEN.ordinal() + 3;
+      this.value = CardRank.KING.getValue() + 2;
     } else if (rank == CardRank.JOKER_1) {
-      this.value = CardRank.QUEEN.ordinal() + 4;
+      this.value = CardRank.KING.getValue() + 3;
     } else if (rank == CardRank.JOKER_2) {
-      this.value = CardRank.QUEEN.ordinal() + 5;
+      this.value = CardRank.KING.getValue() + 4;
     } else {
-      this.value = this.rank.ordinal() + 1;
+      this.value = this.rank.getValue();
     }
   }
 

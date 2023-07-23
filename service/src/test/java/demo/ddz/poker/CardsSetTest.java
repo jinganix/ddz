@@ -23,7 +23,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 @DisplayName("CardsSet")
 class CardsSetTest {
 
-  private Map<CardRank, List<Card>> cardsMap = new HashMap<>();
+  private final Map<CardRank, List<Card>> cardsMap = new HashMap<>();
 
   public CardsSetTest() {
     for (int id = 1; id < 54; id++) {
@@ -46,7 +46,7 @@ class CardsSetTest {
 
   @Nested
   @DisplayName("getPokerHand")
-  class GetPokerHandTest {
+  class GetPokerHand {
 
     @Nested
     @DisplayName("when a valid cards set is provided")
@@ -54,12 +54,12 @@ class CardsSetTest {
 
       @ParameterizedTest
       @DisplayName("then return the poker hand")
-      @ArgumentsSource(BlankStringsArgumentsProvider.class)
-      void thenReturnThePokerHandTest(PokerHand expected, String input) {
+      @ArgumentsSource(PokerHandArgumentsProvider.class)
+      void thenReturnThePokerHand(PokerHand expected, String input) {
         assertEquals(expected, new CardsSet(toCards(input)).getPokerHand());
       }
 
-      static class BlankStringsArgumentsProvider implements ArgumentsProvider {
+      static class PokerHandArgumentsProvider implements ArgumentsProvider {
 
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
@@ -113,7 +113,7 @@ class CardsSetTest {
         "333444555778899AA",
         "33344455566677788889"
       })
-      void thenReturnNullPokerHandTest(String input) {
+      void thenReturnNullPokerHand(String input) {
         assertNull(new CardsSet(toCards(input)).getPokerHand());
       }
     }

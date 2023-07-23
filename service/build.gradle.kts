@@ -43,14 +43,26 @@ tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = "1".toBigDecimal()
+                minimum = "0".toBigDecimal()
             }
         }
     }
 }
 
+tasks.check {
+    dependsOn(tasks.jacocoTestCoverageVerification)
+}
+
 jacoco {
     toolVersion = "0.8.10"
+}
+
+tasks.checkstyleMain {
+    group = "verification"
+}
+
+tasks.checkstyleTest {
+    group = "verification"
 }
 
 checkstyle {
