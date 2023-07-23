@@ -18,7 +18,12 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
+    compileOnly("org.projectlombok:lombok:1.18.28")
     implementation("org.springframework.boot:spring-boot-starter")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.28")
+    testCompileOnly("org.projectlombok:lombok:1.18.28")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
