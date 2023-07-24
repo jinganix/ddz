@@ -25,11 +25,11 @@ class CardTest {
     class WhenCardIdIsValid {
 
       @ParameterizedTest
-      @DisplayName("then construct the card")
+      @DisplayName("when card id is {0}")
       @ArgumentsSource(CardIdArgumentsProvider.class)
-      void thenConstructTheCard(Integer carId, CardSuit suit, CardRank rank, Integer value) {
-        Card card = new Card(carId);
-        assertEquals(carId, card.getId());
+      void thenConstructTheCard(Integer cardId, CardSuit suit, CardRank rank, Integer value) {
+        Card card = new Card(cardId);
+        assertEquals(cardId, card.getId());
         assertEquals(suit, card.getSuit());
         assertEquals(rank, card.getRank());
         assertEquals(value, card.getValue());
@@ -84,7 +84,7 @@ class CardTest {
   class CompareTo {
 
     @Nested
-    @DisplayName("when cards pairs is provided")
+    @DisplayName("when card pairs is provided")
     class WhenCardsPairIsProvided {
 
       @ParameterizedTest
@@ -101,6 +101,9 @@ class CardTest {
           return Stream.of(
             Arguments.of(0, new Card(54), new Card(54)),
             Arguments.of(1, new Card(54), new Card(53)),
+            Arguments.of(-1, new Card(53), new Card(54)),
+            Arguments.of(1, new Card(14), new Card(1)),
+            Arguments.of(-1, new Card(1), new Card(14)),
             Arguments.of(1, new Card(2), new Card(1)),
             Arguments.of(1, new Card(1), new Card(13)),
             Arguments.of(1, new Card(1), new Card(3)),

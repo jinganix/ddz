@@ -28,7 +28,12 @@ class PokerHandTest {
         Arguments.of(7, PokerHand.DOUBLE_STRAIGHT),
         Arguments.of(8, PokerHand.TRIPLE_STRAIGHT),
         Arguments.of(9, PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-        Arguments.of(10, PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS)
+        Arguments.of(10, PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS),
+        Arguments.of(11, PokerHand.FOUR_WITH_TWO),
+        Arguments.of(12, PokerHand.FOUR_WITH_PAIR),
+        Arguments.of(13, PokerHand.FOUR_WITH_TOW_PAIRS),
+        Arguments.of(14, PokerHand.FOUR_OF_KIND),
+        Arguments.of(15, PokerHand.ROCKET)
       );
     }
   }
@@ -41,7 +46,7 @@ class PokerHandTest {
     @DisplayName("when enum values is provided")
     class WhenEnumValuesIsProvided {
 
-      @ParameterizedTest
+      @ParameterizedTest(name = "fromValue({0}) => {1}")
       @DisplayName("then return expected enum")
       @ArgumentsSource(EnumArgumentsProvider.class)
       void thenReturnExpectedEnum(int value, PokerHand expected) {
@@ -58,7 +63,7 @@ class PokerHandTest {
     @DisplayName("when enums is provided")
     class WhenEnumsIsProvided {
 
-      @ParameterizedTest
+      @ParameterizedTest(name = "{1}.toValue() => {0}")
       @DisplayName("then return expected value")
       @ArgumentsSource(EnumArgumentsProvider.class)
       void thenReturnExpectedValue(int expected, PokerHand pokerHand) {

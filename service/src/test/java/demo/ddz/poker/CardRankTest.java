@@ -46,7 +46,7 @@ class CardRankTest {
     @DisplayName("when enum values is provided")
     class WhenEnumValuesIsProvided {
 
-      @ParameterizedTest
+      @ParameterizedTest(name = "fromValue({0}) => {1}")
       @DisplayName("then return expected enum")
       @ArgumentsSource(EnumArgumentsProvider.class)
       void thenReturnExpectedEnum(int value, CardRank expected) {
@@ -63,7 +63,7 @@ class CardRankTest {
     @DisplayName("when enums is provided")
     class WhenEnumsIsProvided {
 
-      @ParameterizedTest
+      @ParameterizedTest(name = "{1}.toValue() => {0}")
       @DisplayName("then return expected value")
       @ArgumentsSource(EnumArgumentsProvider.class)
       void thenReturnExpectedValue(int expected, CardRank cardRank) {
