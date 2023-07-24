@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -19,14 +20,14 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-@Disabled("Disable until implemented")
 @DisplayName("CardsSet")
 class CardsSetTest {
 
-  private final Map<CardRank, List<Card>> cardsMap = new HashMap<>();
+  private static final Map<CardRank, List<Card>> cardsMap = new HashMap<>();
 
-  public CardsSetTest() {
-    for (int id = 1; id < 54; id++) {
+  @BeforeAll
+  static void initCardsMap() {
+    for (int id = 1; id <= 54; id++) {
       Card card = new Card(id);
       List<Card> cards = cardsMap.computeIfAbsent(card.getRank(), k -> new LinkedList<>());
       cards.add(card);
@@ -37,9 +38,9 @@ class CardsSetTest {
     String[] parts = str.split("");
     List<Card> cards = new ArrayList<>(str.length());
     for (String part : parts) {
-      CardRank rank = CardRank.values()[Integer.parseInt(part, 16) - 1];
+      CardRank rank = CardRank.fromValue(Integer.parseInt(part, 16));
       List<Card> cardsOfRank = cardsMap.get(rank);
-      cards.add(cardsOfRank.remove(0));
+      cards.add(cardsOfRank.get(0));
     }
     return cards;
   }
@@ -48,14 +49,15 @@ class CardsSetTest {
   @DisplayName("getPokerHand")
   class GetPokerHand {
 
+    @Disabled("Disable until implemented")
     @Nested
     @DisplayName("when a valid cards set is provided")
     class WhenCardsSetIsValid {
 
-      @ParameterizedTest
+      @ParameterizedTest(name = "{0} => {1}")
       @DisplayName("then return the poker hand")
       @ArgumentsSource(PokerHandArgumentsProvider.class)
-      void thenReturnThePokerHand(PokerHand expected, String input) {
+      void thenReturnThePokerHand(String input, PokerHand expected) {
         assertEquals(expected, new CardsSet(toCards(input)).getPokerHand());
       }
 
@@ -64,29 +66,29 @@ class CardsSetTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
           return Stream.of(
-            Arguments.of(PokerHand.DOUBLE_STRAIGHT, "334455"),
-            Arguments.of(PokerHand.DOUBLE_STRAIGHT, "33445566778899AABBCC"),
-            Arguments.of(PokerHand.FOUR_OF_KIND, "1111"),
-            Arguments.of(PokerHand.FOUR_WITH_TWO, "1111EF"),
-            Arguments.of(PokerHand.FOUR_WITH_PAIR, "211112"),
-            Arguments.of(PokerHand.FOUR_WITH_TOW_PAIRS, "11112233"),
-            Arguments.of(PokerHand.PAIR, "11"),
-            Arguments.of(PokerHand.ROCKET, "EF"),
-            Arguments.of(PokerHand.SINGLE, "1"),
-            Arguments.of(PokerHand.STRAIGHT, "34567"),
-            Arguments.of(PokerHand.STRAIGHT, "3456789ABCD1"),
-            Arguments.of(PokerHand.THREE_OF_KIND, "111"),
-            Arguments.of(PokerHand.THREE_WITH_PAIR, "11199"),
-            Arguments.of(PokerHand.THREE_WITH_PAIR, "91119"),
-            Arguments.of(PokerHand.THREE_WITH_SINGLE, "111E"),
-            Arguments.of(PokerHand.THREE_WITH_SINGLE, "2111"),
-            Arguments.of(PokerHand.TRIPLE_STRAIGHT, "333444555"),
-            Arguments.of(PokerHand.TRIPLE_STRAIGHT, "333444555666"),
-            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "333444555778899"),
-            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "33344455566677789ABC"),
-            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555777"),
-            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555778"),
-            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555789")
+            Arguments.of("334455", PokerHand.DOUBLE_STRAIGHT),
+            Arguments.of("33445566778899AABBCC", PokerHand.DOUBLE_STRAIGHT),
+            Arguments.of("1111", PokerHand.FOUR_OF_KIND),
+            Arguments.of("1111EF", PokerHand.FOUR_WITH_TWO),
+            Arguments.of("211112", PokerHand.FOUR_WITH_PAIR),
+            Arguments.of("11112233", PokerHand.FOUR_WITH_TOW_PAIRS),
+            Arguments.of("11", PokerHand.PAIR),
+            Arguments.of("EF", PokerHand.ROCKET),
+            Arguments.of("1", PokerHand.SINGLE),
+            Arguments.of("34567", PokerHand.STRAIGHT),
+            Arguments.of("3456789ABCD1", PokerHand.STRAIGHT),
+            Arguments.of("111", PokerHand.THREE_OF_KIND),
+            Arguments.of("11199", PokerHand.THREE_WITH_PAIR),
+            Arguments.of("91119", PokerHand.THREE_WITH_PAIR),
+            Arguments.of("111E", PokerHand.THREE_WITH_SINGLE),
+            Arguments.of("2111", PokerHand.THREE_WITH_SINGLE),
+            Arguments.of("333444555", PokerHand.TRIPLE_STRAIGHT),
+            Arguments.of("333444555666", PokerHand.TRIPLE_STRAIGHT),
+            Arguments.of("333444555778899", PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS),
+            Arguments.of("33344455566677789ABC", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
+            Arguments.of("333444555777", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
+            Arguments.of("333444555778", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
+            Arguments.of("333444555789", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES)
           );
         }
       }
@@ -96,7 +98,7 @@ class CardsSetTest {
     @DisplayName("when a invalid cards set is provided")
     class WhenCardsSetIsInvalid {
 
-      @ParameterizedTest
+      @ParameterizedTest(name = "{0} => null")
       @DisplayName("then return null poker hand")
       @ValueSource(strings = {
         "12",
