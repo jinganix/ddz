@@ -10,7 +10,7 @@ The conventional config extends from [config-conventional](https://github.com/co
 
 Run `npm install` in root directory, then you will get [Commitizen](https://github.com/commitizen-tools/commitizen) installed.
 
-Use `npm run cz`create a commit.
+Use `npm run cz` or `npx cz` to create a commit.
 
 ## Workflow validation
 

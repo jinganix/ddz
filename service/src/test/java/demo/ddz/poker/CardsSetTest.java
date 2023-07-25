@@ -88,14 +88,14 @@ class CardsSetTest {
             Arguments.of("AAAA", PokerHand.FOUR_OF_KIND),
             Arguments.of("AAAAXD", PokerHand.FOUR_WITH_TWO),
             Arguments.of("2AAAA2", PokerHand.FOUR_WITH_PAIR),
-            Arguments.of("AAAA2233", PokerHand.FOUR_WITH_TOW_PAIRS),
-            Arguments.of("77888899", PokerHand.FOUR_WITH_TOW_PAIRS),
+            Arguments.of("AAAA2233", PokerHand.FOUR_WITH_TWO_PAIRS),
+            Arguments.of("77888899", PokerHand.FOUR_WITH_TWO_PAIRS),
             Arguments.of("AA", PokerHand.PAIR),
             Arguments.of("XD", PokerHand.ROCKET),
             Arguments.of("A", PokerHand.SINGLE),
             Arguments.of("34567", PokerHand.STRAIGHT),
             Arguments.of("34567890JQKA", PokerHand.STRAIGHT),
-            Arguments.of("AAAA", PokerHand.THREE_OF_KIND),
+            Arguments.of("AAA", PokerHand.THREE_OF_KIND),
             Arguments.of("AAA99", PokerHand.THREE_WITH_PAIR),
             Arguments.of("9AAA9", PokerHand.THREE_WITH_PAIR),
             Arguments.of("AAAX", PokerHand.THREE_WITH_SINGLE),
@@ -119,9 +119,11 @@ class CardsSetTest {
       @ParameterizedTest(name = "{0} => null")
       @DisplayName("then return null poker hand")
       @ValueSource(strings = {
+        "34",
+        "3X",
+        "3D",
         "A2",
         "AAAXD",
-        "AAAAXD",
         "22223333",
         "AAAAX",
         "23456789JQK",
@@ -132,7 +134,8 @@ class CardsSetTest {
         "3334445557890",
         "3334445557788",
         "33344455577889900",
-        "33344455566677788889"
+        "33344455566677788889",
+        "234567890JQKAXD"
       })
       void thenReturnNullPokerHand(String input) {
         assertNull(new CardsSet(toCards(input)).getPokerHand());
