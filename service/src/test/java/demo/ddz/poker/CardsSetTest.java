@@ -23,23 +23,40 @@ import org.junit.jupiter.params.provider.ValueSource;
 @DisplayName("CardsSet")
 class CardsSetTest {
 
-  private static final Map<CardRank, List<Card>> cardsMap = new HashMap<>();
+  private static final Map<CardRank, List<Card>> CARDS_MAP = new HashMap<>();
+
+  private static final Map<String, CardRank> RANK_MAP = new HashMap<>();
 
   @BeforeAll
-  static void initCardsMap() {
+  static void initData() {
     for (int id = 1; id <= 54; id++) {
       Card card = new Card(id);
-      List<Card> cards = cardsMap.computeIfAbsent(card.getRank(), k -> new LinkedList<>());
+      List<Card> cards = CARDS_MAP.computeIfAbsent(card.getRank(), k -> new LinkedList<>());
       cards.add(card);
     }
+    RANK_MAP.put("2", CardRank.RANK_2);
+    RANK_MAP.put("3", CardRank.RANK_3);
+    RANK_MAP.put("4", CardRank.RANK_4);
+    RANK_MAP.put("5", CardRank.RANK_5);
+    RANK_MAP.put("6", CardRank.RANK_6);
+    RANK_MAP.put("7", CardRank.RANK_7);
+    RANK_MAP.put("8", CardRank.RANK_8);
+    RANK_MAP.put("9", CardRank.RANK_9);
+    RANK_MAP.put("0", CardRank.RANK_10);
+    RANK_MAP.put("J", CardRank.JACK);
+    RANK_MAP.put("Q", CardRank.QUEEN);
+    RANK_MAP.put("K", CardRank.KING);
+    RANK_MAP.put("A", CardRank.ACE);
+    RANK_MAP.put("X", CardRank.JOKER_1);
+    RANK_MAP.put("D", CardRank.JOKER_2);
   }
 
   List<Card> toCards(String str) {
     String[] parts = str.split("");
     List<Card> cards = new ArrayList<>(str.length());
     for (String part : parts) {
-      CardRank rank = CardRank.fromValue(Integer.parseInt(part, 16));
-      List<Card> cardsOfRank = cardsMap.get(rank);
+      CardRank rank = RANK_MAP.get(part);
+      List<Card> cardsOfRank = CARDS_MAP.get(rank);
       cards.add(cardsOfRank.get(0));
     }
     return cards;
@@ -67,25 +84,26 @@ class CardsSetTest {
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
           return Stream.of(
             Arguments.of("334455", PokerHand.DOUBLE_STRAIGHT),
-            Arguments.of("33445566778899AABBCC", PokerHand.DOUBLE_STRAIGHT),
-            Arguments.of("1111", PokerHand.FOUR_OF_KIND),
-            Arguments.of("1111EF", PokerHand.FOUR_WITH_TWO),
-            Arguments.of("211112", PokerHand.FOUR_WITH_PAIR),
-            Arguments.of("11112233", PokerHand.FOUR_WITH_TOW_PAIRS),
-            Arguments.of("11", PokerHand.PAIR),
-            Arguments.of("EF", PokerHand.ROCKET),
-            Arguments.of("1", PokerHand.SINGLE),
+            Arguments.of("3344556677889900JJQQ", PokerHand.DOUBLE_STRAIGHT),
+            Arguments.of("AAAA", PokerHand.FOUR_OF_KIND),
+            Arguments.of("AAAAXD", PokerHand.FOUR_WITH_TWO),
+            Arguments.of("2AAAA2", PokerHand.FOUR_WITH_PAIR),
+            Arguments.of("AAAA2233", PokerHand.FOUR_WITH_TOW_PAIRS),
+            Arguments.of("77888899", PokerHand.FOUR_WITH_TOW_PAIRS),
+            Arguments.of("AA", PokerHand.PAIR),
+            Arguments.of("XD", PokerHand.ROCKET),
+            Arguments.of("A", PokerHand.SINGLE),
             Arguments.of("34567", PokerHand.STRAIGHT),
-            Arguments.of("3456789ABCD1", PokerHand.STRAIGHT),
-            Arguments.of("111", PokerHand.THREE_OF_KIND),
-            Arguments.of("11199", PokerHand.THREE_WITH_PAIR),
-            Arguments.of("91119", PokerHand.THREE_WITH_PAIR),
-            Arguments.of("111E", PokerHand.THREE_WITH_SINGLE),
-            Arguments.of("2111", PokerHand.THREE_WITH_SINGLE),
+            Arguments.of("34567890JQKA", PokerHand.STRAIGHT),
+            Arguments.of("AAAA", PokerHand.THREE_OF_KIND),
+            Arguments.of("AAA99", PokerHand.THREE_WITH_PAIR),
+            Arguments.of("9AAA9", PokerHand.THREE_WITH_PAIR),
+            Arguments.of("AAAX", PokerHand.THREE_WITH_SINGLE),
+            Arguments.of("2AAA", PokerHand.THREE_WITH_SINGLE),
             Arguments.of("333444555", PokerHand.TRIPLE_STRAIGHT),
             Arguments.of("333444555666", PokerHand.TRIPLE_STRAIGHT),
             Arguments.of("333444555778899", PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS),
-            Arguments.of("33344455566677789ABC", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
+            Arguments.of("33344455566677789JKA", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
             Arguments.of("333444555777", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
             Arguments.of("333444555778", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
             Arguments.of("333444555789", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES)
@@ -101,18 +119,19 @@ class CardsSetTest {
       @ParameterizedTest(name = "{0} => null")
       @DisplayName("then return null poker hand")
       @ValueSource(strings = {
-        "12",
-        "111EF",
-        "1111EF",
-        "11112222",
-        "1111E",
-        "23456789ABCD",
-        "3456789ABCD12",
+        "A2",
+        "AAAXD",
+        "AAAAXD",
+        "22223333",
+        "AAAAX",
+        "23456789JQK",
+        "3456789JQKA2",
         "2233",
         "223344",
-        "333444555789A",
+        "33344455578",
+        "3334445557890",
         "3334445557788",
-        "333444555778899AA",
+        "33344455577889900",
         "33344455566677788889"
       })
       void thenReturnNullPokerHand(String input) {

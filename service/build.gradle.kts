@@ -25,6 +25,7 @@ dependencies {
   testCompileOnly("org.projectlombok:lombok:1.18.28")
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {
