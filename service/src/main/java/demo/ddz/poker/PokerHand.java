@@ -70,7 +70,7 @@ public enum PokerHand implements Enumeration<Integer> {
   /**
    * Four same cards and two pair of other same cards, eg: 33335577.
    */
-  FOUR_WITH_TOW_PAIRS(13),
+  FOUR_WITH_TWO_PAIRS(13),
 
   /**
    * Four same cards.

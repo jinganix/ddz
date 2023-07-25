@@ -53,14 +53,14 @@ describe("CardSet", () => {
             ["AAAA", PokerHand.FOUR_OF_KIND],
             ["AAAAXD", PokerHand.FOUR_WITH_TWO],
             ["2AAAA2", PokerHand.FOUR_WITH_PAIR],
-            ["AAAA2233", PokerHand.FOUR_WITH_TOW_PAIRS],
-            ["77888899", PokerHand.FOUR_WITH_TOW_PAIRS],
+            ["AAAA2233", PokerHand.FOUR_WITH_TWO_PAIRS],
+            ["77888899", PokerHand.FOUR_WITH_TWO_PAIRS],
             ["AA", PokerHand.PAIR],
             ["XD", PokerHand.ROCKET],
             ["A", PokerHand.SINGLE],
             ["34567", PokerHand.STRAIGHT],
             ["34567890JQKA", PokerHand.STRAIGHT],
-            ["AAAA", PokerHand.THREE_OF_KIND],
+            ["AAA", PokerHand.THREE_OF_KIND],
             ["AAA99", PokerHand.THREE_WITH_PAIR],
             ["9AAA9", PokerHand.THREE_WITH_PAIR],
             ["AAAX", PokerHand.THREE_WITH_SINGLE],
@@ -83,9 +83,11 @@ describe("CardSet", () => {
     describe("when a invalid cards set is provided", () => {
       describe("then return null poker hand", () => {
         it.each([
+          ["34"],
+          ["3X"],
+          ["3D"],
           ["A2"],
           ["AAAXD"],
-          ["AAAAXD"],
           ["22223333"],
           ["AAAAX"],
           ["23456789JQK"],
@@ -97,6 +99,7 @@ describe("CardSet", () => {
           ["3334445557788"],
           ["33344455577889900"],
           ["33344455566677788889"],
+          ["234567890JQKAXD"],
         ])("%s => null", (input: string) => {
           expect(new CardsSet(toCards(input)).getPokerHand()).toBeNull();
         });

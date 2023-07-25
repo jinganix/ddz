@@ -31,7 +31,7 @@ class PokerHandTest {
         Arguments.of(10, PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS),
         Arguments.of(11, PokerHand.FOUR_WITH_TWO),
         Arguments.of(12, PokerHand.FOUR_WITH_PAIR),
-        Arguments.of(13, PokerHand.FOUR_WITH_TOW_PAIRS),
+        Arguments.of(13, PokerHand.FOUR_WITH_TWO_PAIRS),
         Arguments.of(14, PokerHand.FOUR_OF_KIND),
         Arguments.of(15, PokerHand.ROCKET)
       );
