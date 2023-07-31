@@ -68,7 +68,7 @@ tasks.checkstyleTest {
 }
 
 checkstyle {
-  toolVersion = "10.12.1"
+  toolVersion = "10.12.2"
   isIgnoreFailures = false
   maxErrors = 0
   maxWarnings = 0
