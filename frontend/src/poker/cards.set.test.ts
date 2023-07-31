@@ -30,21 +30,23 @@ describe("CardSet", () => {
     for (const part of parts) {
       const rank: CardRank = RANK_MAP[part];
       const cardsOfRank = CARDS_MAP[rank];
-      cards.push(cardsOfRank[0]);
+      cards.push(cardsOfRank.pop()!);
     }
     return cards;
   }
 
-  beforeAll(() => {
+  beforeEach(() => {
+    Object.keys(CardRank)
+      .filter((e) => !isNaN(Number(e)))
+      .forEach((k) => (CARDS_MAP[k as unknown as CardRank] = []));
     for (let id = 1; id <= 54; id++) {
       const card = new Card(id);
-      CARDS_MAP[card.rank] || (CARDS_MAP[card.rank] = []);
       CARDS_MAP[card.rank].push(card);
     }
   });
 
   describe("getPokerHand", () => {
-    describe.skip("when a valid cards set is provided", () => {
+    describe("when a valid cards set is provided", () => {
       describe("then return the poker hand", () => {
         it.each(
           [
@@ -72,6 +74,8 @@ describe("CardSet", () => {
             ["333444555777", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
             ["333444555778", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
             ["333444555789", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
+            ["QQQKKKAAA222", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
+            ["33344455", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
           ].map(([a, b]) => ({ expected: PokerHand[b as PokerHand], input: a as string })),
         )("$input => $expected", ({ input, expected }) => {
           const expectedEnum = PokerHand[expected as keyof typeof PokerHand];
@@ -100,6 +104,9 @@ describe("CardSet", () => {
           ["33344455577889900"],
           ["33344455566677788889"],
           ["234567890JQKAXD"],
+          ["AAA22257"],
+          ["QQKKAA22"],
+          ["JQKA2"],
         ])("%s => null", (input: string) => {
           expect(new CardsSet(toCards(input)).getPokerHand()).toBeNull();
         });
