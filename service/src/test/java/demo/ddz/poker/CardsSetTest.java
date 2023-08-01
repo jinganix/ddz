@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -29,11 +29,6 @@ class CardsSetTest {
 
   @BeforeAll
   static void initData() {
-    for (int id = 1; id <= 54; id++) {
-      Card card = new Card(id);
-      List<Card> cards = CARDS_MAP.computeIfAbsent(card.getRank(), k -> new LinkedList<>());
-      cards.add(card);
-    }
     RANK_MAP.put("2", CardRank.RANK_2);
     RANK_MAP.put("3", CardRank.RANK_3);
     RANK_MAP.put("4", CardRank.RANK_4);
@@ -51,13 +46,23 @@ class CardsSetTest {
     RANK_MAP.put("D", CardRank.JOKER_2);
   }
 
+  @BeforeEach
+  void beforeEach() {
+    CARDS_MAP.clear();
+    for (int id = 1; id <= 54; id++) {
+      Card card = new Card(id);
+      List<Card> cards = CARDS_MAP.computeIfAbsent(card.getRank(), k -> new LinkedList<>());
+      cards.add(card);
+    }
+  }
+
   List<Card> toCards(String str) {
     String[] parts = str.split("");
     List<Card> cards = new ArrayList<>(str.length());
     for (String part : parts) {
       CardRank rank = RANK_MAP.get(part);
       List<Card> cardsOfRank = CARDS_MAP.get(rank);
-      cards.add(cardsOfRank.get(0));
+      cards.add(cardsOfRank.remove(0));
     }
     return cards;
   }
@@ -66,7 +71,6 @@ class CardsSetTest {
   @DisplayName("getPokerHand")
   class GetPokerHand {
 
-    @Disabled("Disable until implemented")
     @Nested
     @DisplayName("when a valid cards set is provided")
     class WhenCardsSetIsValid {
@@ -106,7 +110,9 @@ class CardsSetTest {
             Arguments.of("33344455566677789JKA", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
             Arguments.of("333444555777", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
             Arguments.of("333444555778", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-            Arguments.of("333444555789", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES)
+            Arguments.of("333444555789", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
+            Arguments.of("QQQKKKAAA222", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
+            Arguments.of("33344455", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES)
           );
         }
       }
@@ -135,7 +141,10 @@ class CardsSetTest {
         "3334445557788",
         "33344455577889900",
         "33344455566677788889",
-        "234567890JQKAXD"
+        "234567890JQKAXD",
+        "AAA22257",
+        "QQKKAA22",
+        "JQKA2"
       })
       void thenReturnNullPokerHand(String input) {
         assertNull(new CardsSet(toCards(input)).getPokerHand());

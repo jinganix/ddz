@@ -16,20 +16,20 @@ export class Card {
     }
     this.id = id;
     this.suit = Math.floor((id - 1) / 13) + 1;
-    if (id == 53) {
+    if (id === 53) {
       this.rank = CardRank.JOKER_1;
-    } else if (id == 54) {
+    } else if (id === 54) {
       this.rank = CardRank.JOKER_2;
     } else {
       this.rank = ((id - 1) % 13) + 1;
     }
-    if (this.rank == CardRank.ACE) {
+    if (this.rank === CardRank.ACE) {
       this.value = CardRank.KING + 1;
-    } else if (this.rank == CardRank.RANK_2) {
+    } else if (this.rank === CardRank.RANK_2) {
       this.value = CardRank.KING + 2;
-    } else if (this.rank == CardRank.JOKER_1) {
+    } else if (this.rank === CardRank.JOKER_1) {
       this.value = CardRank.KING + 3;
-    } else if (this.rank == CardRank.JOKER_2) {
+    } else if (this.rank === CardRank.JOKER_2) {
       this.value = CardRank.KING + 4;
     } else {
       this.value = this.rank;
