@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { CardRank } from "./card.rank";
 import { Card } from "./card";
 import { PokerHand } from "./poker.hand";
@@ -50,33 +66,53 @@ describe("CardSet", () => {
       describe("then return the poker hand", () => {
         it.each(
           [
-            ["334455", PokerHand.DOUBLE_STRAIGHT],
-            ["3344556677889900JJQQ", PokerHand.DOUBLE_STRAIGHT],
-            ["AAAA", PokerHand.FOUR_OF_KIND],
-            ["AAAAXD", PokerHand.FOUR_WITH_TWO],
-            ["2AAAA2", PokerHand.FOUR_WITH_PAIR],
-            ["AAAA2233", PokerHand.FOUR_WITH_TWO_PAIRS],
-            ["77888899", PokerHand.FOUR_WITH_TWO_PAIRS],
-            ["AA", PokerHand.PAIR],
-            ["XD", PokerHand.ROCKET],
-            ["A", PokerHand.SINGLE],
-            ["34567", PokerHand.STRAIGHT],
-            ["34567890JQKA", PokerHand.STRAIGHT],
-            ["AAA", PokerHand.THREE_OF_KIND],
-            ["AAA99", PokerHand.THREE_WITH_PAIR],
-            ["9AAA9", PokerHand.THREE_WITH_PAIR],
-            ["AAAX", PokerHand.THREE_WITH_SINGLE],
-            ["2AAA", PokerHand.THREE_WITH_SINGLE],
-            ["333444555", PokerHand.TRIPLE_STRAIGHT],
-            ["333444555666", PokerHand.TRIPLE_STRAIGHT],
-            ["333444555778899", PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS],
-            ["33344455566677789JKA", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
-            ["333444555777", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
-            ["333444555778", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
-            ["333444555789", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
-            ["QQQKKKAAA222", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
-            ["33344455", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES],
-          ].map(([a, b]) => ({ expected: PokerHand[b as PokerHand], input: a as string })),
+            [PokerHand.DOUBLE_STRAIGHT, "334455"],
+            [PokerHand.DOUBLE_STRAIGHT, "3344556677889900JJQQ"],
+            [PokerHand.FOUR_OF_KIND, "AAAA"],
+            [PokerHand.FOUR_WITH_PAIR, "AAAA22"],
+            [PokerHand.FOUR_WITH_PAIR, "JJAAAA"],
+            [PokerHand.FOUR_WITH_TWO, "AAAAXD"],
+            [PokerHand.FOUR_WITH_TWO, "JAAAAX"],
+            [PokerHand.FOUR_WITH_TWO, "JQAAAA"],
+            [PokerHand.FOUR_WITH_TWO_PAIRS, "66778888"],
+            [PokerHand.FOUR_WITH_TWO_PAIRS, "77888899"],
+            [PokerHand.FOUR_WITH_TWO_PAIRS, "88889999"],
+            [PokerHand.FOUR_WITH_TWO_PAIRS, "8888JJQQ"],
+            [PokerHand.PAIR, "AA"],
+            [PokerHand.ROCKET, "XD"],
+            [PokerHand.SINGLE, "A"],
+            [PokerHand.STRAIGHT, "34567"],
+            [PokerHand.STRAIGHT, "34567890JQKA"],
+            [PokerHand.THREE_OF_KIND, "AAA"],
+            [PokerHand.THREE_WITH_PAIR, "99AAA"],
+            [PokerHand.THREE_WITH_PAIR, "AAA22"],
+            [PokerHand.THREE_WITH_SINGLE, "2AAA"],
+            [PokerHand.THREE_WITH_SINGLE, "AAAX"],
+            [PokerHand.TRIPLE_STRAIGHT, "333444555"],
+            [PokerHand.TRIPLE_STRAIGHT, "333444555666777888"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "33334444666777888999"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "3333444555"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "333444555666JJJJQQQQ"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "333444555778899"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "333444JJJJ"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "3355566688"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333344445555"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "33334444555566667777"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3333444455556666777J"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3334444555566667777J"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444455559"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "33344455"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3334445556666JJJ"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "33344455566677789JKA"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555666777JJJJQ"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555666JJJJ"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555777"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555778"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555789"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333555666777"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3335556667778888"],
+            [PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "QQQKKKAAA222"],
+          ].map(([a, b]) => ({ expected: PokerHand[a as PokerHand], input: b as string })),
         )("$input => $expected", ({ input, expected }) => {
           const expectedEnum = PokerHand[expected as keyof typeof PokerHand];
           expect(new CardsSet(toCards(input)).getPokerHand()).toEqual(expectedEnum);
@@ -87,26 +123,27 @@ describe("CardSet", () => {
     describe("when a invalid cards set is provided", () => {
       describe("then return null poker hand", () => {
         it.each([
-          ["34"],
-          ["3X"],
-          ["3D"],
-          ["A2"],
-          ["AAAXD"],
-          ["22223333"],
-          ["AAAAX"],
-          ["23456789JQK"],
-          ["3456789JQKA2"],
           ["2233"],
           ["223344"],
-          ["33344455578"],
-          ["3334445557890"],
+          ["234567890JQKAXD"],
+          ["23456789JQK"],
           ["3334445557788"],
           ["33344455577889900"],
-          ["33344455566677788889"],
-          ["234567890JQKAXD"],
+          ["33344455578"],
+          ["3334445557890"],
+          ["333666777"],
+          ["333666777999"],
+          ["333666777JJQQKK"],
+          ["34"],
+          ["3456789JQKA2"],
+          ["3D"],
+          ["3X"],
+          ["A2"],
           ["AAA22257"],
-          ["QQKKAA22"],
+          ["AAAAX"],
+          ["AAAXD"],
           ["JQKA2"],
+          ["QQKKAA22"],
         ])("%s => null", (input: string) => {
           expect(new CardsSet(toCards(input)).getPokerHand()).toBeNull();
         });
@@ -115,7 +152,7 @@ describe("CardSet", () => {
   });
 
   describe("dominate", () => {
-    describe.skip("when this cards set is dominating", () => {
+    describe("when this cards set is dominating", () => {
       describe("then return true", () => {
         it.each(
           [

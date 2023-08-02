@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package demo.ddz.poker;
 
 import lombok.Getter;
@@ -34,17 +50,26 @@ public class Card implements Comparable<Card> {
     } else {
       this.rank = CardRank.fromValue((id - 1) % 13 + 1);
     }
+    this.value = rankToValue(rank);
+  }
+
+  /**
+   * Card rank to value.
+   *
+   * @param rank {@link CardRank}
+   * @return value
+   */
+  public static int rankToValue(CardRank rank) {
     if (rank == CardRank.ACE) {
-      this.value = CardRank.KING.getValue() + 1;
+      return CardRank.KING.getValue() + 1;
     } else if (rank == CardRank.RANK_2) {
-      this.value = CardRank.KING.getValue() + 2;
+      return CardRank.KING.getValue() + 2;
     } else if (rank == CardRank.JOKER_1) {
-      this.value = CardRank.KING.getValue() + 3;
+      return CardRank.KING.getValue() + 3;
     } else if (rank == CardRank.JOKER_2) {
-      this.value = CardRank.KING.getValue() + 4;
-    } else {
-      this.value = this.rank.getValue();
+      return CardRank.KING.getValue() + 4;
     }
+    return rank.getValue();
   }
 
   /**

@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package demo.ddz.poker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +42,7 @@ class CardTest {
 
       @ParameterizedTest
       @DisplayName("when card id is {0}")
-      @ArgumentsSource(CardIdArgumentsProvider.class)
+      @ArgumentsSource(TestArgumentsProvider.class)
       void thenConstructTheCard(Integer cardId, CardSuit suit, CardRank rank, Integer value) {
         Card card = new Card(cardId);
         assertEquals(cardId, card.getId());
@@ -35,7 +51,7 @@ class CardTest {
         assertEquals(value, card.getValue());
       }
 
-      static class CardIdArgumentsProvider implements ArgumentsProvider {
+      static class TestArgumentsProvider implements ArgumentsProvider {
 
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
@@ -84,17 +100,17 @@ class CardTest {
   class CompareTo {
 
     @Nested
-    @DisplayName("when card pairs is provided")
+    @DisplayName("when cards pairs is provided")
     class WhenCardsPairIsProvided {
 
       @ParameterizedTest
       @DisplayName("then return expected compare result")
-      @ArgumentsSource(ComparisonArgumentsProvider.class)
+      @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedCompareResult(int expected, Card a, Card b) {
         assertEquals(expected, a.compareTo(b));
       }
 
-      static class ComparisonArgumentsProvider implements ArgumentsProvider {
+      static class TestArgumentsProvider implements ArgumentsProvider {
 
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
