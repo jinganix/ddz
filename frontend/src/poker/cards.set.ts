@@ -129,4 +129,8 @@ export class CardsSet {
     }
     return null;
   }
+
+  dominate(_cardsSet: CardsSet): boolean {
+    return false;
+  }
 }

@@ -133,4 +133,14 @@ public class CardsSet {
     }
     return null;
   }
+
+  /**
+   * Check whether this cards set dominate the other.
+   *
+   * @param cardsSet {@link CardsSet}
+   * @return true if dominating
+   */
+  public boolean dominate(CardsSet cardsSet) {
+    return false;
+  }
 }
