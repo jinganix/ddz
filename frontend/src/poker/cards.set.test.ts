@@ -215,7 +215,7 @@ describe("CardSet", () => {
             ["55556666", "4"],
             ["AAAA", "XD"],
           ].map(([a, b]) => ({ a: a as string, b: b as string })),
-        )("$a > $b", ({ a, b }) => {
+        )("$a <= $b", ({ a, b }) => {
           expect(new CardsSet(toCards(a)).dominate(new CardsSet(toCards(b)))).toBeFalsy();
         });
       });

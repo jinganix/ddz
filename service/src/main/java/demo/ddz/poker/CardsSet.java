@@ -25,17 +25,14 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 
-/**
- * A set of cards.
- */
+/** A set of cards. */
 public class CardsSet {
 
   private static final int VALUE_OF_RANK_2 = Card.rankToValue(CardRank.RANK_2);
 
   private final List<Card> cards;
 
-  @Getter
-  private final PokerHand pokerHand;
+  @Getter private final PokerHand pokerHand;
 
   private final int value;
 

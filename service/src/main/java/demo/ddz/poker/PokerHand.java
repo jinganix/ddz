@@ -19,83 +19,51 @@ package demo.ddz.poker;
 import demo.ddz.enumeration.Enumeration;
 import demo.ddz.enumeration.IntegerEnumMapper;
 
-/**
- * Poker hand.
- */
+/** Poker hand. */
 public enum PokerHand implements Enumeration<Integer> {
-  /**
-   * Single card, eg: 3.
-   */
+  /** Single card, eg: 3. */
   SINGLE(1),
 
-  /**
-   * Two same cards, eg: 33.
-   */
+  /** Two same cards, eg: 33. */
   PAIR(2),
 
-  /**
-   * Three same cards, eg: 333.
-   */
+  /** Three same cards, eg: 333. */
   THREE_OF_KIND(3),
 
-  /**
-   * Three same cards and one other card, eg: 3335.
-   */
+  /** Three same cards and one other card, eg: 3335. */
   THREE_WITH_SINGLE(4),
 
-  /**
-   * Three same cards and two other same cards, eg: 33344.
-   */
+  /** Three same cards and two other same cards, eg: 33344. */
   THREE_WITH_PAIR(5),
 
-  /**
-   * Five or more consecutive cards, excludes (2, E, F), eg: 34567.
-   */
+  /** Five or more consecutive cards, excludes (2, E, F), eg: 34567. */
   STRAIGHT(6),
 
-  /**
-   * Three or more consecutive pair cards, excludes 2, eg: 334455.
-   */
+  /** Three or more consecutive pair cards, excludes 2, eg: 334455. */
   DOUBLE_STRAIGHT(7),
 
-  /**
-   * Two or more consecutive triple cards, excludes 2, eg: 333444.
-   */
+  /** Two or more consecutive triple cards, excludes 2, eg: 333444. */
   TRIPLE_STRAIGHT(8),
 
-  /**
-   * One or more consecutive triple cards and a single card for each, excludes 2, eg: 33344468.
-   */
+  /** One or more consecutive triple cards and a single card for each, excludes 2, eg: 33344468. */
   TRIPLE_STRAIGHT_WITH_SINGLES(9),
 
-  /**
-   * One or more consecutive triple cards and a cards pair for each, excludes 2, eg: 3334446688.
-   */
+  /** One or more consecutive triple cards and a cards pair for each, excludes 2, eg: 3334446688. */
   TRIPLE_STRAIGHT_WITH_PAIRS(10),
 
-  /**
-   * Four same cards and two other different cards, eg: 333357.
-   */
+  /** Four same cards and two other different cards, eg: 333357. */
   FOUR_WITH_TWO(11),
 
-  /**
-   * Four same cards and two other same cards, eg: 333355.
-   */
+  /** Four same cards and two other same cards, eg: 333355. */
   FOUR_WITH_PAIR(12),
 
-  /**
-   * Four same cards and two pair of other same cards, eg: 33335577.
-   */
+  /** Four same cards and two pair of other same cards, eg: 33335577. */
   FOUR_WITH_TWO_PAIRS(13),
 
-  /**
-   * Four same cards.
-   */
+  /** Four same cards. */
   FOUR_OF_KIND(14),
 
-  /**
-   * Two jokers.
-   */
+  /** Two jokers. */
   ROCKET(15);
 
   private static final IntegerEnumMapper<PokerHand> mapper = new IntegerEnumMapper<>(values());

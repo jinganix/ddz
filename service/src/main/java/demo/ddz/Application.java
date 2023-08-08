@@ -19,17 +19,12 @@ package demo.ddz;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Application.
- */
+/** Application. */
 @SpringBootApplication
 public class Application {
 
-  /**
-   * Constructor.
-   */
-  public Application() {
-  }
+  /** Constructor. */
+  public Application() {}
 
   /**
    * Main entry.

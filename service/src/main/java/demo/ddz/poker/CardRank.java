@@ -19,83 +19,51 @@ package demo.ddz.poker;
 import demo.ddz.enumeration.Enumeration;
 import demo.ddz.enumeration.IntegerEnumMapper;
 
-/**
- * The hand of a card.
- */
+/** The hand of a card. */
 public enum CardRank implements Enumeration<Integer> {
-  /**
-   * Ace.
-   */
+  /** Ace. */
   ACE(1),
 
-  /**
-   * Rank 2.
-   */
+  /** Rank 2. */
   RANK_2(2),
 
-  /**
-   * Rank 3.
-   */
+  /** Rank 3. */
   RANK_3(3),
 
-  /**
-   * Rank 4.
-   */
+  /** Rank 4. */
   RANK_4(4),
 
-  /**
-   * Rank 5.
-   */
+  /** Rank 5. */
   RANK_5(5),
 
-  /**
-   * Rank 6.
-   */
+  /** Rank 6. */
   RANK_6(6),
 
-  /**
-   * Rank 7.
-   */
+  /** Rank 7. */
   RANK_7(7),
 
-  /**
-   * Rank 8.
-   */
+  /** Rank 8. */
   RANK_8(8),
 
-  /**
-   * Rank 9.
-   */
+  /** Rank 9. */
   RANK_9(9),
 
-  /**
-   * Rank 10.
-   */
+  /** Rank 10. */
   RANK_10(10),
 
-  /**
-   * Jack.
-   */
+  /** Jack. */
   JACK(11),
 
-  /**
-   * Queen.
-   */
+  /** Queen. */
   QUEEN(12),
 
-  /**
-   * King.
-   */
+  /** King. */
   KING(13),
 
-  /**
-   * Joker.
-   */
+  /** Joker. */
   JOKER_1(14),
 
-  /**
-   * Joker.
-   */
+  /** Joker. */
   JOKER_2(15);
 
   private static final IntegerEnumMapper<CardRank> mapper = new IntegerEnumMapper<>(values());

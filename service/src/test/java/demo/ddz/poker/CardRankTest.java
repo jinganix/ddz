@@ -35,22 +35,21 @@ class CardRankTest {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
       return Stream.of(
-        Arguments.of(1, CardRank.ACE),
-        Arguments.of(2, CardRank.RANK_2),
-        Arguments.of(3, CardRank.RANK_3),
-        Arguments.of(4, CardRank.RANK_4),
-        Arguments.of(5, CardRank.RANK_5),
-        Arguments.of(6, CardRank.RANK_6),
-        Arguments.of(7, CardRank.RANK_7),
-        Arguments.of(8, CardRank.RANK_8),
-        Arguments.of(9, CardRank.RANK_9),
-        Arguments.of(10, CardRank.RANK_10),
-        Arguments.of(11, CardRank.JACK),
-        Arguments.of(12, CardRank.QUEEN),
-        Arguments.of(13, CardRank.KING),
-        Arguments.of(14, CardRank.JOKER_1),
-        Arguments.of(15, CardRank.JOKER_2)
-      );
+          Arguments.of(1, CardRank.ACE),
+          Arguments.of(2, CardRank.RANK_2),
+          Arguments.of(3, CardRank.RANK_3),
+          Arguments.of(4, CardRank.RANK_4),
+          Arguments.of(5, CardRank.RANK_5),
+          Arguments.of(6, CardRank.RANK_6),
+          Arguments.of(7, CardRank.RANK_7),
+          Arguments.of(8, CardRank.RANK_8),
+          Arguments.of(9, CardRank.RANK_9),
+          Arguments.of(10, CardRank.RANK_10),
+          Arguments.of(11, CardRank.JACK),
+          Arguments.of(12, CardRank.QUEEN),
+          Arguments.of(13, CardRank.KING),
+          Arguments.of(14, CardRank.JOKER_1),
+          Arguments.of(15, CardRank.JOKER_2));
     }
   }
 
