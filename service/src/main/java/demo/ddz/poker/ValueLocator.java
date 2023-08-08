@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package demo.ddz.enumeration;
+package demo.ddz.poker;
 
 /**
- * Mapping from integer value to enum.
- *
- * @param <T> Enum
+ * Locator for {@link CardsSet} comparison.
  */
-public class IntegerEnumMapper<T extends Enumeration<Integer>> extends EnumMapper<Integer, T> {
+public record ValueLocator(PokerHand pokerHand, int index) {
 
-  /**
-   * Construct an {@link IntegerEnumMapper}.
-   *
-   * @param values generic type values
-   */
-  public IntegerEnumMapper(T[] values) {
-    super(values, Enumeration::getValue);
-  }
 }

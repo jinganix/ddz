@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package demo.ddz.poker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,7 +29,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -80,42 +95,62 @@ class CardsSetTest {
 
       @ParameterizedTest(name = "{0} => {1}")
       @DisplayName("then return the poker hand")
-      @ArgumentsSource(PokerHandArgumentsProvider.class)
-      void thenReturnThePokerHand(String input, PokerHand expected) {
+      @ArgumentsSource(TestArgumentsProvider.class)
+      void thenReturnThePokerHand(PokerHand expected, String input) {
         assertEquals(expected, new CardsSet(toCards(input)).getPokerHand());
       }
 
-      static class PokerHandArgumentsProvider implements ArgumentsProvider {
+      static class TestArgumentsProvider implements ArgumentsProvider {
 
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
           return Stream.of(
-            Arguments.of("334455", PokerHand.DOUBLE_STRAIGHT),
-            Arguments.of("3344556677889900JJQQ", PokerHand.DOUBLE_STRAIGHT),
-            Arguments.of("AAAA", PokerHand.FOUR_OF_KIND),
-            Arguments.of("AAAAXD", PokerHand.FOUR_WITH_TWO),
-            Arguments.of("2AAAA2", PokerHand.FOUR_WITH_PAIR),
-            Arguments.of("AAAA2233", PokerHand.FOUR_WITH_TWO_PAIRS),
-            Arguments.of("77888899", PokerHand.FOUR_WITH_TWO_PAIRS),
-            Arguments.of("AA", PokerHand.PAIR),
-            Arguments.of("XD", PokerHand.ROCKET),
-            Arguments.of("A", PokerHand.SINGLE),
-            Arguments.of("34567", PokerHand.STRAIGHT),
-            Arguments.of("34567890JQKA", PokerHand.STRAIGHT),
-            Arguments.of("AAA", PokerHand.THREE_OF_KIND),
-            Arguments.of("AAA99", PokerHand.THREE_WITH_PAIR),
-            Arguments.of("9AAA9", PokerHand.THREE_WITH_PAIR),
-            Arguments.of("AAAX", PokerHand.THREE_WITH_SINGLE),
-            Arguments.of("2AAA", PokerHand.THREE_WITH_SINGLE),
-            Arguments.of("333444555", PokerHand.TRIPLE_STRAIGHT),
-            Arguments.of("333444555666", PokerHand.TRIPLE_STRAIGHT),
-            Arguments.of("333444555778899", PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS),
-            Arguments.of("33344455566677789JKA", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-            Arguments.of("333444555777", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-            Arguments.of("333444555778", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-            Arguments.of("333444555789", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-            Arguments.of("QQQKKKAAA222", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-            Arguments.of("33344455", PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES)
+            Arguments.of(PokerHand.DOUBLE_STRAIGHT, "334455"),
+            Arguments.of(PokerHand.DOUBLE_STRAIGHT, "3344556677889900JJQQ"),
+            Arguments.of(PokerHand.FOUR_OF_KIND, "AAAA"),
+            Arguments.of(PokerHand.FOUR_WITH_PAIR, "AAAA22"),
+            Arguments.of(PokerHand.FOUR_WITH_PAIR, "JJAAAA"),
+            Arguments.of(PokerHand.FOUR_WITH_TWO, "AAAAXD"),
+            Arguments.of(PokerHand.FOUR_WITH_TWO, "JAAAAX"),
+            Arguments.of(PokerHand.FOUR_WITH_TWO, "JQAAAA"),
+            Arguments.of(PokerHand.FOUR_WITH_TWO_PAIRS, "66778888"),
+            Arguments.of(PokerHand.FOUR_WITH_TWO_PAIRS, "77888899"),
+            Arguments.of(PokerHand.FOUR_WITH_TWO_PAIRS, "88889999"),
+            Arguments.of(PokerHand.FOUR_WITH_TWO_PAIRS, "8888JJQQ"),
+            Arguments.of(PokerHand.PAIR, "AA"),
+            Arguments.of(PokerHand.ROCKET, "XD"),
+            Arguments.of(PokerHand.SINGLE, "A"),
+            Arguments.of(PokerHand.STRAIGHT, "34567"),
+            Arguments.of(PokerHand.STRAIGHT, "34567890JQKA"),
+            Arguments.of(PokerHand.THREE_OF_KIND, "AAA"),
+            Arguments.of(PokerHand.THREE_WITH_PAIR, "99AAA"),
+            Arguments.of(PokerHand.THREE_WITH_PAIR, "AAA22"),
+            Arguments.of(PokerHand.THREE_WITH_SINGLE, "2AAA"),
+            Arguments.of(PokerHand.THREE_WITH_SINGLE, "AAAX"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT, "333444555"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT, "333444555666777888"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "33334444666777888999"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "3333444555"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "333444555666JJJJQQQQ"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "333444555778899"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "333444JJJJ"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, "3355566688"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333344445555"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "33334444555566667777"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3333444455556666777J"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3334444555566667777J"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444455559"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "33344455"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3334445556666JJJ"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "33344455566677789JKA"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555666777JJJJQ"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555666JJJJ"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555777"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555778"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333444555789"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "333555666777"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "3335556667778888"),
+            Arguments.of(PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES, "QQQKKKAAA222")
           );
         }
       }
@@ -128,26 +163,27 @@ class CardsSetTest {
       @ParameterizedTest(name = "{0} => null")
       @DisplayName("then return null poker hand")
       @ValueSource(strings = {
-        "34",
-        "3X",
-        "3D",
-        "A2",
-        "AAAXD",
-        "22223333",
-        "AAAAX",
-        "23456789JQK",
-        "3456789JQKA2",
         "2233",
         "223344",
-        "33344455578",
-        "3334445557890",
+        "234567890JQKAXD",
+        "23456789JQK",
         "3334445557788",
         "33344455577889900",
-        "33344455566677788889",
-        "234567890JQKAXD",
+        "33344455578",
+        "3334445557890",
+        "333666777",
+        "333666777999",
+        "333666777JJQQKK",
+        "34",
+        "3456789JQKA2",
+        "3D",
+        "3X",
+        "A2",
         "AAA22257",
-        "QQKKAA22",
-        "JQKA2"
+        "AAAAX",
+        "AAAXD",
+        "JQKA2",
+        "QQKKAA22"
       })
       void thenReturnNullPokerHand(String input) {
         assertNull(new CardsSet(toCards(input)).getPokerHand());
@@ -163,7 +199,6 @@ class CardsSetTest {
     @DisplayName("when this cards set is dominating")
     class WhenThisCardsSetIsDominating {
 
-      @Disabled("until implemented")
       @ParameterizedTest(name = "{0} > {1}")
       @DisplayName("then return true")
       @ArgumentsSource(TestArgumentsProvider.class)

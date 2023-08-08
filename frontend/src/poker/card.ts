@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { CardSuit } from "@/poker/card.suit";
 import { CardRank } from "@/poker/card.rank";
 
@@ -23,17 +39,20 @@ export class Card {
     } else {
       this.rank = ((id - 1) % 13) + 1;
     }
-    if (this.rank === CardRank.ACE) {
-      this.value = CardRank.KING + 1;
-    } else if (this.rank === CardRank.RANK_2) {
-      this.value = CardRank.KING + 2;
-    } else if (this.rank === CardRank.JOKER_1) {
-      this.value = CardRank.KING + 3;
-    } else if (this.rank === CardRank.JOKER_2) {
-      this.value = CardRank.KING + 4;
-    } else {
-      this.value = this.rank;
+    this.value = Card.rankToValue(this.rank);
+  }
+
+  static rankToValue(rank: CardRank): number {
+    if (rank === CardRank.ACE) {
+      return CardRank.KING + 1;
+    } else if (rank === CardRank.RANK_2) {
+      return CardRank.KING + 2;
+    } else if (rank === CardRank.JOKER_1) {
+      return CardRank.KING + 3;
+    } else if (rank === CardRank.JOKER_2) {
+      return CardRank.KING + 4;
     }
+    return rank;
   }
 
   compareTo(card: Card): number {

@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const _require = require;
 const { pathsToModuleNameMapper } = _require("ts-jest");
 const { compilerOptions } = _require("./tsconfig");
