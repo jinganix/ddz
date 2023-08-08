@@ -16,9 +16,5 @@
 
 package demo.ddz.poker;
 
-/**
- * Locator for {@link CardsSet} comparison.
- */
-public record ValueLocator(PokerHand pokerHand, int index) {
-
-}
+/** Locator for {@link CardsSet} comparison. */
+public record ValueLocator(PokerHand pokerHand, int index) {}

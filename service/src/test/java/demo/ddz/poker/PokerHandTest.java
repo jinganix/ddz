@@ -35,22 +35,21 @@ class PokerHandTest {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
       return Stream.of(
-        Arguments.of(1, PokerHand.SINGLE),
-        Arguments.of(2, PokerHand.PAIR),
-        Arguments.of(3, PokerHand.THREE_OF_KIND),
-        Arguments.of(4, PokerHand.THREE_WITH_SINGLE),
-        Arguments.of(5, PokerHand.THREE_WITH_PAIR),
-        Arguments.of(6, PokerHand.STRAIGHT),
-        Arguments.of(7, PokerHand.DOUBLE_STRAIGHT),
-        Arguments.of(8, PokerHand.TRIPLE_STRAIGHT),
-        Arguments.of(9, PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
-        Arguments.of(10, PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS),
-        Arguments.of(11, PokerHand.FOUR_WITH_TWO),
-        Arguments.of(12, PokerHand.FOUR_WITH_PAIR),
-        Arguments.of(13, PokerHand.FOUR_WITH_TWO_PAIRS),
-        Arguments.of(14, PokerHand.FOUR_OF_KIND),
-        Arguments.of(15, PokerHand.ROCKET)
-      );
+          Arguments.of(1, PokerHand.SINGLE),
+          Arguments.of(2, PokerHand.PAIR),
+          Arguments.of(3, PokerHand.THREE_OF_KIND),
+          Arguments.of(4, PokerHand.THREE_WITH_SINGLE),
+          Arguments.of(5, PokerHand.THREE_WITH_PAIR),
+          Arguments.of(6, PokerHand.STRAIGHT),
+          Arguments.of(7, PokerHand.DOUBLE_STRAIGHT),
+          Arguments.of(8, PokerHand.TRIPLE_STRAIGHT),
+          Arguments.of(9, PokerHand.TRIPLE_STRAIGHT_WITH_SINGLES),
+          Arguments.of(10, PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS),
+          Arguments.of(11, PokerHand.FOUR_WITH_TWO),
+          Arguments.of(12, PokerHand.FOUR_WITH_PAIR),
+          Arguments.of(13, PokerHand.FOUR_WITH_TWO_PAIRS),
+          Arguments.of(14, PokerHand.FOUR_OF_KIND),
+          Arguments.of(15, PokerHand.ROCKET));
     }
   }
 

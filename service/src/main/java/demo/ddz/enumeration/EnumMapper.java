@@ -33,7 +33,7 @@ public class EnumMapper<K, V> {
   /**
    * Constructor.
    *
-   * @param values      values
+   * @param values values
    * @param keyResolver key resolver
    */
   public EnumMapper(V[] values, Function<V, K> keyResolver) {

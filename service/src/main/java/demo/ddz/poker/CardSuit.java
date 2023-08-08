@@ -19,34 +19,22 @@ package demo.ddz.poker;
 import demo.ddz.enumeration.Enumeration;
 import demo.ddz.enumeration.IntegerEnumMapper;
 
-/**
- * The suit of a card.
- */
+/** The suit of a card. */
 public enum CardSuit implements Enumeration<Integer> {
 
-  /**
-   * Spades.
-   */
+  /** Spades. */
   SPADES(1),
 
-  /**
-   * Clubs.
-   */
+  /** Clubs. */
   HEARTS(2),
 
-  /**
-   * Clubs.
-   */
+  /** Clubs. */
   CLUBS(3),
 
-  /**
-   * Diamonds.
-   */
+  /** Diamonds. */
   DIAMONDS(4),
 
-  /**
-   * Joker.
-   */
+  /** Joker. */
   JOKER(5);
 
   private static final IntegerEnumMapper<CardSuit> mapper = new IntegerEnumMapper<>(values());

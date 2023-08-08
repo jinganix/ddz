@@ -2,8 +2,9 @@ plugins {
   java
   jacoco
   checkstyle
-  id("org.springframework.boot") version "3.1.2"
+  id("com.diffplug.spotless") version "6.20.0"
   id("io.spring.dependency-management") version "1.1.2"
+  id("org.springframework.boot") version "3.1.2"
 }
 
 group = "demo.ddz"
@@ -76,4 +77,14 @@ checkstyle {
   configProperties = mapOf(
     "org.checkstyle.google.suppressionfilter.config" to "${rootDir}/service/checkstyle/suppressions.xml"
   )
+}
+
+spotless {
+  java {
+    googleJavaFormat()
+  }
+}
+
+tasks.check {
+  dependsOn(tasks.spotlessCheck)
 }

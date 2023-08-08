@@ -56,18 +56,17 @@ class CardTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
           return Stream.of(
-            Arguments.of(1, CardSuit.SPADES, CardRank.ACE, 14),
-            Arguments.of(14, CardSuit.HEARTS, CardRank.ACE, 14),
-            Arguments.of(27, CardSuit.CLUBS, CardRank.ACE, 14),
-            Arguments.of(40, CardSuit.DIAMONDS, CardRank.ACE, 14),
-            Arguments.of(2, CardSuit.SPADES, CardRank.RANK_2, 15),
-            Arguments.of(41, CardSuit.DIAMONDS, CardRank.RANK_2, 15),
-            Arguments.of(3, CardSuit.SPADES, CardRank.RANK_3, 3),
-            Arguments.of(13, CardSuit.SPADES, CardRank.KING, 13),
-            Arguments.of(52, CardSuit.DIAMONDS, CardRank.KING, 13),
-            Arguments.of(53, CardSuit.JOKER, CardRank.JOKER_1, 16),
-            Arguments.of(54, CardSuit.JOKER, CardRank.JOKER_2, 17)
-          );
+              Arguments.of(1, CardSuit.SPADES, CardRank.ACE, 14),
+              Arguments.of(14, CardSuit.HEARTS, CardRank.ACE, 14),
+              Arguments.of(27, CardSuit.CLUBS, CardRank.ACE, 14),
+              Arguments.of(40, CardSuit.DIAMONDS, CardRank.ACE, 14),
+              Arguments.of(2, CardSuit.SPADES, CardRank.RANK_2, 15),
+              Arguments.of(41, CardSuit.DIAMONDS, CardRank.RANK_2, 15),
+              Arguments.of(3, CardSuit.SPADES, CardRank.RANK_3, 3),
+              Arguments.of(13, CardSuit.SPADES, CardRank.KING, 13),
+              Arguments.of(52, CardSuit.DIAMONDS, CardRank.KING, 13),
+              Arguments.of(53, CardSuit.JOKER, CardRank.JOKER_1, 16),
+              Arguments.of(54, CardSuit.JOKER, CardRank.JOKER_2, 17));
         }
       }
     }
@@ -115,20 +114,19 @@ class CardTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
           return Stream.of(
-            Arguments.of(0, new Card(54), new Card(54)),
-            Arguments.of(1, new Card(54), new Card(53)),
-            Arguments.of(-1, new Card(53), new Card(54)),
-            Arguments.of(1, new Card(14), new Card(1)),
-            Arguments.of(-1, new Card(1), new Card(14)),
-            Arguments.of(1, new Card(2), new Card(1)),
-            Arguments.of(1, new Card(1), new Card(13)),
-            Arguments.of(1, new Card(1), new Card(3)),
-            Arguments.of(1, new Card(4), new Card(3)),
-            Arguments.of(1, new Card(13), new Card(12)),
-            Arguments.of(1, new Card(1), new Card(13)),
-            Arguments.of(1, new Card(53), new Card(2)),
-            Arguments.of(1, new Card(53), new Card(1))
-          );
+              Arguments.of(0, new Card(54), new Card(54)),
+              Arguments.of(1, new Card(54), new Card(53)),
+              Arguments.of(-1, new Card(53), new Card(54)),
+              Arguments.of(1, new Card(14), new Card(1)),
+              Arguments.of(-1, new Card(1), new Card(14)),
+              Arguments.of(1, new Card(2), new Card(1)),
+              Arguments.of(1, new Card(1), new Card(13)),
+              Arguments.of(1, new Card(1), new Card(3)),
+              Arguments.of(1, new Card(4), new Card(3)),
+              Arguments.of(1, new Card(13), new Card(12)),
+              Arguments.of(1, new Card(1), new Card(13)),
+              Arguments.of(1, new Card(53), new Card(2)),
+              Arguments.of(1, new Card(53), new Card(1)));
         }
       }
     }

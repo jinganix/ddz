@@ -18,9 +18,7 @@ package demo.ddz.poker;
 
 import lombok.Getter;
 
-/**
- * Poker card.
- */
+/** Poker card. */
 @Getter
 public class Card implements Comparable<Card> {
 
@@ -76,9 +74,8 @@ public class Card implements Comparable<Card> {
    * Compare.
    *
    * @param card the object to be compared.
-   * @return the value {@code 0} if {@code x == y};
-   *         a value less than {@code 0} if {@code x < y}; and
-   *         a value greater than {@code 0} if {@code x > y}
+   * @return the value {@code 0} if {@code x == y}; a value less than {@code 0} if {@code x < y};
+   *     and a value greater than {@code 0} if {@code x > y}
    */
   @Override
   public int compareTo(Card card) {

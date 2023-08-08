@@ -35,12 +35,11 @@ class CardSuitTest {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
       return Stream.of(
-        Arguments.of(1, CardSuit.SPADES),
-        Arguments.of(2, CardSuit.HEARTS),
-        Arguments.of(3, CardSuit.CLUBS),
-        Arguments.of(4, CardSuit.DIAMONDS),
-        Arguments.of(5, CardSuit.JOKER)
-      );
+          Arguments.of(1, CardSuit.SPADES),
+          Arguments.of(2, CardSuit.HEARTS),
+          Arguments.of(3, CardSuit.CLUBS),
+          Arguments.of(4, CardSuit.DIAMONDS),
+          Arguments.of(5, CardSuit.JOKER));
     }
   }
 

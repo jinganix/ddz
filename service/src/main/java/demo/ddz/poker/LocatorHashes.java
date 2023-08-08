@@ -27,9 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Hash tables to lookup {@link ValueLocator}.
- */
+/** Hash tables to lookup {@link ValueLocator}. */
 public class LocatorHashes {
 
   private static final Map<Long, ValueLocator> LOCATORS = new HashMap<>();
@@ -43,8 +41,7 @@ public class LocatorHashes {
     genOthers();
   }
 
-  private LocatorHashes() {
-  }
+  private LocatorHashes() {}
 
   private static void genOthers() {
     addLocator(1L, PokerHand.SINGLE, 0);
@@ -80,14 +77,16 @@ public class LocatorHashes {
   }
 
   private static void genTripleStraightWithSingles() {
-    List<List<Integer>> triplesList = permute("34", 2, 5).stream()
-        .map(str -> Arrays.stream(str.split("")).map(Integer::parseInt).toList())
-        .toList();
+    List<List<Integer>> triplesList =
+        permute("34", 2, 5).stream()
+            .map(str -> Arrays.stream(str.split("")).map(Integer::parseInt).toList())
+            .toList();
 
-    Map<Integer, List<List<Integer>>> singlesListMap = permute("1234", 1, 5).stream()
-        .map(str -> Arrays.stream(str.split("")).map(Integer::parseInt).toList())
-        .filter(values -> sum(values) <= 5)
-        .collect(Collectors.groupingBy(LocatorHashes::sum));
+    Map<Integer, List<List<Integer>>> singlesListMap =
+        permute("1234", 1, 5).stream()
+            .map(str -> Arrays.stream(str.split("")).map(Integer::parseInt).toList())
+            .filter(values -> sum(values) <= 5)
+            .collect(Collectors.groupingBy(LocatorHashes::sum));
 
     for (List<Integer> triples : triplesList) {
       int singlesLength = (int) triples.stream().filter(e -> e == 3).count();
@@ -109,10 +108,10 @@ public class LocatorHashes {
   }
 
   private static void genTripleStraightWithPairs() {
-    List<List<Integer>> pairsList = Stream
-        .of("22", "222", "2222", "4", "44")
-        .map(str -> Arrays.stream(str.split("")).map(Integer::parseInt).toList())
-        .toList();
+    List<List<Integer>> pairsList =
+        Stream.of("22", "222", "2222", "4", "44")
+            .map(str -> Arrays.stream(str.split("")).map(Integer::parseInt).toList())
+            .toList();
     for (List<Integer> pairs : pairsList) {
       int straightLength = sum(pairs) / 2;
       for (int index = 0; index <= pairs.size(); index++) {
