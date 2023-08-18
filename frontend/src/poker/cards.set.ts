@@ -24,9 +24,9 @@ import { LocatorHashes } from "@/poker/locator.hashes";
 export class CardsSet {
   private static readonly VALUE_OF_RANK_2 = Card.rankToValue(CardRank.RANK_2);
 
-  private readonly pokerHand: PokerHand | null;
+  readonly pokerHand: PokerHand | null;
 
-  private readonly value: number;
+  readonly value: number;
 
   constructor(public readonly cards: Card[]) {
     cards.sort((a, b) => a.compareTo(b));
@@ -145,10 +145,6 @@ export class CardsSet {
       return new ValueLocator(PokerHand.TRIPLE_STRAIGHT_WITH_PAIRS, index);
     }
     return null;
-  }
-
-  getPokerHand(): PokerHand | null {
-    return this.pokerHand;
   }
 
   dominate(cardsSet: CardsSet): boolean {
