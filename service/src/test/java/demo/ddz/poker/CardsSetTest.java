@@ -21,13 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import demo.ddz.helper.CardsHelper;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -41,48 +37,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 @DisplayName("CardsSet")
 class CardsSetTest {
 
-  private static final Map<CardRank, List<Card>> CARDS_MAP = new HashMap<>();
-
-  private static final Map<String, CardRank> RANK_MAP = new HashMap<>();
-
-  @BeforeAll
-  static void initData() {
-    RANK_MAP.put("2", CardRank.RANK_2);
-    RANK_MAP.put("3", CardRank.RANK_3);
-    RANK_MAP.put("4", CardRank.RANK_4);
-    RANK_MAP.put("5", CardRank.RANK_5);
-    RANK_MAP.put("6", CardRank.RANK_6);
-    RANK_MAP.put("7", CardRank.RANK_7);
-    RANK_MAP.put("8", CardRank.RANK_8);
-    RANK_MAP.put("9", CardRank.RANK_9);
-    RANK_MAP.put("0", CardRank.RANK_10);
-    RANK_MAP.put("J", CardRank.JACK);
-    RANK_MAP.put("Q", CardRank.QUEEN);
-    RANK_MAP.put("K", CardRank.KING);
-    RANK_MAP.put("A", CardRank.ACE);
-    RANK_MAP.put("X", CardRank.JOKER_1);
-    RANK_MAP.put("D", CardRank.JOKER_2);
-  }
+  final CardsHelper cardsHelper = new CardsHelper();
 
   @BeforeEach
   void beforeEach() {
-    CARDS_MAP.clear();
-    for (int id = 1; id <= 54; id++) {
-      Card card = new Card(id);
-      List<Card> cards = CARDS_MAP.computeIfAbsent(card.getRank(), k -> new LinkedList<>());
-      cards.add(card);
-    }
+    cardsHelper.initialize();
   }
 
   List<Card> toCards(String str) {
-    String[] parts = str.split("");
-    List<Card> cards = new ArrayList<>(str.length());
-    for (String part : parts) {
-      CardRank rank = RANK_MAP.get(part);
-      List<Card> cardsOfRank = CARDS_MAP.get(rank);
-      cards.add(cardsOfRank.remove(0));
-    }
-    return cards;
+    return cardsHelper.toCards(str);
   }
 
   @Nested
