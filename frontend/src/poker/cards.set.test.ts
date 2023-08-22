@@ -14,54 +14,23 @@
  * limitations under the License.
  */
 
-import { CardRank } from "./card.rank";
 import { Card } from "./card";
 import { PokerHand } from "./poker.hand";
 import { CardsSet } from "./cards.set";
+import { CardsHelper } from "../../test/cards.helper";
 
 describe("CardSet", () => {
-  const CARDS_MAP = {} as Record<CardRank, Card[]>;
-
-  const RANK_MAP = {
-    "0": CardRank.RANK_10,
-    "2": CardRank.RANK_2,
-    "3": CardRank.RANK_3,
-    "4": CardRank.RANK_4,
-    "5": CardRank.RANK_5,
-    "6": CardRank.RANK_6,
-    "7": CardRank.RANK_7,
-    "8": CardRank.RANK_8,
-    "9": CardRank.RANK_9,
-    A: CardRank.ACE,
-    D: CardRank.JOKER_2,
-    J: CardRank.JACK,
-    K: CardRank.KING,
-    Q: CardRank.QUEEN,
-    X: CardRank.JOKER_1,
-  } as Record<string, CardRank>;
+  const cardsHelper = new CardsHelper();
 
   function toCards(str: string): Card[] {
-    const parts = str.split("");
-    const cards: Card[] = [];
-    for (const part of parts) {
-      const rank: CardRank = RANK_MAP[part];
-      const cardsOfRank = CARDS_MAP[rank];
-      cards.push(cardsOfRank.pop()!);
-    }
-    return cards;
+    return cardsHelper.toCards(str);
   }
 
   beforeEach(() => {
-    Object.keys(CardRank)
-      .filter((e) => !isNaN(Number(e)))
-      .forEach((k) => (CARDS_MAP[k as unknown as CardRank] = []));
-    for (let id = 1; id <= 54; id++) {
-      const card = new Card(id);
-      CARDS_MAP[card.rank].push(card);
-    }
+    cardsHelper.initialize();
   });
 
-  describe("getPokerHand", () => {
+  describe("pokerHand", () => {
     describe("when a valid cards set is provided", () => {
       describe("then return the poker hand", () => {
         it.each(
@@ -115,7 +84,7 @@ describe("CardSet", () => {
           ].map(([a, b]) => ({ expected: PokerHand[a as PokerHand], input: b as string })),
         )("$input => $expected", ({ input, expected }) => {
           const expectedEnum = PokerHand[expected as keyof typeof PokerHand];
-          expect(new CardsSet(toCards(input)).getPokerHand()).toEqual(expectedEnum);
+          expect(new CardsSet(toCards(input)).pokerHand).toEqual(expectedEnum);
         });
       });
     });
@@ -145,7 +114,7 @@ describe("CardSet", () => {
           ["JQKA2"],
           ["QQKKAA22"],
         ])("%s => null", (input: string) => {
-          expect(new CardsSet(toCards(input)).getPokerHand()).toBeNull();
+          expect(new CardsSet(toCards(input)).pokerHand).toBeNull();
         });
       });
     });

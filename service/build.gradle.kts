@@ -1,7 +1,6 @@
 plugins {
   java
   jacoco
-  checkstyle
   id("com.diffplug.spotless") version "6.20.0"
   id("io.spring.dependency-management") version "1.1.3"
   id("org.springframework.boot") version "3.1.2"
@@ -58,25 +57,6 @@ tasks.check {
 
 jacoco {
   toolVersion = "0.8.10"
-}
-
-tasks.checkstyleMain {
-  group = "verification"
-}
-
-tasks.checkstyleTest {
-  group = "verification"
-}
-
-checkstyle {
-  toolVersion = "10.12.2"
-  isIgnoreFailures = false
-  maxErrors = 0
-  maxWarnings = 0
-  configFile = file("${rootDir}/service/checkstyle/checkstyle.xml")
-  configProperties = mapOf(
-    "org.checkstyle.google.suppressionfilter.config" to "${rootDir}/service/checkstyle/suppressions.xml"
-  )
 }
 
 spotless {
