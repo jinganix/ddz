@@ -46,11 +46,54 @@ public class ShallowMind {
         .forEach(e -> this.kinds.put(e.getValue(), e));
   }
 
-  public List<Card> popCards(CardsSet cardsSet) {
-    return followSuit(cardsSet.getPokerHand(), cardsSet.getValue(), cardsSet.getCards().size());
+  public List<Card> leadOff() {
+    List<Card> handCards =
+        kinds.values().stream()
+            .map(CardsKind::getCards)
+            .flatMap(List::stream)
+            .collect(Collectors.toList());
+    if (new CardsSet(handCards).getPokerHand() != null) {
+      return handCards;
+    }
+    List<Card> cards = popThreeWith();
+    if (!cards.isEmpty()) {
+      return cards;
+    }
+    cards = popMaxStraight(0, 1, 5);
+    if (!cards.isEmpty()) {
+      return cards;
+    }
+    cards = popMaxStraight(0, 2, 3);
+    if (!cards.isEmpty()) {
+      return cards;
+    }
+    cards = popKind(0, 1, 1);
+    if (!cards.isEmpty()) {
+      return cards;
+    }
+    return popKind(0, 2, 2);
   }
 
-  private List<Card> followSuit(PokerHand pokerHand, int minValue, int cardSize) {
+  private List<Card> popThreeWith() {
+    List<Card> cards = popKind(0, 3, 3);
+    if (cards.isEmpty()) {
+      return cards;
+    }
+    List<Card> popped = popKind(0, 1, 1);
+    if (!popped.isEmpty()) {
+      cards.addAll(popped);
+      return cards;
+    }
+    popped = popKind(0, 2, 2);
+    cards.addAll(popped);
+    return cards;
+  }
+
+  public List<Card> followSuit(CardsSet cardsSet) {
+    return popCards(cardsSet.getPokerHand(), cardsSet.getValue(), cardsSet.getCards().size());
+  }
+
+  private List<Card> popCards(PokerHand pokerHand, int minValue, int cardSize) {
     List<Card> cards = matchPokerHand(pokerHand, minValue, cardSize);
     if (!cards.isEmpty() || pokerHand == PokerHand.FOUR_OF_KIND || pokerHand == PokerHand.ROCKET) {
       return cards;
@@ -229,6 +272,24 @@ public class ShallowMind {
     for (int i = n; i < indices.length; i++) {
       if (indices[i] != null) {
         return indices[i].pop(n);
+      }
+    }
+    return Collections.emptyList();
+  }
+
+  private List<Card> popMaxStraight(int minValue, int n, int minLen) {
+    int fromValue = minValue + 1;
+    for (int value = fromValue; value < VALUE_OF_RANK_2; value++) {
+      CardsKind kind = kinds.get(value);
+      if (kind == null || kind.size() < n) {
+        if (value - fromValue >= minLen) {
+          List<Card> values = new ArrayList<>(n * minLen);
+          for (int i = fromValue; i < value; i++) {
+            values.addAll(kinds.get(i).pop(n));
+          }
+          return values;
+        }
+        fromValue = value + 1;
       }
     }
     return Collections.emptyList();
