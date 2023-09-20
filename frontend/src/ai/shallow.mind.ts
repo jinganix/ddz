@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { find, groupBy, some } from "lodash";
+import { find, flatten, groupBy, some } from "lodash";
 import { Card } from "@/poker/card";
 import { CardRank } from "@/poker/card.rank";
 import { CardsKind } from "@/ai/cards.kind";
@@ -38,11 +38,50 @@ export class ShallowMind {
     this.kinds.sort((a, b) => a.value - b.value);
   }
 
-  popCards(cardsSet: CardsSet): Card[] {
-    return this.followSuit(cardsSet.pokerHand!, cardsSet.value, cardsSet.cards.length);
+  leadOff(): Card[] {
+    const handCards = flatten(this.kinds.map((e) => e.cards));
+    if (new CardsSet(handCards).pokerHand != null) {
+      return handCards;
+    }
+    let cards = this.popThreeWith();
+    if (cards.length) {
+      return cards;
+    }
+    cards = this.popMaxStraight(0, 1, 5);
+    if (cards.length) {
+      return cards;
+    }
+    cards = this.popMaxStraight(0, 2, 3);
+    if (cards.length) {
+      return cards;
+    }
+    cards = this.popKind(0, 1, 1);
+    if (cards.length) {
+      return cards;
+    }
+    return this.popKind(0, 2, 2);
   }
 
-  private followSuit(pokerHand: PokerHand, minValue: number, cardSize: number): Card[] {
+  private popThreeWith(): Card[] {
+    const cards = this.popKind(0, 3, 3);
+    if (!cards.length) {
+      return cards;
+    }
+    let popped = this.popKind(0, 1, 1);
+    if (popped.length) {
+      cards.push(...popped);
+      return cards;
+    }
+    popped = this.popKind(0, 2, 2);
+    cards.push(...popped);
+    return cards;
+  }
+
+  followSuit(cardsSet: CardsSet): Card[] {
+    return this.popCards(cardsSet.pokerHand!, cardsSet.value, cardsSet.cards.length);
+  }
+
+  private popCards(pokerHand: PokerHand, minValue: number, cardSize: number): Card[] {
     const cards: Card[] = this.matchPokerHand(pokerHand, minValue, cardSize);
     if (
       cards.length !== 0 ||
@@ -258,9 +297,26 @@ export class ShallowMind {
     return [];
   }
 
+  private popMaxStraight(minValue: number, n: number, minLen: number): Card[] {
+    let fromValue: number = minValue + 1;
+    for (let value = fromValue; value < ShallowMind.VALUE_OF_RANK_2; value++) {
+      const kind = this.getKind(value);
+      if (kind === null || kind.size() < n) {
+        if (value - fromValue >= minLen) {
+          const values: Card[] = [];
+          for (let i = fromValue; i < value; i++) {
+            values.push(...this.getKind(i)!.pop(n));
+          }
+          return values;
+        }
+        fromValue = value + 1;
+      }
+    }
+    return [];
+  }
+
   private popStraight(minValue: number, n: number, len: number): Card[] {
     let fromValue: number = minValue + 1;
-
     for (let value = fromValue; value < ShallowMind.VALUE_OF_RANK_2; value++) {
       const kind = this.getKind(value);
       if (kind === null || kind.size() < n) {
