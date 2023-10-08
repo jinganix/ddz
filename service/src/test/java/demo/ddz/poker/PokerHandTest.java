@@ -18,6 +18,7 @@ package demo.ddz.poker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import demo.ddz.module.poker.PokerHand;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
