@@ -31,6 +31,8 @@ public class TablePlayer {
 
   private Long id;
 
+  private int score;
+
   private int bidScore;
 
   private PlayerState state = PlayerState.IDLE;
@@ -55,7 +57,7 @@ public class TablePlayer {
     return this.state == state;
   }
 
-  public void clearAuto() {
+  public void disableAuto() {
     this.auto = 0;
     if (this.autoPlay != null) {
       this.cards = this.autoPlay.toCards();
@@ -65,7 +67,13 @@ public class TablePlayer {
 
   public void incrAuto() {
     this.auto++;
-    if (auto >= 2 && this.autoPlay == null) {
+    if (auto >= 2) {
+      this.enableAuto();
+    }
+  }
+
+  public void enableAuto() {
+    if (this.autoPlay == null) {
       this.autoPlay = new ShallowMind(this.cards);
       this.cards = null;
     }

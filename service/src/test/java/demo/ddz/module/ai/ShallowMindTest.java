@@ -273,6 +273,7 @@ class ShallowMindTest {
             .isEqualTo(
                 new CardsHelper(handCards)
                     .toCards(expected).stream().map(Card::getValue).sorted().toList());
+        assertThat(mind.toCards().size()).isEqualTo(handCardsStr.length() - expected.length());
       }
 
       static class TestArgumentsProvider implements ArgumentsProvider {

@@ -20,6 +20,7 @@ import demo.ddz.helper.phase.PhaseExecutor;
 import demo.ddz.module.phase.DdzPhaseType;
 import demo.ddz.module.poker.Card;
 import demo.ddz.module.poker.CardsSet;
+import demo.ddz.module.poker.PokerHand;
 import demo.ddz.module.table.HighestBidder;
 import demo.ddz.module.table.PlayerState;
 import demo.ddz.module.table.Table;
@@ -39,7 +40,8 @@ public class PlayingExecutor extends PhaseExecutor<Table> {
 
   @Override
   public long schedule(Table table) {
-    if (table.getHighestBidder().equalsTo(table.getCurrentPlayer())) {
+    TablePlayer current = table.getCurrentPlayer();
+    if (table.getHighestBidder() != null && table.getHighestBidder().equalsTo(current)) {
       table.setHighestBidder(null);
       for (TablePlayer player : table.getPlayers()) {
         player.setState(PlayerState.PLAYING);
@@ -54,7 +56,10 @@ public class PlayingExecutor extends PhaseExecutor<Table> {
     if (current.isState(PlayerState.FOLD)) {
       return DdzPhaseType.PLAYING;
     }
-    if (table.getHighestBidder() == null || !table.getHighestBidder().equalsTo(current)) {
+    if (table.getHighestBidder() == null) {
+      current.enableAuto();
+      autoPlay(table, current);
+    } else if (!table.getHighestBidder().equalsTo(current)) {
       current.incrAuto();
       if (current.getAutoPlay() != null) {
         autoPlay(table, current);
@@ -62,20 +67,30 @@ public class PlayingExecutor extends PhaseExecutor<Table> {
         current.setState(PlayerState.FOLD);
       }
     }
+    if (table.getHighestBidder().equalsTo(current)) {
+      PokerHand pokerHand = table.getHighestBidder().cardsSet().getPokerHand();
+      if (pokerHand == PokerHand.FOUR_OF_KIND || pokerHand == PokerHand.ROCKET) {
+        table.setBombCount(table.getBombCount() + 1);
+      }
+    }
+    if (!table.getHighestBidder().equalsTo(table.getLandlord())) {
+      table.setCleanSweep(false);
+    }
     if (current.isCardsEmpty()) {
-      return DdzPhaseType.END;
+      return DdzPhaseType.SETTLEMENT;
     }
     table.moveCursor();
     return DdzPhaseType.PLAYING;
   }
 
-  private void autoPlay(Table table, TablePlayer current) {
+  private void autoPlay(Table table, TablePlayer player) {
     List<Card> cards =
         table.getHighestBidder() == null
-            ? current.getAutoPlay().leadOff()
-            : current.getAutoPlay().followSuit(new CardsSet(table.getHighestBidder().cards()));
+            ? player.getAutoPlay().leadOff()
+            : player.getAutoPlay().followSuit(table.getHighestBidder().cardsSet());
     if (!cards.isEmpty()) {
-      table.setHighestBidder(new HighestBidder(current.getId(), cards));
+      CardsSet cardsSet = new CardsSet(cards);
+      table.setHighestBidder(new HighestBidder(player.getId(), cardsSet));
     }
   }
 }

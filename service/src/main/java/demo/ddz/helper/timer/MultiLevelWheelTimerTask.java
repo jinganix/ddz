@@ -54,10 +54,21 @@ class MultiLevelWheelTimerTask implements TimerTask {
       timers.get(0).newTimeout(task, delay, MILLISECONDS);
       return;
     }
-    WheelTimer timer = MultiLevelWheelTimer.resolve(timers, delay);
+    WheelTimer timer = resolve(timers, delay);
     MultiLevelWheelTimerTask timerTask =
         new MultiLevelWheelTimerTask(task, timers, delegatedTimeout, this.delay, startAt);
     long fixedDelay = delay / timer.getTickDuration() * timer.getTickDuration() - 1;
     delegatedTimeout.setDelegate(timer.newTimeout(timerTask, fixedDelay, MILLISECONDS));
+  }
+
+  public static WheelTimer resolve(List<WheelTimer> timers, long delay) {
+    WheelTimer timer = null;
+    for (WheelTimer wheelTimer : timers) {
+      if (delay < wheelTimer.getWheelDuration()) {
+        timer = wheelTimer;
+        break;
+      }
+    }
+    return timer == null ? timers.get(timers.size() - 1) : timer;
   }
 }

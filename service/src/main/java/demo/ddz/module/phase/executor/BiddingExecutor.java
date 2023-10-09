@@ -53,11 +53,12 @@ public class BiddingExecutor extends PhaseExecutor<Table> {
     }
     if (table.getPlayers().stream().allMatch(e -> e.isState(PlayerState.DOUBLING))) {
       if (table.getPlayers().stream().allMatch(e -> e.getBidScore() == 0)) {
-        return DdzPhaseType.IDLE;
+        return DdzPhaseType.END;
       }
       Optional<TablePlayer> max =
           table.getPlayers().stream().max(Comparator.comparingInt(TablePlayer::getBidScore));
       table.setLandlord(max.get());
+      table.setCursor(table.getPlayers().indexOf(table.getLandlord()));
       return DdzPhaseType.DOUBLING;
     }
     table.moveCursor();

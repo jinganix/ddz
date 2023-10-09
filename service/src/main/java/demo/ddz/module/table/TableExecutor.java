@@ -14,34 +14,20 @@
  * limitations under the License.
  */
 
-package demo.ddz.module.phase.executor;
+package demo.ddz.module.table;
 
-import demo.ddz.helper.phase.PhaseExecutor;
+import demo.ddz.helper.phase.PhaseExecutors;
 import demo.ddz.module.phase.DdzPhaseType;
-import demo.ddz.module.table.PlayerState;
-import demo.ddz.module.table.Table;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class IdleExecutor extends PhaseExecutor<Table> {
+public class TableExecutor {
 
-  @Override
-  public DdzPhaseType getPhaseType() {
-    return DdzPhaseType.IDLE;
-  }
+  private final PhaseExecutors phaseExecutors;
 
-  @Override
-  public long schedule(Table table) {
-    return table.getCfg().getDuration(getPhaseType());
-  }
-
-  @Override
-  public DdzPhaseType execute(Table table) {
-    if (table.getPlayers().stream().filter(e -> e.isState(PlayerState.READY)).count() != 3) {
-      return null;
-    }
-    return DdzPhaseType.COUNTDOWN;
+  public void execute(Table table, DdzPhaseType phaseType) {
+    phaseExecutors.execute(table.getPhase(), phaseType);
   }
 }

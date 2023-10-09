@@ -88,7 +88,7 @@ class IdleExecutorTest {
     class WhenReadySizeIs3 {
 
       @Test
-      @DisplayName("then return START")
+      @DisplayName("then return COUNTDOWN")
       void thenReturn() {
         Table table =
             new Table()
@@ -98,7 +98,7 @@ class IdleExecutorTest {
                         new TablePlayer().setState(PlayerState.READY),
                         new TablePlayer().setState(PlayerState.READY)));
 
-        assertThat(idleExecutor.execute(table)).isEqualTo(DdzPhaseType.START);
+        assertThat(idleExecutor.execute(table)).isEqualTo(DdzPhaseType.COUNTDOWN);
       }
     }
   }

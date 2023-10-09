@@ -17,7 +17,11 @@
 package demo.ddz.module.table;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import demo.ddz.module.poker.CardsSet;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -72,13 +76,14 @@ class TableTest {
       @Test
       @DisplayName("then reset")
       void thenReset() {
-        List<TablePlayer> players = List.of(new TablePlayer());
+        TablePlayer player = mock(TablePlayer.class);
+        List<TablePlayer> players = List.of(player);
         Table table =
             new Table()
                 .setId(1L)
                 .setPlayers(players)
                 .setLandlord(new TablePlayer())
-                .setHighestBidder(new HighestBidder(1L, Collections.emptyList()))
+                .setHighestBidder(new HighestBidder(1L, new CardsSet(Collections.emptyList())))
                 .setCursor(2);
 
         table.reset();
@@ -89,6 +94,9 @@ class TableTest {
         assertThat(table.getLandlord()).isNull();
         assertThat(table.getHighestBidder()).isNull();
         assertThat(table.getCursor()).isEqualTo(0);
+        assertThat(table.isCleanSweep()).isTrue();
+        assertThat(table.getBombCount()).isEqualTo(0);
+        verify(player, times(1)).reset();
       }
     }
   }

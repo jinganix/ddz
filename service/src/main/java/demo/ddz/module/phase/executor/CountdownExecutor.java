@@ -14,20 +14,34 @@
  * limitations under the License.
  */
 
-package demo.ddz.module.table;
+package demo.ddz.module.phase.executor;
 
-import demo.ddz.helper.phase.PhaseExecutors;
+import demo.ddz.helper.phase.PhaseExecutor;
 import demo.ddz.module.phase.DdzPhaseType;
+import demo.ddz.module.table.PlayerState;
+import demo.ddz.module.table.Table;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class TableService {
+public class CountdownExecutor extends PhaseExecutor<Table> {
 
-  private final PhaseExecutors phaseExecutors;
+  @Override
+  public DdzPhaseType getPhaseType() {
+    return DdzPhaseType.COUNTDOWN;
+  }
 
-  public void execute(Table table, DdzPhaseType phaseType) {
-    phaseExecutors.execute(table.getPhase(), phaseType);
+  @Override
+  public long schedule(Table table) {
+    return table.getCfg().getDuration(getPhaseType());
+  }
+
+  @Override
+  public DdzPhaseType execute(Table table) {
+    if (table.getPlayers().stream().filter(e -> e.isState(PlayerState.READY)).count() != 3) {
+      return DdzPhaseType.END;
+    }
+    return DdzPhaseType.DEALING;
   }
 }

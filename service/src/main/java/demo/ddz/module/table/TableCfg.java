@@ -17,10 +17,12 @@
 package demo.ddz.module.table;
 
 import static demo.ddz.module.phase.DdzPhaseType.BIDDING;
+import static demo.ddz.module.phase.DdzPhaseType.COUNTDOWN;
+import static demo.ddz.module.phase.DdzPhaseType.DEALING;
 import static demo.ddz.module.phase.DdzPhaseType.DOUBLING;
 import static demo.ddz.module.phase.DdzPhaseType.END;
 import static demo.ddz.module.phase.DdzPhaseType.IDLE;
-import static demo.ddz.module.phase.DdzPhaseType.START;
+import static demo.ddz.module.phase.DdzPhaseType.SETTLEMENT;
 
 import demo.ddz.module.phase.DdzPhaseType;
 
@@ -28,9 +30,12 @@ public class TableCfg {
 
   // replace with switch statement once jacoco fix the coverage issue
   public long getDuration(DdzPhaseType phaseType) {
-    if (phaseType == IDLE || phaseType == END) {
+    if (phaseType == IDLE || phaseType == SETTLEMENT || phaseType == END) {
       return 0;
-    } else if (phaseType == START || phaseType == BIDDING || phaseType == DOUBLING) {
+    } else if (phaseType == COUNTDOWN
+        || phaseType == DEALING
+        || phaseType == BIDDING
+        || phaseType == DOUBLING) {
       return 3000;
     } else {
       return 15000;

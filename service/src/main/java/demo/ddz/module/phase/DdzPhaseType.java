@@ -24,20 +24,26 @@ public enum DdzPhaseType implements PhaseType {
   /** IDLE */
   IDLE(0),
 
-  /** START */
-  START(1),
+  /** COUNTDOWN */
+  COUNTDOWN(1),
+
+  /** DEALING */
+  DEALING(2),
 
   /** BIDDING */
-  BIDDING(2),
+  BIDDING(3),
 
   /** DOUBLING */
-  DOUBLING(3),
+  DOUBLING(4),
 
   /** PLAYING */
-  PLAYING(4),
+  PLAYING(5),
+
+  /** SETTLEMENT */
+  SETTLEMENT(6),
 
   /** END */
-  END(5);
+  END(7);
 
   private static final IntegerEnumMapper<DdzPhaseType> mapper = new IntegerEnumMapper<>(values());
 

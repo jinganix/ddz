@@ -45,7 +45,7 @@ public class MultiLevelWheelTimer implements TaskTimer {
     if (timers.size() == 1 || delay < timers.get(0).getWheelDuration()) {
       return timers.get(0).newTimeout(task, delay, MILLISECONDS);
     }
-    WheelTimer timer = resolve(timers, delay);
+    WheelTimer timer = MultiLevelWheelTimerTask.resolve(timers, delay);
     long millis = System.currentTimeMillis();
     DelegatedTimeout delegatedTimeout = new DelegatedTimeout();
     MultiLevelWheelTimerTask timerTask =
@@ -54,16 +54,5 @@ public class MultiLevelWheelTimer implements TaskTimer {
     Timeout timeout = timer.newTimeout(timerTask, fixedDelay, MILLISECONDS);
     delegatedTimeout.setDelegate(timeout);
     return delegatedTimeout;
-  }
-
-  public static WheelTimer resolve(List<WheelTimer> timers, long delay) {
-    WheelTimer timer = null;
-    for (WheelTimer wheelTimer : timers) {
-      if (delay < wheelTimer.getWheelDuration()) {
-        timer = wheelTimer;
-        break;
-      }
-    }
-    return timer == null ? timers.get(timers.size() - 1) : timer;
   }
 }

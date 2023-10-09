@@ -89,12 +89,12 @@ class BiddingExecutorTest {
     class WhenCurrentIsBidding {
 
       @Test
-      @DisplayName("then return IDLE")
+      @DisplayName("then return END")
       void thenReturn() {
         Table table =
             new Table().setPlayers(List.of(new TablePlayer().setState(PlayerState.BIDDING)));
 
-        assertThat(biddingExecutor.execute(table)).isEqualTo(DdzPhaseType.IDLE);
+        assertThat(biddingExecutor.execute(table)).isEqualTo(DdzPhaseType.END);
 
         TablePlayer current = table.getCurrentPlayer();
         assertThat(current.getAuto()).isEqualTo(1);
@@ -104,25 +104,27 @@ class BiddingExecutorTest {
     }
 
     @Nested
-    @DisplayName("when current has score")
+    @DisplayName("when players have score")
     class WhenCurrentHasScore {
 
       @Test
       @DisplayName("then return DOUBLING")
       void thenReturn() {
+        TablePlayer landlord = new TablePlayer().setState(PlayerState.DOUBLING).setBidScore(2);
         Table table =
             new Table()
                 .setPlayers(
-                    List.of(new TablePlayer().setState(PlayerState.DOUBLING).setBidScore(1)));
+                    List.of(
+                        new TablePlayer().setState(PlayerState.DOUBLING).setBidScore(1), landlord));
 
         assertThat(biddingExecutor.execute(table)).isEqualTo(DdzPhaseType.DOUBLING);
 
-        TablePlayer current = table.getCurrentPlayer();
-        assertThat(current.getAuto()).isEqualTo(0);
-        assertThat(current.getState()).isEqualTo(PlayerState.DOUBLING);
-        assertThat(current.getBidScore()).isEqualTo(1);
+        assertThat(landlord.getAuto()).isEqualTo(0);
+        assertThat(landlord.getState()).isEqualTo(PlayerState.DOUBLING);
+        assertThat(landlord.getBidScore()).isEqualTo(2);
 
-        assertThat(table.getLandlord()).isEqualTo(current);
+        assertThat(table.getLandlord()).isEqualTo(landlord);
+        assertThat(table.getCursor()).isEqualTo(1);
       }
     }
 

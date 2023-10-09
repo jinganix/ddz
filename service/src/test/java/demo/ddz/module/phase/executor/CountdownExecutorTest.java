@@ -17,32 +17,24 @@
 package demo.ddz.module.phase.executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
 
-import demo.ddz.helper.utils.UtilsService;
 import demo.ddz.module.phase.DdzPhaseType;
-import demo.ddz.module.table.HighestBidder;
 import demo.ddz.module.table.PlayerState;
 import demo.ddz.module.table.Table;
 import demo.ddz.module.table.TablePlayer;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@DisplayName("StartExecutor")
+@DisplayName("CountdownExecutor")
 @ExtendWith(MockitoExtension.class)
-class StartExecutorTest {
+class CountdownExecutorTest {
 
-  @Mock UtilsService utilsService;
-
-  @InjectMocks StartExecutor startExecutor;
+  @InjectMocks CountdownExecutor countdownExecutor;
 
   @Nested
   @DisplayName("getPhaseType")
@@ -53,9 +45,9 @@ class StartExecutorTest {
     class WhenCalled {
 
       @Test
-      @DisplayName("then return START")
+      @DisplayName("then return COUNTDOWN")
       void thenReturn() {
-        assertThat(startExecutor.getPhaseType()).isEqualTo(DdzPhaseType.START);
+        assertThat(countdownExecutor.getPhaseType()).isEqualTo(DdzPhaseType.COUNTDOWN);
       }
     }
   }
@@ -71,7 +63,7 @@ class StartExecutorTest {
       @Test
       @DisplayName("then return 3000")
       void thenReturn() {
-        assertThat(startExecutor.schedule(new Table())).isEqualTo(3000);
+        assertThat(countdownExecutor.schedule(new Table())).isEqualTo(3000);
       }
     }
   }
@@ -85,9 +77,9 @@ class StartExecutorTest {
     class WhenReadySizeIs0 {
 
       @Test
-      @DisplayName("then return IDLE")
+      @DisplayName("then return END")
       void thenReturn() {
-        assertThat(startExecutor.execute(new Table())).isEqualTo(DdzPhaseType.IDLE);
+        assertThat(countdownExecutor.execute(new Table())).isEqualTo(DdzPhaseType.END);
       }
     }
 
@@ -96,29 +88,17 @@ class StartExecutorTest {
     class WhenReadySizeIs3 {
 
       @Test
-      @DisplayName("then return BIDDING")
+      @DisplayName("then return DEALING")
       void thenReturn() {
-        when(utilsService.nextInt(anyInt(), anyInt())).thenReturn(1);
         Table table =
             new Table()
-                .setHighestBidder(new HighestBidder(1L, Collections.emptyList()))
-                .setCursor(2)
                 .setPlayers(
                     List.of(
                         new TablePlayer().setState(PlayerState.READY),
                         new TablePlayer().setState(PlayerState.READY),
                         new TablePlayer().setState(PlayerState.READY)));
 
-        assertThat(startExecutor.execute(table)).isEqualTo(DdzPhaseType.BIDDING);
-
-        assertThat(table.getPlayers())
-            .usingRecursiveFieldByFieldElementComparatorOnFields("state")
-            .containsExactly(
-                new TablePlayer().setState(PlayerState.BIDDING),
-                new TablePlayer().setState(PlayerState.BIDDING),
-                new TablePlayer().setState(PlayerState.BIDDING));
-        assertThat(table.getHighestBidder()).isNull();
-        assertThat(table.getCursor()).isEqualTo(1);
+        assertThat(countdownExecutor.execute(table)).isEqualTo(DdzPhaseType.DEALING);
       }
     }
   }
