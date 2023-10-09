@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        jdk: [19]
+        jdk: [20]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4

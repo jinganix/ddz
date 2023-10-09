@@ -10,7 +10,7 @@ group = "demo.ddz"
 version = "0.0.1-SNAPSHOT"
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_19
+  sourceCompatibility = JavaVersion.VERSION_20
 }
 
 repositories {
@@ -20,16 +20,24 @@ repositories {
 dependencies {
   annotationProcessor("org.projectlombok:lombok:1.18.30")
   compileOnly("org.projectlombok:lombok:1.18.30")
+  implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
   implementation("org.springframework.boot:spring-boot-starter")
+  implementation("org.springframework.boot:spring-boot-starter-aop")
+  implementation("org.springframework.boot:spring-boot-starter-webflux")
   testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
   testCompileOnly("org.projectlombok:lombok:1.18.30")
+  testImplementation("io.projectreactor:reactor-test:3.5.10")
+  testImplementation("org.assertj:assertj-core:3.24.2")
+  testImplementation("org.awaitility:awaitility:4.2.0")
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
+  testImplementation("org.mockito:mockito-core:5.6.0")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {
   useJUnitPlatform()
+  jvmArgs("--enable-preview")
 }
 
 tasks.test {
@@ -49,6 +57,10 @@ tasks.jacocoTestCoverageVerification {
       }
     }
   }
+}
+
+tasks.withType<JavaCompile> {
+  options.compilerArgs.add("--enable-preview")
 }
 
 tasks.check {
