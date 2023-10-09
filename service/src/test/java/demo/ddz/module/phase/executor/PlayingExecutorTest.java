@@ -16,15 +16,16 @@
 
 package demo.ddz.module.phase.executor;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import demo.ddz.module.phase.DdzPhaseType;
 import demo.ddz.module.poker.Card;
+import demo.ddz.module.poker.CardsSet;
 import demo.ddz.module.table.HighestBidder;
 import demo.ddz.module.table.PlayerState;
 import demo.ddz.module.table.Table;
 import demo.ddz.module.table.TablePlayer;
-import java.util.Collections;
 import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
@@ -68,7 +69,7 @@ class PlayingExecutorTest {
       @DisplayName("then return 15000")
       void thenReturn() {
         TablePlayer player = new TablePlayer().setId(1L).setState(PlayerState.FOLD);
-        HighestBidder bidder = new HighestBidder(2L, Collections.emptyList());
+        HighestBidder bidder = new HighestBidder(2L, new CardsSet(emptyList()));
         Table table = new Table().setPlayers(List.of(player)).setHighestBidder(bidder);
 
         assertThat(playingExecutor.schedule(table)).isEqualTo(15000);
@@ -88,7 +89,7 @@ class PlayingExecutorTest {
         Table table =
             new Table()
                 .setPlayers(List.of(player))
-                .setHighestBidder(new HighestBidder(1L, Collections.emptyList()));
+                .setHighestBidder(new HighestBidder(1L, new CardsSet(emptyList())));
 
         assertThat(playingExecutor.schedule(table)).isEqualTo(15000);
         assertThat(table.getHighestBidder()).isNull();
@@ -132,8 +133,8 @@ class PlayingExecutorTest {
                   .setAuto(1)
                   .setCards(List.of(new Card(1)));
 
-          Table table = new Table().setPlayers(List.of(player));
-          assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.PLAYING);
+          Table table = new Table().setPlayers(List.of(player)).setLandlord(player);
+          assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.SETTLEMENT);
         }
       }
 
@@ -142,14 +143,13 @@ class PlayingExecutorTest {
       class WhenAutoPlayIsNull {
 
         @Test
-        @DisplayName("then fold")
-        void thenFold() {
+        @DisplayName("then enable auto play")
+        void thenEnableAutoPlay() {
           TablePlayer player =
               new TablePlayer().setState(PlayerState.PLAYING).setCards(List.of(new Card(1)));
 
-          Table table = new Table().setPlayers(List.of(player));
-          assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.PLAYING);
-          assertThat(player.getState()).isEqualTo(PlayerState.FOLD);
+          Table table = new Table().setPlayers(List.of(player)).setLandlord(player);
+          assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.SETTLEMENT);
         }
       }
     }
@@ -174,49 +174,139 @@ class PlayingExecutorTest {
           Table table =
               new Table()
                   .setPlayers(List.of(player))
-                  .setHighestBidder(new HighestBidder(2L, Lists.newArrayList(new Card(2))));
+                  .setLandlord(player)
+                  .setHighestBidder(
+                      new HighestBidder(2L, new CardsSet(Lists.newArrayList(new Card(2)))));
           assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.PLAYING);
+        }
+      }
+
+      @Nested
+      @DisplayName("when auto play is null")
+      class WhenAutoPlayIsNull {
+
+        @Test
+        @DisplayName("then fold")
+        void thenFold() {
+          TablePlayer player =
+              new TablePlayer().setState(PlayerState.PLAYING).setCards(List.of(new Card(1)));
+
+          Table table =
+              new Table()
+                  .setPlayers(List.of(player))
+                  .setLandlord(player)
+                  .setHighestBidder(
+                      new HighestBidder(2L, new CardsSet(Lists.newArrayList(new Card(2)))));
+          assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.PLAYING);
+          assertThat(player.getState()).isEqualTo(PlayerState.FOLD);
         }
       }
     }
 
     @Nested
-    @DisplayName("when cards is empty")
-    class WhenCardsIsEmpty {
+    @DisplayName("when current is highest bidder")
+    class WhenCurrentIsHighestBidder {
 
-      @Test
-      @DisplayName("then return END")
-      void thenReturn() {
-        HighestBidder bidder = new HighestBidder(1L, Collections.emptyList());
-        TablePlayer player =
-            new TablePlayer()
-                .setId(1L)
-                .setState(PlayerState.PLAYING)
-                .setCards(Collections.emptyList());
-        Table table = new Table().setPlayers(List.of(player)).setHighestBidder(bidder);
+      @Nested
+      @DisplayName("when highest bidder is bomb")
+      class WhenHighestBidderIsBomb {
 
-        assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.END);
+        @Test
+        @DisplayName("then add bomb count")
+        void thenAddBombCount() {
+          HighestBidder bidder =
+              new HighestBidder(
+                  1L,
+                  new CardsSet(
+                      Lists.newArrayList(new Card(1), new Card(14), new Card(27), new Card(40))));
+          TablePlayer player =
+              new TablePlayer().setId(1L).setState(PlayerState.PLAYING).setCards(emptyList());
+          Table table =
+              new Table().setPlayers(List.of(player)).setLandlord(player).setHighestBidder(bidder);
+
+          playingExecutor.execute(table);
+
+          assertThat(table.getBombCount()).isEqualTo(1);
+        }
+      }
+
+      @Nested
+      @DisplayName("when highest bidder is rocket")
+      class WhenHighestBidderIsRocket {
+
+        @Test
+        @DisplayName("then add bomb count")
+        void thenAddBombCount() {
+          HighestBidder bidder =
+              new HighestBidder(1L, new CardsSet(Lists.newArrayList(new Card(53), new Card(54))));
+          TablePlayer player =
+              new TablePlayer().setId(1L).setState(PlayerState.PLAYING).setCards(emptyList());
+          Table table =
+              new Table().setPlayers(List.of(player)).setLandlord(player).setHighestBidder(bidder);
+
+          playingExecutor.execute(table);
+
+          assertThat(table.getBombCount()).isEqualTo(1);
+        }
+      }
+
+      @Nested
+      @DisplayName("when player cards is empty")
+      class WhenPlayerCardsIsEmpty {
+
+        @Test
+        @DisplayName("then return SETTLEMENT")
+        void thenReturn() {
+          HighestBidder bidder = new HighestBidder(1L, new CardsSet(emptyList()));
+          TablePlayer player =
+              new TablePlayer().setId(1L).setState(PlayerState.PLAYING).setCards(emptyList());
+          Table table =
+              new Table().setPlayers(List.of(player)).setLandlord(player).setHighestBidder(bidder);
+
+          assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.SETTLEMENT);
+        }
+      }
+
+      @Nested
+      @DisplayName("when player cards is not empty")
+      class WhenPlayerCardsIsNotEmpty {
+
+        @Test
+        @DisplayName("then return PLAYING")
+        void thenReturn() {
+          HighestBidder bidder = new HighestBidder(1L, new CardsSet(emptyList()));
+          TablePlayer player =
+              new TablePlayer()
+                  .setId(1L)
+                  .setState(PlayerState.PLAYING)
+                  .setCards(List.of(new Card(1)));
+          Table table =
+              new Table()
+                  .setPlayers(List.of(player, new TablePlayer()))
+                  .setLandlord(player)
+                  .setHighestBidder(bidder);
+
+          assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.PLAYING);
+          assertThat(table.getCursor()).isEqualTo(1);
+        }
       }
     }
 
     @Nested
-    @DisplayName("when cards is not empty")
-    class WhenCardsIsNotEmpty {
+    @DisplayName("when highest bidder is not landlord")
+    class WhenHighestBidderIsNotLandlord {
 
       @Test
-      @DisplayName("then return END")
-      void thenReturn() {
-        HighestBidder bidder = new HighestBidder(1L, Collections.emptyList());
-        TablePlayer player =
-            new TablePlayer()
-                .setId(1L)
-                .setState(PlayerState.PLAYING)
-                .setCards(List.of(new Card(1)));
+      @DisplayName("then not clean sweep")
+      void thenNotCleanSweep() {
+        HighestBidder bidder = new HighestBidder(1L, new CardsSet(emptyList()));
+        TablePlayer player = new TablePlayer().setId(2L).setCards(emptyList());
         Table table =
-            new Table().setPlayers(List.of(player, new TablePlayer())).setHighestBidder(bidder);
+            new Table().setPlayers(List.of(player)).setLandlord(player).setHighestBidder(bidder);
 
-        assertThat(playingExecutor.execute(table)).isEqualTo(DdzPhaseType.PLAYING);
-        assertThat(table.getCursor()).isEqualTo(1);
+        playingExecutor.execute(table);
+
+        assertThat(table.isCleanSweep()).isFalse();
       }
     }
   }

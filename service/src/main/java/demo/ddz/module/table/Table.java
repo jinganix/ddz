@@ -45,6 +45,10 @@ public class Table implements PhasedContext {
 
   private int cursor;
 
+  private boolean cleanSweep = true;
+
+  private int bombCount;
+
   @Override
   public String getKey() {
     return String.valueOf(id);
@@ -60,6 +64,8 @@ public class Table implements PhasedContext {
     this.landlord = null;
     this.highestBidder = null;
     this.cursor = 0;
+    this.cleanSweep = true;
+    this.bombCount = 0;
   }
 
   public void moveCursor() {

@@ -38,6 +38,7 @@ public class EndExecutor extends PhaseExecutor<Table> {
 
   @Override
   public DdzPhaseType execute(Table table) {
+    table.reset();
     return DdzPhaseType.IDLE;
   }
 }

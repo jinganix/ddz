@@ -23,8 +23,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /** Tests for spring component. */
-@ActiveProfiles("test")
-@ContextConfiguration
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
+@ContextConfiguration
+@ActiveProfiles("test")
+@ExtendWith(SpringExtension.class)
 public abstract class SpringComponentTests {}

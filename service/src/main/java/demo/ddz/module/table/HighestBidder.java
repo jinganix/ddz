@@ -16,11 +16,10 @@
 
 package demo.ddz.module.table;
 
-import demo.ddz.module.poker.Card;
-import java.util.List;
+import demo.ddz.module.poker.CardsSet;
 import java.util.Objects;
 
-public record HighestBidder(Long id, List<Card> cards) {
+public record HighestBidder(Long id, CardsSet cardsSet) {
 
   public boolean equalsTo(TablePlayer player) {
     return Objects.equals(id, player.getId());

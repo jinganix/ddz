@@ -48,25 +48,27 @@ public class PhaseExecutors {
   }
 
   public void execute(ScheduledPhase phase, PhaseType phaseType) {
+    if (phaseType == null) {
+      return;
+    }
     phase.cancelTimer();
     phase.incrUid();
-    while (phaseType != null) {
-      PhasedContext context = phase.getContext();
+    PhasedContext context = phase.getContext();
+    if (phase.getPhaseType() == phaseType) {
       PhaseExecutor<PhasedContext> executor = executors.get(phaseType);
-      if (phase.getPhaseType() == phaseType) {
-        phaseType = executor.execute(context);
-        continue;
-      }
+      phaseType = executor.execute(context);
+    }
+    while (phaseType != null) {
+      PhaseExecutor<PhasedContext> executor = executors.get(phaseType);
       long millis = utilsService.currentTimeMillis();
       phase.setPhaseType(phaseType);
       phase.setStartAt(millis);
       phase.setDuration(executor.schedule(context));
-      if (phase.getDuration() <= 0) {
-        phaseType = executor.execute(context);
-        continue;
+      if (phase.getDuration() > 0) {
+        schedule(phase, phaseType);
+        return;
       }
-      schedule(phase, phaseType);
-      break;
+      phaseType = executor.execute(context);
     }
   }
 

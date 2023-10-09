@@ -30,8 +30,8 @@ import org.junit.jupiter.api.Test;
 class TablePlayerTest {
 
   @Nested
-  @DisplayName("clearAuto")
-  class ClearAuto {
+  @DisplayName("disableAuto")
+  class DisableAuto {
 
     @Nested
     @DisplayName("when auto play is null")
@@ -41,7 +41,7 @@ class TablePlayerTest {
       @DisplayName("then clear")
       void thenClear() {
         TablePlayer player = new TablePlayer().setAuto(1);
-        player.clearAuto();
+        player.disableAuto();
         assertThat(player.getAuto()).isEqualTo(0);
         assertThat(player.getAutoPlay()).isNull();
         assertThat(player.getCards()).isNull();
@@ -57,7 +57,7 @@ class TablePlayerTest {
       void thenClear() {
         TablePlayer player =
             new TablePlayer().setAuto(1).setAutoPlay(new ShallowMind(List.of(new Card(1))));
-        player.clearAuto();
+        player.disableAuto();
         assertThat(player.getAuto()).isEqualTo(0);
         assertThat(player.getAutoPlay()).isNull();
         assertThat(player.getCards())
@@ -125,6 +125,44 @@ class TablePlayerTest {
           assertThat(player.getAutoPlay()).isEqualTo(autoPlay);
           assertThat(player.getCards()).isNull();
         }
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("enableAuto")
+  class EnableAuto {
+
+    @Nested
+    @DisplayName("when auto play is null")
+    class WhenAutoPlayIsNull {
+
+      @Test
+      @DisplayName("then enable")
+      void thenEnable() {
+        TablePlayer player = new TablePlayer().setAuto(1).setCards(List.of(new Card(1)));
+        player.enableAuto();
+        assertThat(player.getAutoPlay()).isNotNull();
+        assertThat(player.getAutoPlay().toCards())
+            .usingRecursiveFieldByFieldElementComparator()
+            .containsExactly(new Card(1));
+        assertThat(player.getCards()).isNull();
+      }
+    }
+
+    @Nested
+    @DisplayName("when auto play is not null")
+    class WhenAutoPlayIsNotNull {
+
+      @Test
+      @DisplayName("then auto play")
+      void thenEnable() {
+        AutoPlay autoPlay = new ShallowMind(List.of(new Card(1)));
+        TablePlayer player = new TablePlayer().setAuto(1).setAutoPlay(autoPlay);
+        player.enableAuto();
+        assertThat(player.getAutoPlay()).isNotNull();
+        assertThat(player.getAutoPlay()).isEqualTo(autoPlay);
+        assertThat(player.getCards()).isNull();
       }
     }
   }

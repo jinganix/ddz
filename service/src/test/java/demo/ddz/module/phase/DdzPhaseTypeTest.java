@@ -36,11 +36,13 @@ class DdzPhaseTypeTest {
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
       return Stream.of(
           Arguments.of(0, DdzPhaseType.IDLE),
-          Arguments.of(1, DdzPhaseType.START),
-          Arguments.of(2, DdzPhaseType.BIDDING),
-          Arguments.of(3, DdzPhaseType.DOUBLING),
-          Arguments.of(4, DdzPhaseType.PLAYING),
-          Arguments.of(5, DdzPhaseType.END));
+          Arguments.of(1, DdzPhaseType.COUNTDOWN),
+          Arguments.of(2, DdzPhaseType.DEALING),
+          Arguments.of(3, DdzPhaseType.BIDDING),
+          Arguments.of(4, DdzPhaseType.DOUBLING),
+          Arguments.of(5, DdzPhaseType.PLAYING),
+          Arguments.of(6, DdzPhaseType.SETTLEMENT),
+          Arguments.of(7, DdzPhaseType.END));
     }
   }
 

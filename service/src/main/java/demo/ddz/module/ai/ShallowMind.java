@@ -73,6 +73,7 @@ public class ShallowMind implements AutoPlay {
             .flatMap(List::stream)
             .collect(Collectors.toList());
     if (new CardsSet(handCards).getPokerHand() != null) {
+      kinds.clear();
       return handCards;
     }
     List<Card> cards = popThreeWith();

@@ -18,18 +18,18 @@ package demo.ddz.module.phase.executor;
 
 import demo.ddz.helper.phase.PhaseExecutor;
 import demo.ddz.module.phase.DdzPhaseType;
-import demo.ddz.module.table.PlayerState;
 import demo.ddz.module.table.Table;
+import demo.ddz.module.table.TablePlayer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class IdleExecutor extends PhaseExecutor<Table> {
+public class SettlementExecutor extends PhaseExecutor<Table> {
 
   @Override
   public DdzPhaseType getPhaseType() {
-    return DdzPhaseType.IDLE;
+    return DdzPhaseType.SETTLEMENT;
   }
 
   @Override
@@ -39,9 +39,18 @@ public class IdleExecutor extends PhaseExecutor<Table> {
 
   @Override
   public DdzPhaseType execute(Table table) {
-    if (table.getPlayers().stream().filter(e -> e.isState(PlayerState.READY)).count() != 3) {
-      return null;
+    int tableFan = table.getBombCount() + (table.isCleanSweep() ? 1 : 0);
+    TablePlayer landlord = table.getLandlord();
+    boolean landlordWin = landlord.isCardsEmpty();
+    for (TablePlayer player : table.getPlayers()) {
+      if (player == landlord) {
+        continue;
+      }
+      int fan = tableFan + (player.isDoubling() ? 1 : 0) + (landlord.isDoubling() ? 1 : 0);
+      int score = (int) Math.pow(2, fan) * landlord.getBidScore();
+      landlord.setScore(landlord.getScore() + (landlordWin ? 1 : -1) * score);
+      player.setScore(player.getScore() + (landlordWin ? -1 : 1) * score);
     }
-    return DdzPhaseType.COUNTDOWN;
+    return DdzPhaseType.END;
   }
 }

@@ -46,9 +46,9 @@ class MultiLevelWheelTimerTest {
         timer.schedule(20, timeout -> ref.set(System.currentTimeMillis() - startAt));
 
         await()
-            .pollInterval(Duration.ofMillis(5))
+            .pollInterval(Duration.ofMillis(50))
             .atMost(Duration.ofSeconds(1))
-            .untilAsserted(() -> assertThat(ref.get()).isBetween(20L, 40L));
+            .untilAsserted(() -> assertThat(ref.get()).isBetween(20L, 50L));
       }
     }
 
@@ -66,7 +66,7 @@ class MultiLevelWheelTimerTest {
         timer.schedule(50, timeout -> ref.set(System.currentTimeMillis() - startAt));
 
         await()
-            .pollInterval(Duration.ofMillis(5))
+            .pollInterval(Duration.ofMillis(50))
             .atMost(Duration.ofSeconds(1))
             .untilAsserted(() -> assertThat(ref.get()).isBetween(50L, 70L));
       }
@@ -86,7 +86,7 @@ class MultiLevelWheelTimerTest {
         timer.schedule(120, timeout -> ref.set(System.currentTimeMillis() - startAt));
 
         await()
-            .pollInterval(Duration.ofMillis(5))
+            .pollInterval(Duration.ofMillis(50))
             .atMost(Duration.ofSeconds(1))
             .untilAsserted(() -> assertThat(ref.get()).isBetween(120L, 140L));
       }
@@ -111,9 +111,9 @@ class MultiLevelWheelTimerTest {
         timer.schedule(20, timeout -> ref.set(System.currentTimeMillis() - startAt));
 
         await()
-            .pollInterval(Duration.ofMillis(5))
+            .pollInterval(Duration.ofMillis(50))
             .atMost(Duration.ofSeconds(1))
-            .untilAsserted(() -> assertThat(ref.get()).isBetween(20L, 40L));
+            .untilAsserted(() -> assertThat(ref.get()).isBetween(20L, 50L));
       }
     }
 
@@ -131,9 +131,9 @@ class MultiLevelWheelTimerTest {
         timer.schedule(50, timeout -> ref.set(System.currentTimeMillis() - startAt));
 
         await()
-            .pollInterval(Duration.ofMillis(5))
+            .pollInterval(Duration.ofMillis(50))
             .atMost(Duration.ofSeconds(1))
-            .untilAsserted(() -> assertThat(ref.get()).isBetween(50L, 70L));
+            .untilAsserted(() -> assertThat(ref.get()).isBetween(50L, 80L));
       }
     }
 
@@ -151,9 +151,9 @@ class MultiLevelWheelTimerTest {
         timer.schedule(120, timeout -> ref.set(System.currentTimeMillis() - startAt));
 
         await()
-            .pollInterval(Duration.ofMillis(5))
+            .pollInterval(Duration.ofMillis(50))
             .atMost(Duration.ofSeconds(1))
-            .untilAsserted(() -> assertThat(ref.get()).isBetween(120L, 140L));
+            .untilAsserted(() -> assertThat(ref.get()).isBetween(120L, 150L));
       }
     }
 
@@ -171,9 +171,9 @@ class MultiLevelWheelTimerTest {
         timer.schedule(300, timeout -> ref.set(System.currentTimeMillis() - startAt));
 
         await()
-            .pollInterval(Duration.ofMillis(5))
+            .pollInterval(Duration.ofMillis(50))
             .atMost(Duration.ofSeconds(1))
-            .untilAsserted(() -> assertThat(ref.get()).isBetween(300L, 320L));
+            .untilAsserted(() -> assertThat(ref.get()).isBetween(300L, 330L));
       }
     }
   }

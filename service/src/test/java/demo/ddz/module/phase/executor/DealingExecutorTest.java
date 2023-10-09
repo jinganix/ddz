@@ -17,25 +17,34 @@
 package demo.ddz.module.phase.executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
+import demo.ddz.helper.utils.UtilsService;
 import demo.ddz.module.phase.DdzPhaseType;
+import demo.ddz.module.poker.CardsSet;
+import demo.ddz.module.table.HighestBidder;
 import demo.ddz.module.table.PlayerState;
 import demo.ddz.module.table.Table;
 import demo.ddz.module.table.TablePlayer;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@DisplayName("EndExecutor")
+@DisplayName("DealingExecutor")
 @ExtendWith(MockitoExtension.class)
-class EndExecutorTest {
+class DealingExecutorTest {
 
-  @InjectMocks EndExecutor endExecutor;
+  @Mock UtilsService utilsService;
+
+  @InjectMocks DealingExecutor dealingExecutor;
 
   @Nested
   @DisplayName("getPhaseType")
@@ -46,9 +55,9 @@ class EndExecutorTest {
     class WhenCalled {
 
       @Test
-      @DisplayName("then return END")
+      @DisplayName("then return DEALING")
       void thenReturn() {
-        assertThat(endExecutor.getPhaseType()).isEqualTo(DdzPhaseType.END);
+        assertThat(dealingExecutor.getPhaseType()).isEqualTo(DdzPhaseType.DEALING);
       }
     }
   }
@@ -62,9 +71,13 @@ class EndExecutorTest {
     class WhenCalled {
 
       @Test
-      @DisplayName("then return 0")
+      @DisplayName("then return 3000")
       void thenReturn() {
-        assertThat(endExecutor.schedule(new Table())).isEqualTo(0);
+        TablePlayer player = new TablePlayer();
+        Table table = new Table().setPlayers(List.of(player));
+
+        assertThat(dealingExecutor.schedule(table)).isEqualTo(3000);
+        assertThat(player.getCards()).hasSize(17).allMatch(Objects::nonNull);
       }
     }
   }
@@ -78,14 +91,22 @@ class EndExecutorTest {
     class WhenCalled {
 
       @Test
-      @DisplayName("then return IDLE")
+      @DisplayName("then return BIDDING")
       void thenReturn() {
-        TablePlayer player =
-            new TablePlayer().setState(PlayerState.PLAYING).setCards(Collections.emptyList());
-        Table table = new Table().setPlayers(List.of(player)).setLandlord(player);
+        when(utilsService.nextInt(anyInt(), anyInt())).thenReturn(1);
+        Table table =
+            new Table()
+                .setHighestBidder(new HighestBidder(1L, new CardsSet(Collections.emptyList())))
+                .setCursor(2)
+                .setPlayers(List.of(new TablePlayer().setState(PlayerState.READY)));
 
-        assertThat(endExecutor.execute(table)).isEqualTo(DdzPhaseType.IDLE);
-        assertThat(player.getState()).isEqualTo(PlayerState.IDLE);
+        assertThat(dealingExecutor.execute(table)).isEqualTo(DdzPhaseType.BIDDING);
+
+        assertThat(table.getPlayers())
+            .usingRecursiveFieldByFieldElementComparatorOnFields("state")
+            .containsExactly(new TablePlayer().setState(PlayerState.BIDDING));
+        assertThat(table.getHighestBidder()).isNull();
+        assertThat(table.getCursor()).isEqualTo(1);
       }
     }
   }
