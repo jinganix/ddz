@@ -18,6 +18,9 @@ package demo.ddz.helper.actor;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import demo.ddz.helper.exception.BusinessException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -62,6 +65,33 @@ public class ChainedTaskExecutor {
 
   public void executeAsync(String key, Runnable task) {
     queues.get(key).execute(getExecutor(), task);
+  }
+
+  public void executeSync(Object key, Runnable task) {
+    executeSync(String.valueOf(key), task);
+  }
+
+  public void executeSync(String key, Runnable task) {
+    try {
+      ChainedTaskQueue queue = queues.get(key);
+      CompletableFuture<Void> future = new CompletableFuture<>();
+      Runnable runnable =
+          () -> {
+            try {
+              task.run();
+              future.complete(null);
+            } catch (Exception ex) {
+              future.completeExceptionally(ex);
+            }
+          };
+      queue.execute(getExecutor(), runnable);
+      future.get();
+    } catch (InterruptedException | ExecutionException ex) {
+      if (ex instanceof ExecutionException e && e.getCause() instanceof BusinessException bizEx) {
+        throw bizEx;
+      }
+      throw new RuntimeException(ex);
+    }
   }
 
   private Executor getExecutor() {

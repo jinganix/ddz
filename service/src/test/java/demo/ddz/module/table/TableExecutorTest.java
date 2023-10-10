@@ -32,7 +32,7 @@ import demo.ddz.module.phase.executor.EndExecutor;
 import demo.ddz.module.phase.executor.IdleExecutor;
 import demo.ddz.module.phase.executor.PlayingExecutor;
 import demo.ddz.module.phase.executor.SettlementExecutor;
-import demo.ddz.tests.SpringComponentTests;
+import demo.ddz.tests.SpringIntegrationTests;
 import java.time.Duration;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 @DisplayName("TableExecutor")
-class TableExecutorTest extends SpringComponentTests {
+class TableExecutorTest extends SpringIntegrationTests {
 
   @SpyBean BiddingExecutor biddingExecutor;
 

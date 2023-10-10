@@ -14,26 +14,15 @@
  * limitations under the License.
  */
 
-package demo.ddz.tests;
+package demo.ddz.helper.exception;
 
-/** Test data constants definition. */
-public interface TestConst {
+/** Business error code. */
+public interface BusinessErrorCode {
 
-  /** MILLIS. */
-  long MILLIS = 123456789L;
-
-  /** UID_1. */
-  long UID_1 = 10001;
-
-  /** UID_2. */
-  long UID_2 = 10002;
-
-  /** UID_3. */
-  long UID_3 = 10003;
-
-  /** UID_4. */
-  long UID_4 = 10004;
-
-  /** UID_5. */
-  long UID_5 = 10005;
+  /**
+   * Get error code value.
+   *
+   * @return code value
+   */
+  Integer getValue();
 }

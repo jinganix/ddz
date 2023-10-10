@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 linqu.tech, All Rights Reserved.
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,4 +27,4 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
-public abstract class SpringComponentTests {}
+public abstract class SpringIntegrationTests {}

@@ -19,14 +19,14 @@ package demo.ddz.helper.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
 
-import demo.ddz.tests.SpringComponentTests;
+import demo.ddz.tests.SpringIntegrationTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("UtilsService")
-class UtilsServiceTest extends SpringComponentTests {
+class UtilsServiceTest extends SpringIntegrationTests {
 
   @Autowired UtilsService utilsService;
 

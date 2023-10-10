@@ -23,13 +23,14 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.Delegate;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 public class Table implements PhasedContext {
 
-  private final ScheduledPhase phase = new ScheduledPhase(this);
+  @Delegate private final ScheduledPhase phase = new ScheduledPhase(this);
 
   private final CardDeck deck = new CardDeck();
 
