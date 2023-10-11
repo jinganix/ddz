@@ -16,6 +16,9 @@
 
 package demo.ddz.module.table;
 
+import static demo.ddz.tests.TestConst.UID_1;
+import static demo.ddz.tests.TestConst.UID_2;
+import static demo.ddz.tests.TestConst.UID_3;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.atLeast;
@@ -32,7 +35,7 @@ import demo.ddz.module.phase.executor.EndExecutor;
 import demo.ddz.module.phase.executor.IdleExecutor;
 import demo.ddz.module.phase.executor.PlayingExecutor;
 import demo.ddz.module.phase.executor.SettlementExecutor;
-import demo.ddz.tests.SpringComponentTests;
+import demo.ddz.tests.SpringIntegrationTests;
 import java.time.Duration;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 @DisplayName("TableExecutor")
-class TableExecutorTest extends SpringComponentTests {
+class TableExecutorTest extends SpringIntegrationTests {
 
   @SpyBean BiddingExecutor biddingExecutor;
 
@@ -138,9 +141,18 @@ class TableExecutorTest extends SpringComponentTests {
             new Table()
                 .setPlayers(
                     List.of(
-                        new TablePlayer().setId(1L).setState(PlayerState.DOUBLING).setBidScore(3),
-                        new TablePlayer().setId(2L).setState(PlayerState.DOUBLING).setBidScore(2),
-                        new TablePlayer().setId(3L).setState(PlayerState.DOUBLING).setBidScore(1)))
+                        new TablePlayer()
+                            .setId(UID_1)
+                            .setState(PlayerState.DOUBLING)
+                            .setBidScore(3),
+                        new TablePlayer()
+                            .setId(UID_2)
+                            .setState(PlayerState.DOUBLING)
+                            .setBidScore(2),
+                        new TablePlayer()
+                            .setId(UID_3)
+                            .setState(PlayerState.DOUBLING)
+                            .setBidScore(1)))
                 .setCfg(new FixedTableCfg(0));
 
         dealingExecutor.schedule(table);
@@ -174,9 +186,18 @@ class TableExecutorTest extends SpringComponentTests {
             new Table()
                 .setPlayers(
                     List.of(
-                        new TablePlayer().setId(1L).setState(PlayerState.DOUBLING).setBidScore(3),
-                        new TablePlayer().setId(2L).setState(PlayerState.DOUBLING).setBidScore(2),
-                        new TablePlayer().setId(3L).setState(PlayerState.DOUBLING).setBidScore(1)))
+                        new TablePlayer()
+                            .setId(UID_1)
+                            .setState(PlayerState.DOUBLING)
+                            .setBidScore(3),
+                        new TablePlayer()
+                            .setId(UID_2)
+                            .setState(PlayerState.DOUBLING)
+                            .setBidScore(2),
+                        new TablePlayer()
+                            .setId(UID_3)
+                            .setState(PlayerState.DOUBLING)
+                            .setBidScore(1)))
                 .setCfg(new FixedTableCfg(10));
 
         dealingExecutor.schedule(table);

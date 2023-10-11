@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ * Copyright (c) 2020 https://github.com/jinganix/ddz, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,5 +38,9 @@ class WheelTimer {
 
   public Timeout newTimeout(TimerTask task, long delay, TimeUnit unit) {
     return timer.newTimeout(task, delay, unit);
+  }
+
+  public void stop() {
+    timer.stop();
   }
 }

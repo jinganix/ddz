@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ * Copyright (c) 2020 https://github.com/jinganix/ddz, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,14 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.Delegate;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 public class Table implements PhasedContext {
 
-  private final ScheduledPhase phase = new ScheduledPhase(this);
+  @Delegate private final ScheduledPhase phase = new ScheduledPhase(this);
 
   private final CardDeck deck = new CardDeck();
 

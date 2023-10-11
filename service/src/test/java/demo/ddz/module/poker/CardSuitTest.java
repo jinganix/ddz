@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package demo.ddz.poker;
+package demo.ddz.module.poker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import demo.ddz.module.poker.CardRank;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -28,29 +27,19 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-@DisplayName("CardRank")
-class CardRankTest {
+@DisplayName("CardSuit")
+class CardSuitTest {
 
   static class TestArgumentsProvider implements ArgumentsProvider {
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
       return Stream.of(
-          Arguments.of(1, CardRank.ACE),
-          Arguments.of(2, CardRank.RANK_2),
-          Arguments.of(3, CardRank.RANK_3),
-          Arguments.of(4, CardRank.RANK_4),
-          Arguments.of(5, CardRank.RANK_5),
-          Arguments.of(6, CardRank.RANK_6),
-          Arguments.of(7, CardRank.RANK_7),
-          Arguments.of(8, CardRank.RANK_8),
-          Arguments.of(9, CardRank.RANK_9),
-          Arguments.of(10, CardRank.RANK_10),
-          Arguments.of(11, CardRank.JACK),
-          Arguments.of(12, CardRank.QUEEN),
-          Arguments.of(13, CardRank.KING),
-          Arguments.of(14, CardRank.JOKER_1),
-          Arguments.of(15, CardRank.JOKER_2));
+          Arguments.of(1, CardSuit.SPADES),
+          Arguments.of(2, CardSuit.HEARTS),
+          Arguments.of(3, CardSuit.CLUBS),
+          Arguments.of(4, CardSuit.DIAMONDS),
+          Arguments.of(5, CardSuit.JOKER));
     }
   }
 
@@ -65,8 +54,8 @@ class CardRankTest {
       @ParameterizedTest(name = "fromValue({0}) => {1}")
       @DisplayName("then return expected enum")
       @ArgumentsSource(TestArgumentsProvider.class)
-      void thenReturnExpectedEnum(int value, CardRank expected) {
-        assertEquals(expected, CardRank.fromValue(value));
+      void thenReturnExpectedEnum(int value, CardSuit expected) {
+        assertEquals(expected, CardSuit.fromValue(value));
       }
     }
   }
@@ -82,8 +71,8 @@ class CardRankTest {
       @ParameterizedTest(name = "{1}.toValue() => {0}")
       @DisplayName("then return expected value")
       @ArgumentsSource(TestArgumentsProvider.class)
-      void thenReturnExpectedValue(int expected, CardRank cardRank) {
-        assertEquals(expected, cardRank.getValue());
+      void thenReturnExpectedValue(int expected, CardSuit cardSuit) {
+        assertEquals(expected, cardSuit.getValue());
       }
     }
   }

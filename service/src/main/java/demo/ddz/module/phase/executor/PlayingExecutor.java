@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ * Copyright (c) 2020 https://github.com/jinganix/ddz, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,9 @@ public class PlayingExecutor extends PhaseExecutor<Table> {
   @Override
   public long schedule(Table table) {
     TablePlayer current = table.getCurrentPlayer();
+    if (current.isState(PlayerState.FOLD)) {
+      return 0;
+    }
     if (table.getHighestBidder() != null && table.getHighestBidder().equalsTo(current)) {
       table.setHighestBidder(null);
       for (TablePlayer player : table.getPlayers()) {
@@ -54,6 +57,7 @@ public class PlayingExecutor extends PhaseExecutor<Table> {
   public DdzPhaseType execute(Table table) {
     TablePlayer current = table.getCurrentPlayer();
     if (current.isState(PlayerState.FOLD)) {
+      table.moveCursor();
       return DdzPhaseType.PLAYING;
     }
     if (table.getHighestBidder() == null) {

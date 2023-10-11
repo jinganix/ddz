@@ -38,8 +38,8 @@ class ScheduledPhaseTest {
     class WhenCalled {
 
       @Test
-      @DisplayName("then create instance")
-      void thenCreateInstance() {
+      @DisplayName("then concrete")
+      void thenConcrete() {
         PhasedContext phasedContext = mock(PhasedContext.class);
         assertThat(new ScheduledPhase(phasedContext).getContext()).isEqualTo(phasedContext);
       }

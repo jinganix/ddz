@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 linqu.tech, All Rights Reserved.
+ * Copyright (c) 2020 https://github.com/jinganix/ddz, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package demo.ddz.tests;
+package demo.ddz.helper.repository.single;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import demo.ddz.helper.repository.RepositoryMeta;
 
-/** Tests for spring component. */
-@SpringBootTest
-@ContextConfiguration
-@ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
-public abstract class SpringComponentTests {}
+public interface SingleValueRepositoryMeta<T, ID> extends RepositoryMeta<T, ID> {}
