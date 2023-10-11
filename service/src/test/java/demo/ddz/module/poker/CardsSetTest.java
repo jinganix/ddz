@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package demo.ddz.poker;
+package demo.ddz.module.poker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import demo.ddz.module.poker.Card;
-import demo.ddz.module.poker.CardsSet;
-import demo.ddz.module.poker.PokerHand;
 import demo.ddz.tests.CardsHelper;
 import java.util.List;
 import java.util.stream.Stream;

@@ -16,6 +16,7 @@
 
 package demo.ddz.module.phase.executor;
 
+import static demo.ddz.tests.TestConst.UID_1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -67,17 +68,34 @@ class DealingExecutorTest {
   class Schedule {
 
     @Nested
-    @DisplayName("when called")
+    @DisplayName("when player auto play")
+    class WhenPlayerAutoPlay {
+
+      @Test
+      @DisplayName("then deal auto play cards")
+      void thenDealAutoPlayCards() {
+        TablePlayer player = new TablePlayer().setAuto(2);
+        Table table = new Table().setPlayers(List.of(player));
+
+        assertThat(dealingExecutor.schedule(table)).isEqualTo(3000);
+        assertThat(player.getCards()).isNull();
+        assertThat(player.getAutoPlay().toCards()).hasSize(17).allMatch(Objects::nonNull);
+      }
+    }
+
+    @Nested
+    @DisplayName("when player not auto play")
     class WhenCalled {
 
       @Test
-      @DisplayName("then return 3000")
-      void thenReturn() {
-        TablePlayer player = new TablePlayer();
+      @DisplayName("then deal cards")
+      void thenCards() {
+        TablePlayer player = new TablePlayer().setAuto(1);
         Table table = new Table().setPlayers(List.of(player));
 
         assertThat(dealingExecutor.schedule(table)).isEqualTo(3000);
         assertThat(player.getCards()).hasSize(17).allMatch(Objects::nonNull);
+        assertThat(player.getAutoPlay()).isNull();
       }
     }
   }
@@ -96,7 +114,7 @@ class DealingExecutorTest {
         when(utilsService.nextInt(anyInt(), anyInt())).thenReturn(1);
         Table table =
             new Table()
-                .setHighestBidder(new HighestBidder(1L, new CardsSet(Collections.emptyList())))
+                .setHighestBidder(new HighestBidder(UID_1, new CardsSet(Collections.emptyList())))
                 .setCursor(2)
                 .setPlayers(List.of(new TablePlayer().setState(PlayerState.READY)));
 

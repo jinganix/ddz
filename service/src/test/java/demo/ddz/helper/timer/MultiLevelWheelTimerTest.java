@@ -21,6 +21,8 @@ import static org.awaitility.Awaitility.await;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,9 +30,21 @@ import org.junit.jupiter.api.Test;
 @DisplayName("MultiLevelWheelTimer")
 class MultiLevelWheelTimerTest {
 
+  MultiLevelWheelTimer timer;
+
+  @AfterEach
+  void beforeEach() {
+    timer.stop();
+  }
+
   @Nested
   @DisplayName("when level is 1")
   class WhenLevelIs1 {
+
+    @BeforeEach
+    void beforeEach() {
+      timer = new MultiLevelWheelTimer(10, 5, 1);
+    }
 
     @Nested
     @DisplayName("when delay < wheel duration")
@@ -39,8 +53,6 @@ class MultiLevelWheelTimerTest {
       @Test
       @DisplayName("then task executed")
       void thenTaskExecuted() {
-        MultiLevelWheelTimer timer = new MultiLevelWheelTimer(10, 5, 1);
-
         AtomicReference<Long> ref = new AtomicReference<>();
         long startAt = System.currentTimeMillis();
         timer.schedule(20, timeout -> ref.set(System.currentTimeMillis() - startAt));
@@ -59,8 +71,6 @@ class MultiLevelWheelTimerTest {
       @Test
       @DisplayName("then task executed")
       void thenTaskExecuted() {
-        MultiLevelWheelTimer timer = new MultiLevelWheelTimer(10, 50, 1);
-
         AtomicReference<Long> ref = new AtomicReference<>();
         long startAt = System.currentTimeMillis();
         timer.schedule(50, timeout -> ref.set(System.currentTimeMillis() - startAt));
@@ -79,8 +89,6 @@ class MultiLevelWheelTimerTest {
       @Test
       @DisplayName("then task executed")
       void thenTaskExecuted() {
-        MultiLevelWheelTimer timer = new MultiLevelWheelTimer(10, 5, 1);
-
         AtomicReference<Long> ref = new AtomicReference<>();
         long startAt = System.currentTimeMillis();
         timer.schedule(120, timeout -> ref.set(System.currentTimeMillis() - startAt));
@@ -97,6 +105,11 @@ class MultiLevelWheelTimerTest {
   @DisplayName("when level is 2")
   class WhenLevelIs2 {
 
+    @BeforeEach
+    void beforeEach() {
+      timer = new MultiLevelWheelTimer(10, 5, 2);
+    }
+
     @Nested
     @DisplayName("when delay < wheel duration")
     class WhenDelayLessThanWheelDuration {
@@ -104,8 +117,6 @@ class MultiLevelWheelTimerTest {
       @Test
       @DisplayName("then task executed")
       void thenTaskExecuted() {
-        MultiLevelWheelTimer timer = new MultiLevelWheelTimer(10, 5, 2);
-
         AtomicReference<Long> ref = new AtomicReference<>();
         long startAt = System.currentTimeMillis();
         timer.schedule(20, timeout -> ref.set(System.currentTimeMillis() - startAt));
@@ -124,8 +135,6 @@ class MultiLevelWheelTimerTest {
       @Test
       @DisplayName("then task executed")
       void thenTaskExecuted() {
-        MultiLevelWheelTimer timer = new MultiLevelWheelTimer(10, 50, 2);
-
         AtomicReference<Long> ref = new AtomicReference<>();
         long startAt = System.currentTimeMillis();
         timer.schedule(50, timeout -> ref.set(System.currentTimeMillis() - startAt));
@@ -144,8 +153,6 @@ class MultiLevelWheelTimerTest {
       @Test
       @DisplayName("then task executed")
       void thenTaskExecuted() {
-        MultiLevelWheelTimer timer = new MultiLevelWheelTimer(10, 5, 2);
-
         AtomicReference<Long> ref = new AtomicReference<>();
         long startAt = System.currentTimeMillis();
         timer.schedule(120, timeout -> ref.set(System.currentTimeMillis() - startAt));
@@ -164,8 +171,6 @@ class MultiLevelWheelTimerTest {
       @Test
       @DisplayName("then task executed")
       void thenTaskExecuted() {
-        MultiLevelWheelTimer timer = new MultiLevelWheelTimer(10, 3, 2);
-
         AtomicReference<Long> ref = new AtomicReference<>();
         long startAt = System.currentTimeMillis();
         timer.schedule(300, timeout -> ref.set(System.currentTimeMillis() - startAt));

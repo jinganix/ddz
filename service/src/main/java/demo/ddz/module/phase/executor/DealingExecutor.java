@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ * Copyright (c) 2020 https://github.com/jinganix/ddz, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package demo.ddz.module.phase.executor;
 
 import demo.ddz.helper.phase.PhaseExecutor;
 import demo.ddz.helper.utils.UtilsService;
+import demo.ddz.module.ai.ShallowMind;
 import demo.ddz.module.phase.DdzPhaseType;
 import demo.ddz.module.poker.Card;
 import demo.ddz.module.table.PlayerState;
@@ -47,7 +48,11 @@ public class DealingExecutor extends PhaseExecutor<Table> {
           IntStream.rangeClosed(1, 17)
               .mapToObj(e -> table.getDeck().pop())
               .collect(Collectors.toList());
-      player.setCards(cards);
+      if (player.getAuto() >= 2) {
+        player.setAutoPlay(new ShallowMind(cards));
+      } else {
+        player.setCards(cards);
+      }
     }
     return table.getCfg().getDuration(getPhaseType());
   }

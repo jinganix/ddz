@@ -16,6 +16,7 @@
 
 package demo.ddz.module.table;
 
+import static demo.ddz.tests.TestConst.UID_1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -42,8 +43,8 @@ class TableTest {
       @Test
       @DisplayName("then return key")
       void thenReturnKey() {
-        Table table = new Table().setId(1L);
-        assertThat(table.getKey()).isEqualTo("1");
+        Table table = new Table().setId(UID_1);
+        assertThat(table.getKey()).isEqualTo(String.valueOf(UID_1));
       }
     }
   }
@@ -80,15 +81,15 @@ class TableTest {
         List<TablePlayer> players = List.of(player);
         Table table =
             new Table()
-                .setId(1L)
+                .setId(UID_1)
                 .setPlayers(players)
                 .setLandlord(new TablePlayer())
-                .setHighestBidder(new HighestBidder(1L, new CardsSet(Collections.emptyList())))
+                .setHighestBidder(new HighestBidder(UID_1, new CardsSet(Collections.emptyList())))
                 .setCursor(2);
 
         table.reset();
 
-        assertThat(table.getId()).isEqualTo(1L);
+        assertThat(table.getId()).isEqualTo(UID_1);
         assertThat(table.getDeck()).isNotNull();
         assertThat(table.getPlayers()).hasSize(1);
         assertThat(table.getLandlord()).isNull();

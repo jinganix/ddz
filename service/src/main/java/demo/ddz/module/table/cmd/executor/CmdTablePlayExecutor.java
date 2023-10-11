@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020 https://github.com/jinganix/ddz, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package demo.ddz.module.table.cmd.executor;
 
 import demo.ddz.helper.exception.BusinessException;
@@ -27,23 +43,25 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CmdTablePlayExecutor extends TableCmdExecutor<CmdTablePlay> {
 
+  private final TableCmdChecker tableCmdChecker;
+
   private final TableExecutor tableExecutor;
 
   private final TableRepository tableRepository;
 
   @Override
   public CmdType support() {
-    return CmdType.tableFold;
+    return CmdType.tablePlay;
   }
 
   @Override
   public void execute(Long tableId, Cmds cmds, CmdTablePlay cmd) {
     Table table = tableRepository.find(tableId);
-    TableCmdChecker.assertExecution(cmd.getPlayerId(), table, DdzPhaseType.PLAYING);
+    tableCmdChecker.assertExecution(cmd.getPlayerId(), table, DdzPhaseType.PLAYING);
     TablePlayer player = table.getCurrentPlayer();
     player.disableAuto();
-    List<Card> playedCards = new ArrayList<>(cmd.getCardIds().size());
-    List<Card> remainingCards = new ArrayList<>(player.getCards().size() - cmd.getCardIds().size());
+    List<Card> playedCards = new ArrayList<>();
+    List<Card> remainingCards = new ArrayList<>();
     for (Card card : player.getCards()) {
       if (cmd.getCardIds().contains(card.getId())) {
         playedCards.add(card);
@@ -61,7 +79,7 @@ public class CmdTablePlayExecutor extends TableCmdExecutor<CmdTablePlay> {
     CardsSet highest =
         table.getHighestBidder() == null ? null : table.getHighestBidder().cardsSet();
     if (highest != null && !cardsSet.dominate(highest)) {
-      throw BusinessException.of(ErrorCode.CARDS_SET_NOT_DOMINATED);
+      throw BusinessException.of(ErrorCode.PLAYED_CARDS_NOT_DOMINATING);
     }
     player.setCards(remainingCards);
     table.setHighestBidder(new HighestBidder(cmd.getPlayerId(), cardsSet));
