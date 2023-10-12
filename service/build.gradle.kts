@@ -2,6 +2,7 @@ plugins {
   java
   jacoco
   id("com.diffplug.spotless") version "6.22.0"
+  id("com.github.kt3k.coveralls") version "2.12.2"
   id("io.spring.dependency-management") version "1.1.3"
   id("org.springframework.boot") version "3.1.4"
 }
@@ -46,6 +47,11 @@ tasks.test {
 
 tasks.jacocoTestReport {
   dependsOn(tasks.test)
+
+  reports {
+    html.required.set(true)
+    xml.required.set(true)
+  }
 }
 
 tasks.jacocoTestCoverageVerification {
@@ -79,4 +85,8 @@ spotless {
 
 tasks.check {
   dependsOn(tasks.spotlessCheck)
+}
+
+coveralls {
+  jacocoReportPath = "build/reports/jacoco/test/jacocoTestReport.xml"
 }
