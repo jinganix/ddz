@@ -16,6 +16,7 @@
 
 package demo.ddz.helper.utils;
 
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,19 @@ public class UtilsService {
 
   public int nextInt(int origin, int bound) {
     return ThreadLocalRandom.current().nextInt(origin, bound);
+  }
+
+  /**
+   * Generate uuid.
+   *
+   * @param dash true with dash
+   * @return uuid
+   */
+  public synchronized String uuid(boolean dash) {
+    if (dash) {
+      return UUID.randomUUID().toString();
+    } else {
+      return UUID.randomUUID().toString().replace("-", "");
+    }
   }
 }

@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ChainedTaskQueue {
+public class OrderedTaskQueue {
 
   // @protectedby tasks
   private final LinkedList<Task> tasks = new LinkedList<>();
@@ -31,7 +31,7 @@ public class ChainedTaskQueue {
   // @protectedby tasks
   private Executor current;
 
-  public ChainedTaskQueue() {
+  public OrderedTaskQueue() {
     runner = this::run;
   }
 

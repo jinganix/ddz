@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("PlayerRepository")
 class PlayerRepositoryTest {
+
   @Nested
   @DisplayName("Meta")
   class Meta extends SpringIntegrationTests {

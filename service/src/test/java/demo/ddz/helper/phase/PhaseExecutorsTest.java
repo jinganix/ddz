@@ -28,7 +28,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import demo.ddz.helper.actor.ChainedTaskExecutor;
+import demo.ddz.helper.actor.OrderedTaskExecutor;
 import demo.ddz.helper.timer.MultiLevelWheelTimer;
 import demo.ddz.helper.timer.TaskTimer;
 import demo.ddz.helper.utils.UtilsService;
@@ -43,14 +43,14 @@ import org.junit.jupiter.api.Test;
 @DisplayName("PhaseExecutors")
 class PhaseExecutorsTest {
 
-  ChainedTaskExecutor chainedTaskExecutor =
-      spy(new ChainedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
+  OrderedTaskExecutor orderedTaskExecutor =
+      spy(new OrderedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
 
   UtilsService utilsService = mock(UtilsService.class);
 
   TaskTimer taskTimer = spy(new MultiLevelWheelTimer(10, 512, 1));
 
-  PhaseExecutors phaseExecutors = new PhaseExecutors(chainedTaskExecutor, utilsService, taskTimer);
+  PhaseExecutors phaseExecutors = new PhaseExecutors(orderedTaskExecutor, utilsService, taskTimer);
 
   @Nested
   @DisplayName("execute")

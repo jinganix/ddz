@@ -16,7 +16,7 @@
 
 package demo.ddz.module.table;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +56,7 @@ class PlayerStateTest {
       @DisplayName("then return expected enum")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedEnum(int value, PlayerState expected) {
-        assertEquals(expected, PlayerState.fromValue(value));
+        assertThat(PlayerState.fromValue(value)).isEqualTo(expected);
       }
     }
   }
@@ -73,7 +73,7 @@ class PlayerStateTest {
       @DisplayName("then return expected value")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedValue(int expected, PlayerState playerState) {
-        assertEquals(expected, playerState.getValue());
+        assertThat(playerState.getValue()).isEqualTo(expected);
       }
     }
   }

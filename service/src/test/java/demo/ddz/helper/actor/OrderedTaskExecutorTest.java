@@ -37,10 +37,10 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @DisplayName("ChainedTaskExecutor")
-class ChainedTaskExecutorTest {
+class OrderedTaskExecutorTest {
 
-  ChainedTaskExecutor executor =
-      spy(new ChainedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
+  OrderedTaskExecutor executor =
+      spy(new OrderedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
 
   @Nested
   @DisplayName("publish")
@@ -135,7 +135,7 @@ class ChainedTaskExecutorTest {
 
       @Test
       @DisplayName("then run task async")
-      void thenCallDelegate() {
+      void thenRunTaskAsync() {
         long startAt = System.currentTimeMillis();
         executor.executeAsync("a", () -> TestUtils.sleep(100));
         assertThat(System.currentTimeMillis() - startAt).isLessThan(100);
@@ -189,7 +189,7 @@ class ChainedTaskExecutorTest {
 
       @Test
       @DisplayName("then run task sync")
-      void thenCallDelegate() {
+      void thenRunTaskSync() {
         long startAt = System.currentTimeMillis();
         executor.executeSync("a", () -> TestUtils.sleep(100));
         assertThat(System.currentTimeMillis() - startAt).isGreaterThanOrEqualTo(100);

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import demo.ddz.helper.actor.ChainedTaskExecutor;
+import demo.ddz.helper.actor.OrderedTaskExecutor;
 import demo.ddz.helper.exception.BusinessException;
 import demo.ddz.module.cmd.CmdType;
 import demo.ddz.module.cmd.Cmds;
@@ -94,8 +94,8 @@ class TableCmdDispatcherTest {
   @ExtendWith(MockitoExtension.class)
   class Dispatch {
 
-    ChainedTaskExecutor chainedTaskExecutor =
-        spy(new ChainedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
+    OrderedTaskExecutor orderedTaskExecutor =
+        spy(new OrderedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
 
     @Mock PlayerRepository playerRepository;
 
@@ -117,7 +117,7 @@ class TableCmdDispatcherTest {
         TableCmd cmd = mock(TableCmd.class);
         assertThatThrownBy(() -> tableCmdDispatcher.dispatch(UID_1, cmds, cmd))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.TABLE_NOT_FOUND);
       }
     }
@@ -151,7 +151,7 @@ class TableCmdDispatcherTest {
         Cmds cmds = new Cmds();
         tableCmdDispatcher.dispatch(UID_1, cmds, cmd);
 
-        verify(chainedTaskExecutor, times(1)).executeSync(eq(String.valueOf(UID_1)), any());
+        verify(orderedTaskExecutor, times(1)).executeSync(eq(String.valueOf(UID_1)), any());
         verify(executor, times(1)).execute(UID_1, cmds, cmd);
       }
     }

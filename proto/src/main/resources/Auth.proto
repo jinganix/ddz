@@ -1,0 +1,38 @@
+syntax = "proto2";
+
+package AuthProto;
+
+option java_package = "demo.ddz.proto.auth";
+
+import "WebpbOptions.proto";
+import "webpb/WebpbExtend.proto";
+
+enum TokenType {
+  BEARER = 0 [(v_opts).opt = {value: 'Bearer'}];
+}
+
+message AuthLoginRequest {
+  option (m_opts).opt = {
+    method: "POST"
+    path: "/api/auth/login"
+  };
+
+  required string nickname = 1 [(opts).java = {annotation: '@NotNull' annotation: '@Size(min = 3, max = 10)'}];
+}
+
+message AuthTokenRequest {
+  option (m_opts).opt = {
+    method: "POST"
+    path: "/api/auth/token"
+  };
+
+  optional string refreshToken = 1 [(opts).java = {annotation: '@NotNull'}];
+}
+
+message AuthTokenResponse {
+  required string accessToken = 1;
+  required int64 expiresIn = 2;
+  required string refreshToken = 3;
+  required string tokenType = 4;
+  required string scope = 5;
+}

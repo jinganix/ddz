@@ -1,0 +1,44 @@
+syntax = "proto2";
+
+package ErrorProto;
+
+option java_package = "demo.ddz.proto.error";
+
+import "WebpbOptions.proto";
+import "webpb/WebpbExtend.proto";
+
+message ValidationErrorMessage {
+  map<string, string> errors = 1;
+}
+
+message ErrorMessage {
+  option (m_opts).opt = {
+    method: "POST"
+    path: "/api/error"
+  };
+
+  required ErrorCode code = 1 [(opts).java = {auto_alias: ''}, (opts).ts = {auto_alias: false}];
+  optional string message = 2 [(opts).java = {auto_alias: ''}, (opts).ts = {auto_alias: false}];
+}
+
+enum ErrorCode {
+  option (e_opts).java = {
+    annotation: '@JsonDeserialize(using = EnumerationDeserializer.class)'
+    annotation: '@JsonSerialize(using = EnumerationSerializer.class)'
+    implements: "BusinessErrorCode"
+  };
+
+  OK = 0;
+  ERROR = 1;
+  BAD_REQUEST = 2;
+  FORCE_LOGOUT = 3;
+  TABLE_NOT_FOUND = 4;
+  PHASE_INVALID = 5;
+  NOT_CURRENT_PLAYER = 6;
+  INVALID_PLAYED_CARDS = 7;
+  PLAYED_CARDS_NOT_DOMINATING = 8;
+  INVALID_PLAYER_STATE = 9;
+  BAD_REFRESH_TOKEN = 10;
+  PLAYER_NOT_FOUND = 11;
+  PLAYER_IS_OFFLINE = 12;
+}

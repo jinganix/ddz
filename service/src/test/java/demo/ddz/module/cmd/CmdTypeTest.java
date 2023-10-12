@@ -16,7 +16,7 @@
 
 package demo.ddz.module.cmd;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +55,7 @@ class CmdTypeTest {
       @DisplayName("then return expected enum")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedEnum(int value, CmdType expected) {
-        assertEquals(expected, CmdType.fromValue(value));
+        assertThat(CmdType.fromValue(value)).isEqualTo(expected);
       }
     }
   }
@@ -72,7 +72,7 @@ class CmdTypeTest {
       @DisplayName("then return expected value")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedValue(int expected, CmdType CmdType) {
-        assertEquals(expected, CmdType.getValue());
+        assertThat(CmdType.getValue()).isEqualTo(expected);
       }
     }
   }

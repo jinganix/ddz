@@ -27,7 +27,8 @@ public enum ErrorCode implements BusinessErrorCode, Enumeration<Integer> {
   NOT_CURRENT_PLAYER(3),
   INVALID_PLAYED_CARDS(4),
   PLAYED_CARDS_NOT_DOMINATING(5),
-  INVALID_PLAYER_STATE(6);
+  INVALID_PLAYER_STATE(6),
+  PLAYER_IS_OFFLINE(7);
 
   private static final IntegerEnumMapper<ErrorCode> mapper = new IntegerEnumMapper<>(values());
 

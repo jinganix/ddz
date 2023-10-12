@@ -16,7 +16,8 @@
 
 package demo.ddz.setup;
 
-import demo.ddz.helper.actor.ChainedTaskExecutor;
+import demo.ddz.helper.actor.OrderedTaskExecutor;
+import demo.ddz.helper.actor.VirtualThreadExecutor;
 import demo.ddz.helper.timer.MultiLevelWheelTimer;
 import demo.ddz.helper.timer.TaskTimer;
 import java.util.concurrent.Executors;
@@ -35,7 +36,12 @@ public class BeansConfiguration {
   }
 
   @Bean
-  ChainedTaskExecutor chainedTaskExecutor() {
-    return new ChainedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor());
+  OrderedTaskExecutor chainedTaskExecutor() {
+    return new OrderedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor());
+  }
+
+  @Bean
+  VirtualThreadExecutor virtualThreadExecutor() {
+    return new VirtualThreadExecutor(Executors.newVirtualThreadPerTaskExecutor());
   }
 }

@@ -16,7 +16,7 @@
 
 package demo.ddz.module.poker;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +55,7 @@ class CardSuitTest {
       @DisplayName("then return expected enum")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedEnum(int value, CardSuit expected) {
-        assertEquals(expected, CardSuit.fromValue(value));
+        assertThat(CardSuit.fromValue(value)).isEqualTo(expected);
       }
     }
   }
@@ -72,7 +72,7 @@ class CardSuitTest {
       @DisplayName("then return expected value")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedValue(int expected, CardSuit cardSuit) {
-        assertEquals(expected, cardSuit.getValue());
+        assertThat(cardSuit.getValue()).isEqualTo(expected);
       }
     }
   }

@@ -99,7 +99,7 @@ class CmdTablePlayExecutorTest {
         CmdTablePlay cmd = new CmdTablePlay(UID_1, List.of(1));
         assertThatThrownBy(() -> cmdTablePlayExecutor.execute(UID_1, cmds, cmd))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.INVALID_PLAYED_CARDS);
         verify(tableCmdChecker, times(1)).assertExecution(UID_1, table, DdzPhaseType.PLAYING);
       }
@@ -120,7 +120,7 @@ class CmdTablePlayExecutorTest {
         CmdTablePlay cmd = new CmdTablePlay(UID_1, List.of(1, 5));
         assertThatThrownBy(() -> cmdTablePlayExecutor.execute(UID_1, cmds, cmd))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.INVALID_PLAYED_CARDS);
         verify(tableCmdChecker, times(1)).assertExecution(UID_1, table, DdzPhaseType.PLAYING);
       }
@@ -145,7 +145,7 @@ class CmdTablePlayExecutorTest {
         CmdTablePlay cmd = new CmdTablePlay(UID_1, List.of(6));
         assertThatThrownBy(() -> cmdTablePlayExecutor.execute(UID_1, cmds, cmd))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.PLAYED_CARDS_NOT_DOMINATING);
         verify(tableCmdChecker, times(1)).assertExecution(UID_1, table, DdzPhaseType.PLAYING);
       }

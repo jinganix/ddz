@@ -1,10 +1,14 @@
+import com.google.protobuf.gradle.id
+import com.google.protobuf.gradle.remove
+
 plugins {
-  java
-  jacoco
   id("com.diffplug.spotless") version "6.22.0"
   id("com.github.kt3k.coveralls") version "2.12.2"
+  id("com.google.protobuf") version "0.9.4"
   id("io.spring.dependency-management") version "1.1.3"
   id("org.springframework.boot") version "3.1.4"
+  jacoco
+  java
 }
 
 group = "demo.ddz"
@@ -16,15 +20,36 @@ java {
 
 repositories {
   mavenCentral()
+  maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots") }
 }
 
 dependencies {
+  annotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1-SNAPSHOT")
+  annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
   annotationProcessor("org.projectlombok:lombok:1.18.30")
   compileOnly("org.projectlombok:lombok:1.18.30")
+
+  implementation("com.auth0:java-jwt:4.4.0")
   implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+  implementation("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
+  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1-SNAPSHOT")
+  implementation("io.github.jinganix.webpb:webpb-runtime:0.0.1-SNAPSHOT")
+  implementation("org.apache.commons:commons-lang3:3.13.0")
+  implementation("org.mapstruct:mapstruct:1.5.5.Final")
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-aop")
+  implementation("org.springframework.boot:spring-boot-starter-rsocket")
+  implementation("org.mapstruct:mapstruct:1.5.5.Final")
+  implementation("org.springframework.boot:spring-boot-starter-security")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
+  implementation("org.springframework.security:spring-security-messaging")
+  implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.1.2")
+  implementation("org.springframework.security:spring-security-rsocket")
+
+  protobuf(project(":proto"))
+  testAnnotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1-SNAPSHOT")
+  testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
   testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
   testCompileOnly("org.projectlombok:lombok:1.18.30")
   testImplementation("io.projectreactor:reactor-test:3.5.11")
@@ -52,6 +77,12 @@ tasks.jacocoTestReport {
     html.required.set(true)
     xml.required.set(true)
   }
+
+  classDirectories.setFrom(classDirectories.files.map {
+    fileTree(it).matching {
+      exclude("demo/ddz/setup/exception/ErrorCodeMapperImpl.class")
+    }
+  })
 }
 
 tasks.jacocoTestCoverageVerification {
@@ -89,4 +120,28 @@ tasks.check {
 
 coveralls {
   jacocoReportPath = "build/reports/jacoco/test/jacocoTestReport.xml"
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.24.4"
+  }
+  plugins {
+    id("webpb") {
+      artifact = "io.github.jinganix.webpb:webpb-protoc-java:0.0.1-SNAPSHOT:all@jar"
+    }
+  }
+  generateProtoTasks {
+    ofSourceSet("main").forEach {
+      it.doFirst {
+        delete(it.outputBaseDir)
+      }
+      it.builtins {
+        remove("java")
+      }
+      it.plugins {
+        id("webpb")
+      }
+    }
+  }
 }

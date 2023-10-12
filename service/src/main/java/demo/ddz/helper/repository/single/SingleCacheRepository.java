@@ -32,7 +32,7 @@ public class SingleCacheRepository<T, ID> extends AbstractSingleValueRepository<
     super(meta, delegate);
 
     Cache<ID, T> cache =
-        Caffeine.newBuilder().maximumSize(20000).expireAfterAccess(Duration.ofMinutes(5)).build();
+        Caffeine.newBuilder().maximumSize(20000).expireAfterAccess(Duration.ofMinutes(10)).build();
     this.cache = cache.asMap();
   }
 
@@ -87,5 +87,9 @@ public class SingleCacheRepository<T, ID> extends AbstractSingleValueRepository<
       values.addAll(delegate.findAll(uncachedIds));
     }
     return values;
+  }
+
+  public void clearCache() {
+    this.cache.clear();
   }
 }

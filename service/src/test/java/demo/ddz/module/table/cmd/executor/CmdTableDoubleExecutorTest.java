@@ -93,7 +93,7 @@ class CmdTableDoubleExecutorTest {
         CmdTableDouble cmd = new CmdTableDouble(UID_1, true);
         assertThatThrownBy(() -> cmdTableDoubleExecutor.execute(UID_1, cmds, cmd))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.INVALID_PLAYER_STATE);
         verify(tableCmdChecker, times(1)).assertExecution(UID_1, table, DdzPhaseType.DOUBLING);
       }

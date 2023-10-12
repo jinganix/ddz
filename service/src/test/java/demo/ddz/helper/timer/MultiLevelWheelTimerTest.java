@@ -33,7 +33,7 @@ class MultiLevelWheelTimerTest {
   MultiLevelWheelTimer timer;
 
   @AfterEach
-  void beforeEach() {
+  void cleanup() {
     timer.stop();
   }
 
