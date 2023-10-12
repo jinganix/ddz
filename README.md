@@ -1,3 +1,7 @@
+[![CI](https://github.com/jinganix/ddz/actions/workflows/ci.yml/badge.svg)](https://github.com/jinganix/ddz/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/jinganix/ddz/badge.svg?branch=master)](https://coveralls.io/github/jinganix/ddz?branch=master)
+[![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 # ddz
 
 ## Contributing
