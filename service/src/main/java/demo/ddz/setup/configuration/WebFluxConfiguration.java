@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package demo.ddz.setup;
+package demo.ddz.setup.configuration;
 
 import demo.ddz.setup.argument.webflux.PlayerIdArgumentResolver;
 import lombok.extern.slf4j.Slf4j;

@@ -104,11 +104,8 @@ class GlobalExceptionHandlerTest extends SpringIntegrationTests {
       @DisplayName("then return")
       void thenReturn() {
         BusinessException exception = BusinessException.of(ErrorCode.ERROR);
-        ResponseEntity<?> entity = globalExceptionHandler.handleBusinessException(exception);
-        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(entity.getBody())
-            .usingRecursiveComparison()
-            .isEqualTo(new ErrorMessage().setCode(ErrorCode.ERROR));
+        ErrorMessage message = globalExceptionHandler.handleBusinessException(exception);
+        assertThat(message.getCode()).isEqualTo(ErrorCode.ERROR);
       }
     }
   }

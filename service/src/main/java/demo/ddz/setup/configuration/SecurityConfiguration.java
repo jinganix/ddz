@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package demo.ddz.setup;
+package demo.ddz.setup.configuration;
 
-import demo.ddz.helper.auth.security.AuthenticationEntryPoint;
-import demo.ddz.module.auth.AuthorizeExchangeCustomizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity.AuthorizeExchangeSpec;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
@@ -42,9 +43,9 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 @EnableReactiveMethodSecurity
 public class SecurityConfiguration {
 
-  private final AuthenticationEntryPoint authenticationEntryPoint;
+  private final ServerAuthenticationEntryPoint authenticationEntryPoint;
 
-  private final AuthorizeExchangeCustomizer authorizeExchangeCustomizer;
+  private final Customizer<AuthorizeExchangeSpec> authorizeExchangeCustomizer;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -56,11 +57,7 @@ public class SecurityConfiguration {
       ServerHttpSecurity security,
       ReactiveAuthenticationManager authenticationManager,
       ServerSecurityContextRepository contextRepository) {
-    security.authorizeExchange(
-        spec -> {
-          authorizeExchangeCustomizer.customize(spec);
-          spec.anyExchange().authenticated();
-        });
+    security.authorizeExchange(authorizeExchangeCustomizer);
 
     security
         .authenticationManager(authenticationManager)

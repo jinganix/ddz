@@ -78,6 +78,7 @@ tasks.jacocoTestReport {
     xml.required.set(true)
   }
 
+  // TODO: exclude with mapstruct 1.6 @AnnotateWith(Generated.class)
   classDirectories.setFrom(classDirectories.files.map {
     fileTree(it).matching {
       exclude("demo/ddz/setup/exception/ErrorCodeMapperImpl.class")
@@ -94,6 +95,13 @@ tasks.jacocoTestCoverageVerification {
       }
     }
   }
+
+  // TODO: exclude with mapstruct 1.6 @AnnotateWith(Generated.class)
+  classDirectories.setFrom(classDirectories.files.map {
+    fileTree(it).matching {
+      exclude("demo/ddz/setup/exception/ErrorCodeMapperImpl.class")
+    }
+  })
 }
 
 tasks.withType<JavaCompile> {
@@ -111,6 +119,8 @@ jacoco {
 spotless {
   java {
     googleJavaFormat()
+
+    targetExclude("build/**/*.java")
   }
 }
 

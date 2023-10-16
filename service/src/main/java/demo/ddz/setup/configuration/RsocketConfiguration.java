@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package demo.ddz.setup;
+package demo.ddz.setup.configuration;
 
 import demo.ddz.module.auth.model.GrantedRole;
 import demo.ddz.setup.argument.messaging.PlayerIdArgumentResolver;

@@ -80,21 +80,6 @@ public class GlobalExceptionHandler {
   /**
    * Handle api exception.
    *
-   * @param ex {@link BusinessException}
-   * @return {@link ErrorMessage}
-   */
-  @ExceptionHandler(BusinessException.class)
-  public ResponseEntity<?> handleBusinessException(BusinessException ex) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(
-            new ErrorMessage()
-                .setCode(errorCodeMapper.map(ex.getCode()))
-                .setMessage(ex.getMessage()));
-  }
-
-  /**
-   * Handle api exception.
-   *
    * @param ex {@link ApiException}
    * @return {@link ErrorMessage}
    */
@@ -114,6 +99,20 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(AccessDeniedException.class)
   public ErrorMessage handleAccessDeniedException(AccessDeniedException ex) {
     return new ErrorMessage(ErrorCode.ERROR, ex.getMessage());
+  }
+
+  /**
+   * Handle business exception.
+   *
+   * @param ex {@link BusinessException}
+   * @return {@link ErrorMessage}
+   */
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BusinessException.class)
+  public ErrorMessage handleBusinessException(BusinessException ex) {
+    return new ErrorMessage()
+        .setCode(errorCodeMapper.map(ex.getCode()))
+        .setMessage(ex.getMessage());
   }
 
   /**

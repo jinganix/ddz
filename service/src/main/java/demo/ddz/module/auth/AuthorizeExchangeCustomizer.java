@@ -29,5 +29,6 @@ public class AuthorizeExchangeCustomizer implements Customizer<AuthorizeExchange
   public void customize(AuthorizeExchangeSpec spec) {
     spec.pathMatchers(AuthLoginRequest.WEBPB_METHOD, AuthLoginRequest.WEBPB_PATH).permitAll();
     spec.pathMatchers(AuthTokenRequest.WEBPB_METHOD, AuthTokenRequest.WEBPB_PATH).permitAll();
+    spec.anyExchange().authenticated();
   }
 }
