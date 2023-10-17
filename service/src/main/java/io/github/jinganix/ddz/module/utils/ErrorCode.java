@@ -21,22 +21,16 @@ import io.github.jinganix.ddz.helper.enumeration.IntegerEnumMapper;
 import io.github.jinganix.ddz.helper.exception.BusinessErrorCode;
 
 public enum ErrorCode implements BusinessErrorCode, Enumeration<Integer> {
-  OK(0),
-  TABLE_NOT_FOUND(1),
-  PHASE_INVALID(2),
-  NOT_CURRENT_PLAYER(3),
-  INVALID_PLAYED_CARDS(4),
-  PLAYED_CARDS_NOT_DOMINATING(5),
-  INVALID_PLAYER_STATE(6),
-  PLAYER_IS_OFFLINE(7);
+  OK,
+  TABLE_NOT_FOUND,
+  PHASE_INVALID,
+  NOT_CURRENT_PLAYER,
+  INVALID_PLAYED_CARDS,
+  PLAYED_CARDS_NOT_DOMINATING,
+  INVALID_PLAYER_STATE,
+  PLAYER_IS_OFFLINE;
 
   private static final IntegerEnumMapper<ErrorCode> mapper = new IntegerEnumMapper<>(values());
-
-  private final Integer value;
-
-  ErrorCode(int value) {
-    this.value = value;
-  }
 
   /**
    * Get enum from value.
@@ -55,6 +49,6 @@ public enum ErrorCode implements BusinessErrorCode, Enumeration<Integer> {
    */
   @Override
   public Integer getValue() {
-    return value;
+    return ordinal();
   }
 }
