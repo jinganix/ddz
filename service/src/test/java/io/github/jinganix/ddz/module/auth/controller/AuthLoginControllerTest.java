@@ -25,6 +25,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import io.github.jinganix.ddz.module.auth.model.GrantedRole;
+import io.github.jinganix.ddz.module.auth.model.UserCredential;
+import io.github.jinganix.ddz.module.auth.repository.UserCredentialRepository;
 import io.github.jinganix.ddz.module.player.Player;
 import io.github.jinganix.ddz.module.player.PlayerRepository;
 import io.github.jinganix.ddz.module.utils.TestHelper;
@@ -48,6 +50,8 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
 
   @Autowired TestHelper testHelper;
 
+  @Autowired UserCredentialRepository userCredentialRepository;
+
   @Autowired PlayerRepository playerRepository;
 
   @Autowired PasswordEncoder passwordEncoder;
@@ -62,14 +66,14 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
   class WhenRequestIsInvalid {
 
     @Nested
-    @DisplayName("when nickname is null")
-    class WhenNicknameIsNull {
+    @DisplayName("when username is null")
+    class WhenUsernameIsNull {
 
       @Test
       @DisplayName("then response BAD_REQUEST")
       void thenResponseError() {
         testHelper
-            .request(UID_1, new AuthLoginRequest(null))
+            .request(UID_1, new AuthLoginRequest(null, "aaaaaa"))
             .expectStatus()
             .isEqualTo(HttpStatus.BAD_REQUEST)
             .expectBody(ErrorMessage.class)
@@ -78,15 +82,15 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
     }
 
     @Nested
-    @DisplayName("when nickname length < 3")
-    class WhenNicknameLengthLessThan1 {
+    @DisplayName("when username length < 3")
+    class WhenUsernameLengthLessThan1 {
 
       @Test
       @DisplayName("then response BAD_REQUEST")
       void thenResponseError() {
         String randomString = RandomStringUtils.randomAlphabetic(2);
         testHelper
-            .request(UID_1, new AuthLoginRequest(randomString), GrantedRole.PLAYER.getValue())
+            .request(UID_1, new AuthLoginRequest(randomString, "aaaaaa"), GrantedRole.PLAYER.name())
             .expectStatus()
             .isEqualTo(HttpStatus.BAD_REQUEST)
             .expectBody(ErrorMessage.class)
@@ -95,15 +99,65 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
     }
 
     @Nested
-    @DisplayName("when nickname length > 10")
-    class WhenNicknameLengthGreater20 {
+    @DisplayName("when username length > 20")
+    class WhenUsernameLengthGreater20 {
 
       @Test
       @DisplayName("then response BAD_REQUEST")
       void thenResponseError() {
-        String randomString = RandomStringUtils.randomAlphabetic(11);
+        String randomString = RandomStringUtils.randomAlphabetic(21);
         testHelper
-            .request(UID_1, new AuthLoginRequest(randomString), GrantedRole.PLAYER.getValue())
+            .request(UID_1, new AuthLoginRequest(randomString, "aaaaaa"), GrantedRole.PLAYER.name())
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(ErrorMessage.class)
+            .value(e -> assertThat(e.getCode()).isEqualTo(ErrorCode.BAD_REQUEST));
+      }
+    }
+
+    @Nested
+    @DisplayName("when password is null")
+    class WhenPasswordIsNull {
+
+      @Test
+      @DisplayName("then response BAD_REQUEST")
+      void thenResponseError() {
+        testHelper
+            .request(UID_1, new AuthLoginRequest("aaa", null))
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(ErrorMessage.class)
+            .value(e -> assertThat(e.getCode()).isEqualTo(ErrorCode.BAD_REQUEST));
+      }
+    }
+
+    @Nested
+    @DisplayName("when password length < 6")
+    class WhenPasswordLengthLessThan1 {
+
+      @Test
+      @DisplayName("then response BAD_REQUEST")
+      void thenResponseError() {
+        String randomString = RandomStringUtils.randomAlphabetic(5);
+        testHelper
+            .request(UID_1, new AuthLoginRequest("aaa", randomString), GrantedRole.PLAYER.name())
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(ErrorMessage.class)
+            .value(e -> assertThat(e.getCode()).isEqualTo(ErrorCode.BAD_REQUEST));
+      }
+    }
+
+    @Nested
+    @DisplayName("when password length > 20")
+    class WhenPasswordLengthGreater20 {
+
+      @Test
+      @DisplayName("then response BAD_REQUEST")
+      void thenResponseError() {
+        String randomString = RandomStringUtils.randomAlphabetic(21);
+        testHelper
+            .request(UID_1, new AuthLoginRequest("aaa", randomString), GrantedRole.PLAYER.name())
             .expectStatus()
             .isEqualTo(HttpStatus.BAD_REQUEST)
             .expectBody(ErrorMessage.class)
@@ -113,37 +167,155 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
   }
 
   @Nested
+  @DisplayName("when check fails")
+  class WhenCheckFails {
+
+    @Nested
+    @DisplayName("when password not match")
+    class WhenPasswordNotMatch {
+
+      @Test
+      @DisplayName("then response BAD_CREDENTIAL")
+      void thenResponseError() {
+        userCredentialRepository.save(new UserCredential("abc", "abcdef", UID_1));
+
+        testHelper
+            .request(UID_1, new AuthLoginRequest("abc", "aaaaaa"))
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(ErrorMessage.class)
+            .value(e -> assertThat(e.getCode()).isEqualTo(ErrorCode.BAD_CREDENTIAL));
+      }
+    }
+  }
+
+  @Nested
   @DisplayName("when request is performed")
   class WhenRequestIsPerformed {
 
-    @Test
-    @DisplayName("then player created")
-    void thenPlayerCreated() {
-      when(tokenService.generate(anyLong(), anyString(), anyString())).thenReturn("test_token");
-      when(uidGenerator.nextUid()).thenReturn(UID_1);
-      when(utilsService.currentTimeMillis()).thenReturn(MILLIS);
-      when(utilsService.uuid(anyBoolean())).thenReturn("test_uuid");
+    @Nested
+    @DisplayName("when username not found")
+    class WhenUsernameNotFound {
 
-      testHelper
-          .request(UID_1, new AuthLoginRequest("abc"))
-          .expectStatus()
-          .isEqualTo(HttpStatus.OK)
-          .expectBody(AuthTokenResponse.class)
-          .consumeWith(
-              result ->
-                  assertThat(result.getResponseBody())
-                      .usingRecursiveComparison()
-                      .isEqualTo(
-                          new AuthTokenResponse()
-                              .setAccessToken("test_token")
-                              .setExpiresIn(MILLIS + TimeUnit.MINUTES.toMillis(5))
-                              .setRefreshToken("test_uuid")
-                              .setTokenType("Bearer")
-                              .setScope(GrantedRole.PLAYER.getValue())));
+      @Test
+      @DisplayName("then player created")
+      void thenPlayerCreated() {
+        when(tokenService.generate(anyLong(), anyString(), anyString())).thenReturn("test_token");
+        when(uidGenerator.nextUid()).thenReturn(UID_1);
+        when(utilsService.uuid(anyBoolean())).thenReturn("test_uuid");
+        when(utilsService.currentTimeMillis()).thenReturn(MILLIS);
 
-      assertThat(playerRepository.find(UID_1))
-          .usingRecursiveComparison()
-          .isEqualTo(new Player().setId(UID_1).setNickname("abc"));
+        testHelper
+            .request(UID_1, new AuthLoginRequest("abc", "aaaaaa"))
+            .expectStatus()
+            .isEqualTo(HttpStatus.OK)
+            .expectBody(AuthTokenResponse.class)
+            .consumeWith(
+                result ->
+                    assertThat(result.getResponseBody())
+                        .usingRecursiveComparison()
+                        .isEqualTo(
+                            new AuthTokenResponse()
+                                .setAccessToken("test_token")
+                                .setExpiresIn(MILLIS + TimeUnit.MINUTES.toMillis(5))
+                                .setRefreshToken("test_uuid")
+                                .setTokenType("Bearer")
+                                .setScope(GrantedRole.PLAYER.getValue())));
+
+        assertThat(playerRepository.find(UID_1))
+            .usingRecursiveComparison()
+            .isEqualTo(new Player().setId(UID_1));
+
+        UserCredential userCredential = userCredentialRepository.find("abc");
+        assertThat(userCredential.getUsername()).isEqualTo("abc");
+        assertThat(passwordEncoder.matches("aaaaaa", userCredential.getPassword())).isTrue();
+        assertThat(userCredential.getPlayerId()).isEqualTo(UID_1);
+      }
+    }
+
+    @Nested
+    @DisplayName("when player not found")
+    class WhenPlayerNotFound {
+
+      @Test
+      @DisplayName("then response")
+      void thenResponse() {
+        userCredentialRepository.save(
+            new UserCredential("abc", passwordEncoder.encode("aaaaaa"), UID_1));
+        when(tokenService.generate(anyLong(), anyString(), anyString())).thenReturn("test_token");
+        when(uidGenerator.nextUid()).thenReturn(UID_1);
+        when(utilsService.uuid(anyBoolean())).thenReturn("test_uuid");
+        when(utilsService.currentTimeMillis()).thenReturn(MILLIS);
+
+        testHelper
+            .request(UID_1, new AuthLoginRequest("abc", "aaaaaa"))
+            .expectStatus()
+            .isEqualTo(HttpStatus.OK)
+            .expectBody(AuthTokenResponse.class)
+            .consumeWith(
+                result ->
+                    assertThat(result.getResponseBody())
+                        .usingRecursiveComparison()
+                        .isEqualTo(
+                            new AuthTokenResponse()
+                                .setAccessToken("test_token")
+                                .setExpiresIn(MILLIS + TimeUnit.MINUTES.toMillis(5))
+                                .setRefreshToken("test_uuid")
+                                .setTokenType("Bearer")
+                                .setScope(GrantedRole.PLAYER.getValue())));
+
+        assertThat(playerRepository.find(UID_1))
+            .usingRecursiveComparison()
+            .isEqualTo(new Player().setId(UID_1));
+
+        UserCredential userCredential = userCredentialRepository.find("abc");
+        assertThat(userCredential.getUsername()).isEqualTo("abc");
+        assertThat(passwordEncoder.matches("aaaaaa", userCredential.getPassword())).isTrue();
+        assertThat(userCredential.getPlayerId()).isEqualTo(UID_1);
+      }
+    }
+
+    @Nested
+    @DisplayName("when username found")
+    class WhenUsernameFound {
+
+      @Test
+      @DisplayName("then response")
+      void thenResponse() {
+        playerRepository.save(new Player().setId(UID_1));
+        userCredentialRepository.save(
+            new UserCredential("abc", passwordEncoder.encode("aaaaaa"), UID_1));
+        when(tokenService.generate(anyLong(), anyString(), anyString())).thenReturn("test_token");
+        when(uidGenerator.nextUid()).thenReturn(UID_1);
+        when(utilsService.uuid(anyBoolean())).thenReturn("test_uuid");
+        when(utilsService.currentTimeMillis()).thenReturn(MILLIS);
+
+        testHelper
+            .request(UID_1, new AuthLoginRequest("abc", "aaaaaa"))
+            .expectStatus()
+            .isEqualTo(HttpStatus.OK)
+            .expectBody(AuthTokenResponse.class)
+            .consumeWith(
+                result ->
+                    assertThat(result.getResponseBody())
+                        .usingRecursiveComparison()
+                        .isEqualTo(
+                            new AuthTokenResponse()
+                                .setAccessToken("test_token")
+                                .setExpiresIn(MILLIS + TimeUnit.MINUTES.toMillis(5))
+                                .setRefreshToken("test_uuid")
+                                .setTokenType("Bearer")
+                                .setScope(GrantedRole.PLAYER.getValue())));
+
+        assertThat(playerRepository.find(UID_1))
+            .usingRecursiveComparison()
+            .isEqualTo(new Player().setId(UID_1));
+
+        UserCredential userCredential = userCredentialRepository.find("abc");
+        assertThat(userCredential.getUsername()).isEqualTo("abc");
+        assertThat(passwordEncoder.matches("aaaaaa", userCredential.getPassword())).isTrue();
+        assertThat(userCredential.getPlayerId()).isEqualTo(UID_1);
+      }
     }
   }
 }

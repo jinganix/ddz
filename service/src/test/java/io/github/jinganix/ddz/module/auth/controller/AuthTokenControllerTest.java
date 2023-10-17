@@ -25,8 +25,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import io.github.jinganix.ddz.module.auth.model.GrantedRole;
-import io.github.jinganix.ddz.module.auth.model.PlayerToken;
-import io.github.jinganix.ddz.module.auth.repository.PlayerTokenRepository;
+import io.github.jinganix.ddz.module.auth.model.UserToken;
+import io.github.jinganix.ddz.module.auth.repository.UserTokenRepository;
 import io.github.jinganix.ddz.module.player.Player;
 import io.github.jinganix.ddz.module.player.PlayerRepository;
 import io.github.jinganix.ddz.module.utils.TestHelper;
@@ -50,7 +50,7 @@ class AuthTokenControllerTest extends SpringIntegrationWithSpiedBeansTests {
 
   @Autowired PlayerRepository playerRepository;
 
-  @Autowired PlayerTokenRepository playerTokenRepository;
+  @Autowired UserTokenRepository userTokenRepository;
 
   @BeforeEach
   void setup() {
@@ -105,7 +105,7 @@ class AuthTokenControllerTest extends SpringIntegrationWithSpiedBeansTests {
       @Test
       @DisplayName("then response PLAYER_NOT_FOUND")
       void thenResponseError() {
-        playerTokenRepository.save(new PlayerToken("abc", UID_1));
+        userTokenRepository.save(new UserToken("abc", UID_1));
 
         testHelper
             .request(UID_1, new AuthTokenRequest("abc"))
@@ -125,7 +125,7 @@ class AuthTokenControllerTest extends SpringIntegrationWithSpiedBeansTests {
     @DisplayName("then response token")
     void thenResponseToken() {
       playerRepository.save(new Player().setId(UID_1));
-      playerTokenRepository.save(new PlayerToken("abc", UID_1));
+      userTokenRepository.save(new UserToken("abc", UID_1));
 
       when(tokenService.generate(anyLong(), anyString(), anyString())).thenReturn("test_token");
       when(uidGenerator.nextUid()).thenReturn(UID_1);

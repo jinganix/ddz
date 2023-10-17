@@ -16,14 +16,24 @@
 
 package io.github.jinganix.ddz.module.auth.handler;
 
+import io.github.jinganix.ddz.helper.exception.ApiException;
 import io.github.jinganix.ddz.helper.uid.UidGenerator;
 import io.github.jinganix.ddz.module.auth.AuthService;
+import io.github.jinganix.ddz.module.auth.model.UserCredential;
+import io.github.jinganix.ddz.module.auth.repository.UserCredentialRepository;
 import io.github.jinganix.ddz.module.player.Player;
 import io.github.jinganix.ddz.module.player.PlayerRepository;
 import io.github.jinganix.ddz.proto.auth.AuthLoginRequest;
 import io.github.jinganix.ddz.proto.auth.AuthTokenResponse;
+import io.github.jinganix.ddz.proto.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -33,14 +43,40 @@ public class AuthLoginHandler {
 
   private final AuthService authService;
 
+  private final AuthenticationManager authenticationManager;
+
+  private final PasswordEncoder passwordEncoder;
+
   private final PlayerRepository playerRepository;
 
   private final UidGenerator uidGenerator;
 
+  private final UserCredentialRepository userCredentialRepository;
+
   public AuthTokenResponse handle(AuthLoginRequest request) {
-    Long playerId = uidGenerator.nextUid();
-    Player player = new Player().setId(playerId).setNickname(request.getNickname());
+    String username = request.getUsername();
+    String password = request.getPassword();
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(username, password);
+    try {
+      Authentication authentication = authenticationManager.authenticate(authenticationToken);
+      Long playerId = (Long) authentication.getDetails();
+      return authService.createAuthTokenResponse(playerId);
+    } catch (UsernameNotFoundException ex) {
+      Player player = createPlayer(username, password);
+      return authService.createAuthTokenResponse(player.getId());
+    } catch (BadCredentialsException ex) {
+      throw ApiException.of(ErrorCode.BAD_CREDENTIAL);
+    }
+  }
+
+  private Player createPlayer(String username, String password) {
+    long playerId = uidGenerator.nextUid();
+    UserCredential credential =
+        new UserCredential(username, passwordEncoder.encode(password), playerId);
+    userCredentialRepository.save(credential);
+    Player player = new Player().setId(playerId);
     playerRepository.save(player);
-    return authService.createAuthTokenResponse(playerId);
+    return player;
   }
 }
