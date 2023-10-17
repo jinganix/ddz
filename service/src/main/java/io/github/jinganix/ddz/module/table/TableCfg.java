@@ -16,29 +16,15 @@
 
 package io.github.jinganix.ddz.module.table;
 
-import static io.github.jinganix.ddz.module.phase.DdzPhaseType.BIDDING;
-import static io.github.jinganix.ddz.module.phase.DdzPhaseType.COUNTDOWN;
-import static io.github.jinganix.ddz.module.phase.DdzPhaseType.DEALING;
-import static io.github.jinganix.ddz.module.phase.DdzPhaseType.DOUBLING;
-import static io.github.jinganix.ddz.module.phase.DdzPhaseType.END;
-import static io.github.jinganix.ddz.module.phase.DdzPhaseType.IDLE;
-import static io.github.jinganix.ddz.module.phase.DdzPhaseType.SETTLEMENT;
-
 import io.github.jinganix.ddz.module.phase.DdzPhaseType;
 
 public class TableCfg {
 
-  // TODO: replace with switch statement once jacoco fix the coverage issue
   public long getDuration(DdzPhaseType phaseType) {
-    if (phaseType == IDLE || phaseType == SETTLEMENT || phaseType == END) {
-      return 0;
-    } else if (phaseType == COUNTDOWN
-        || phaseType == DEALING
-        || phaseType == BIDDING
-        || phaseType == DOUBLING) {
-      return 3000;
-    } else {
-      return 15000;
-    }
+    return switch (phaseType) {
+      case IDLE, SETTLEMENT, END -> 0;
+      case COUNTDOWN, DEALING, BIDDING, DOUBLING -> 3000;
+      case PLAYING -> 15000;
+    };
   }
 }
