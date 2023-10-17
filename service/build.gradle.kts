@@ -11,7 +11,7 @@ plugins {
   java
 }
 
-group = "demo.ddz"
+group = "io.github.jinganix.ddz"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -81,7 +81,7 @@ tasks.jacocoTestReport {
   // TODO: exclude with mapstruct 1.6 @AnnotateWith(Generated.class)
   classDirectories.setFrom(classDirectories.files.map {
     fileTree(it).matching {
-      exclude("demo/ddz/setup/exception/ErrorCodeMapperImpl.class")
+      exclude("io/github/jinganix/ddz/setup/exception/ErrorCodeMapperImpl.class")
     }
   })
 }
@@ -99,7 +99,7 @@ tasks.jacocoTestCoverageVerification {
   // TODO: exclude with mapstruct 1.6 @AnnotateWith(Generated.class)
   classDirectories.setFrom(classDirectories.files.map {
     fileTree(it).matching {
-      exclude("demo/ddz/setup/exception/ErrorCodeMapperImpl.class")
+      exclude("io/github/jinganix/ddz/setup/exception/ErrorCodeMapperImpl.class")
     }
   })
 }

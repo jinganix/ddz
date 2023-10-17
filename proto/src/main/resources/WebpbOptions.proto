@@ -15,7 +15,7 @@ option (f_opts).java = {
   import: 'com.fasterxml.jackson.databind.annotation.JsonSerialize'
   import: 'com.fasterxml.jackson.databind.ser.std.ToStringSerializer'
   import: 'com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement'
-  import: 'demo.ddz.helper.exception.BusinessErrorCode'
+  import: 'io.github.jinganix.ddz.helper.exception.BusinessErrorCode'
   import: 'io.github.jinganix.webpb.runtime.enumeration.EnumerationDeserializer'
   import: 'io.github.jinganix.webpb.runtime.enumeration.EnumerationSerializer'
   import: 'io.github.jinganix.webpb.runtime.Generated'

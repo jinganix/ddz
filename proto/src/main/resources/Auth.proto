@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package AuthProto;
 
-option java_package = "demo.ddz.proto.auth";
+option java_package = "io.github.jinganix.ddz.proto.auth";
 
 import "WebpbOptions.proto";
 import "webpb/WebpbExtend.proto";

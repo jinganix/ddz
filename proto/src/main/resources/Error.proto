@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package ErrorProto;
 
-option java_package = "demo.ddz.proto.error";
+option java_package = "io.github.jinganix.ddz.proto.error";
 
 import "WebpbOptions.proto";
 import "webpb/WebpbExtend.proto";
