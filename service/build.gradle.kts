@@ -44,7 +44,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.security:spring-security-messaging")
-  implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.1.2")
+  implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.1.3")
   implementation("org.springframework.security:spring-security-rsocket")
 
   protobuf(project(":proto"))
