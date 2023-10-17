@@ -21,7 +21,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PlayerToken {
+public class UserToken {
 
   private String refreshToken;
 

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.jinganix.ddz.module.player;
+package io.github.jinganix.ddz.module.auth.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 @Getter
-@Setter
-@Accessors(chain = true)
-public class Player {
+@AllArgsConstructor
+public class UserCredential {
 
-  private Long id;
+  private String username;
 
-  private Long tableId;
+  private String password;
+
+  private Long playerId;
 }

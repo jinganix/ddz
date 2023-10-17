@@ -18,8 +18,8 @@ package io.github.jinganix.ddz.module.auth.handler;
 
 import io.github.jinganix.ddz.helper.exception.ApiException;
 import io.github.jinganix.ddz.module.auth.AuthService;
-import io.github.jinganix.ddz.module.auth.model.PlayerToken;
-import io.github.jinganix.ddz.module.auth.repository.PlayerTokenRepository;
+import io.github.jinganix.ddz.module.auth.model.UserToken;
+import io.github.jinganix.ddz.module.auth.repository.UserTokenRepository;
 import io.github.jinganix.ddz.module.player.Player;
 import io.github.jinganix.ddz.module.player.PlayerRepository;
 import io.github.jinganix.ddz.proto.auth.AuthTokenRequest;
@@ -39,14 +39,14 @@ public class AuthTokenHandler {
 
   private final PlayerRepository playerRepository;
 
-  private final PlayerTokenRepository playerTokenRepository;
+  private final UserTokenRepository userTokenRepository;
 
   public AuthTokenResponse handle(AuthTokenRequest request) {
-    PlayerToken token = playerTokenRepository.find(request.getRefreshToken());
+    UserToken token = userTokenRepository.find(request.getRefreshToken());
     if (token == null) {
       throw ApiException.of(HttpStatus.UNAUTHORIZED, ErrorCode.BAD_REFRESH_TOKEN);
     }
-    playerTokenRepository.delete(token);
+    userTokenRepository.delete(token);
     Player player = playerRepository.find(token.getPlayerId());
     if (player == null) {
       throw ApiException.of(ErrorCode.PLAYER_NOT_FOUND);

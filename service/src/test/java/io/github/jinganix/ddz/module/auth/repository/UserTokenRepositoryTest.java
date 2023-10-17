@@ -19,7 +19,7 @@ package io.github.jinganix.ddz.module.auth.repository;
 import static io.github.jinganix.ddz.tests.TestConst.UID_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.jinganix.ddz.module.auth.model.PlayerToken;
+import io.github.jinganix.ddz.module.auth.model.UserToken;
 import io.github.jinganix.ddz.tests.SpringIntegrationTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,13 +27,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("UserTokenRepository")
-class PlayerTokenRepositoryTest {
+class UserTokenRepositoryTest {
 
   @Nested
   @DisplayName("Meta")
   class Meta extends SpringIntegrationTests {
 
-    @Autowired PlayerTokenRepository.Meta meta;
+    @Autowired UserTokenRepository.Meta meta;
 
     @Nested
     @DisplayName("module")
@@ -62,7 +62,7 @@ class PlayerTokenRepositoryTest {
         @Test
         @DisplayName("then return")
         void thenReturn() {
-          assertThat(meta.indexId(new PlayerToken("token", UID_1))).isEqualTo("token");
+          assertThat(meta.indexId(new UserToken("token", UID_1))).isEqualTo("token");
         }
       }
     }

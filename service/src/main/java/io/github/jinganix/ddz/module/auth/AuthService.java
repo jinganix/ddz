@@ -19,8 +19,8 @@ package io.github.jinganix.ddz.module.auth;
 import io.github.jinganix.ddz.helper.auth.token.TokenService;
 import io.github.jinganix.ddz.helper.utils.UtilsService;
 import io.github.jinganix.ddz.module.auth.model.GrantedRole;
-import io.github.jinganix.ddz.module.auth.model.PlayerToken;
-import io.github.jinganix.ddz.module.auth.repository.PlayerTokenRepository;
+import io.github.jinganix.ddz.module.auth.model.UserToken;
+import io.github.jinganix.ddz.module.auth.repository.UserTokenRepository;
 import io.github.jinganix.ddz.proto.auth.AuthTokenResponse;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class AuthService {
 
   private final TokenService tokenService;
 
-  private final PlayerTokenRepository playerTokenRepository;
+  private final UserTokenRepository userTokenRepository;
 
   private final UtilsService utilsService;
 
@@ -46,8 +46,8 @@ public class AuthService {
     String refreshToken = utilsService.uuid(true);
 
     long millis = utilsService.currentTimeMillis();
-    PlayerToken token = new PlayerToken(refreshToken, playerId);
-    playerTokenRepository.save(token);
+    UserToken token = new UserToken(refreshToken, playerId);
+    userTokenRepository.save(token);
     Long expiresIn = millis + TimeUnit.MINUTES.toMillis(5);
     return new AuthTokenResponse(
         accessToken, expiresIn, refreshToken, "Bearer", grantedRole.getValue());

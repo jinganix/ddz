@@ -19,33 +19,34 @@ package io.github.jinganix.ddz.module.auth.repository;
 import io.github.jinganix.ddz.helper.repository.single.DelegateSingleValueRepository;
 import io.github.jinganix.ddz.helper.repository.single.SingleCacheRepository;
 import io.github.jinganix.ddz.helper.repository.single.SingleValueRepositoryMeta;
-import io.github.jinganix.ddz.module.auth.model.PlayerToken;
+import io.github.jinganix.ddz.module.auth.model.UserCredential;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PlayerTokenRepository extends DelegateSingleValueRepository<PlayerToken, String> {
+public class UserCredentialRepository
+    extends DelegateSingleValueRepository<UserCredential, String> {
 
-  public PlayerTokenRepository(Meta meta, Cache cache) {
+  public UserCredentialRepository(Meta meta, Cache cache) {
     super(meta, cache);
   }
 
   @Component
-  public static class Meta implements SingleValueRepositoryMeta<PlayerToken, String> {
+  public static class Meta implements SingleValueRepositoryMeta<UserCredential, String> {
 
     @Override
     public String module() {
-      return "model_user_token";
+      return "model_user_credential";
     }
 
     @Override
-    public String indexId(PlayerToken entity) {
-      return entity.getRefreshToken();
+    public String indexId(UserCredential entity) {
+      return entity.getUsername();
     }
   }
 
   @Component
-  public static class Cache extends SingleCacheRepository<PlayerToken, String> {
+  public static class Cache extends SingleCacheRepository<UserCredential, String> {
 
     public Cache(Meta meta) {
       super(meta, null);
