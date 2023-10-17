@@ -1,0 +1,11 @@
+core:
+  jwt-secret: test-jwt-secret
+
+server:
+  port: 0
+
+spring:
+  rsocket:
+    server:
+      port: 0
+      transport: websocket

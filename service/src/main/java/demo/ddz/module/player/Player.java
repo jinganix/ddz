@@ -28,4 +28,6 @@ public class Player {
   private Long id;
 
   private Long tableId;
+
+  private String nickname;
 }

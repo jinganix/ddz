@@ -14,28 +14,25 @@
  * limitations under the License.
  */
 
-package demo.ddz.setup;
+package demo.ddz.helper.actor;
 
-import demo.ddz.helper.actor.ChainedTaskExecutor;
-import demo.ddz.helper.timer.MultiLevelWheelTimer;
-import demo.ddz.helper.timer.TaskTimer;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Mono;
 
-/** Configuration for beans. */
-@Configuration
 @RequiredArgsConstructor
-public class BeansConfiguration {
+public class VirtualThreadExecutor {
 
-  @Bean
-  TaskTimer taskTimer() {
-    return new MultiLevelWheelTimer(10, 5120, 2);
+  private final ExecutorService executor;
+
+  public <T> Mono<T> publish(Supplier<T> supplier) {
+    return Mono.fromCompletionStage(CompletableFuture.supplyAsync(supplier, getExecutor()));
   }
 
-  @Bean
-  ChainedTaskExecutor chainedTaskExecutor() {
-    return new ChainedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor());
+  private Executor getExecutor() {
+    return Thread.currentThread().isVirtual() ? DirectExecutor.INSTANCE : executor;
   }
 }

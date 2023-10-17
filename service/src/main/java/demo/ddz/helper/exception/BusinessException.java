@@ -22,11 +22,11 @@ import lombok.Getter;
 @Getter
 public class BusinessException extends RuntimeException {
 
-  private final BusinessErrorCode errorCode;
+  private final BusinessErrorCode code;
 
   private BusinessException(BusinessErrorCode errorCode, String message) {
     super(message);
-    this.errorCode = errorCode;
+    this.code = errorCode;
   }
 
   /**
@@ -36,18 +36,7 @@ public class BusinessException extends RuntimeException {
    * @return {@link BusinessException}
    */
   public static BusinessException of(BusinessErrorCode errorCode) {
-    return of(errorCode, null);
-  }
-
-  /**
-   * Create an exception.
-   *
-   * @param errorCode {@link BusinessErrorCode}
-   * @param message message
-   * @return {@link BusinessException}
-   */
-  public static BusinessException of(BusinessErrorCode errorCode, String message) {
-    return new BusinessException(errorCode, message);
+    return new BusinessException(errorCode, null);
   }
 
   /**

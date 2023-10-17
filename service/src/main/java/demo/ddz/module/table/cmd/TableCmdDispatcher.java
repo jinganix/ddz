@@ -16,7 +16,7 @@
 
 package demo.ddz.module.table.cmd;
 
-import demo.ddz.helper.actor.ChainedTaskExecutor;
+import demo.ddz.helper.actor.OrderedTaskExecutor;
 import demo.ddz.helper.exception.BusinessException;
 import demo.ddz.module.cmd.Cmd;
 import demo.ddz.module.cmd.CmdDispatcher;
@@ -40,7 +40,7 @@ public class TableCmdDispatcher implements CmdDispatcher {
 
   private final Map<CmdType, TableCmdExecutor<Cmd>> executors = new HashMap<>();
 
-  private final ChainedTaskExecutor chainedTaskExecutor;
+  private final OrderedTaskExecutor orderedTaskExecutor;
 
   private final PlayerRepository playerRepository;
 
@@ -68,6 +68,6 @@ public class TableCmdDispatcher implements CmdDispatcher {
       throw BusinessException.of(ErrorCode.TABLE_NOT_FOUND);
     }
     TableCmdExecutor<Cmd> executor = executors.get(cmd.getCmdType());
-    chainedTaskExecutor.executeSync(tableId, () -> executor.execute(tableId, cmds, cmd));
+    orderedTaskExecutor.executeSync(tableId, () -> executor.execute(tableId, cmds, cmd));
   }
 }

@@ -62,4 +62,31 @@ class UtilsServiceTest extends SpringIntegrationTests {
       }
     }
   }
+
+  @Nested
+  @DisplayName("uuid")
+  class Uuid {
+
+    @Nested
+    @DisplayName("when dash is true")
+    class WhenDashIsTrue {
+
+      @Test
+      @DisplayName("then return dashed uuid")
+      void thenReturn() {
+        assertThat(utilsService.uuid(true)).hasSize(36);
+      }
+    }
+
+    @Nested
+    @DisplayName("when dash is false")
+    class WhenDashIsFalse {
+
+      @Test
+      @DisplayName("then return non dashed uuid")
+      void thenReturn() {
+        assertThat(utilsService.uuid(false)).hasSize(32);
+      }
+    }
+  }
 }

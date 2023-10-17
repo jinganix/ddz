@@ -28,7 +28,7 @@ import demo.ddz.module.phase.DdzPhaseType;
 
 public class TableCfg {
 
-  // replace with switch statement once jacoco fix the coverage issue
+  // TODO: replace with switch statement once jacoco fix the coverage issue
   public long getDuration(DdzPhaseType phaseType) {
     if (phaseType == IDLE || phaseType == SETTLEMENT || phaseType == END) {
       return 0;

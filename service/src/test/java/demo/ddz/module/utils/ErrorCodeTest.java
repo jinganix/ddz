@@ -16,7 +16,7 @@
 
 package demo.ddz.module.utils;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,9 @@ class ErrorCodeTest {
           Arguments.of(2, ErrorCode.PHASE_INVALID),
           Arguments.of(3, ErrorCode.NOT_CURRENT_PLAYER),
           Arguments.of(4, ErrorCode.INVALID_PLAYED_CARDS),
-          Arguments.of(5, ErrorCode.PLAYED_CARDS_NOT_DOMINATING));
+          Arguments.of(5, ErrorCode.PLAYED_CARDS_NOT_DOMINATING),
+          Arguments.of(6, ErrorCode.INVALID_PLAYER_STATE),
+          Arguments.of(7, ErrorCode.PLAYER_IS_OFFLINE));
     }
   }
 
@@ -56,7 +58,7 @@ class ErrorCodeTest {
       @DisplayName("then return expected enum")
       @ArgumentsSource(ErrorCodeTest.TestArgumentsProvider.class)
       void thenReturnExpectedEnum(int value, ErrorCode expected) {
-        assertEquals(expected, ErrorCode.fromValue(value));
+        assertThat(ErrorCode.fromValue(value)).isEqualTo(expected);
       }
     }
   }
@@ -73,7 +75,7 @@ class ErrorCodeTest {
       @DisplayName("then return expected value")
       @ArgumentsSource(ErrorCodeTest.TestArgumentsProvider.class)
       void thenReturnExpectedValue(int expected, ErrorCode errorCode) {
-        assertEquals(expected, errorCode.getValue());
+        assertThat(errorCode.getValue()).isEqualTo(expected);
       }
     }
   }

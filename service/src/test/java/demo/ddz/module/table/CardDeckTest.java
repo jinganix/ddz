@@ -17,7 +17,6 @@
 package demo.ddz.module.table;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import demo.ddz.module.poker.Card;
 import java.util.ArrayList;

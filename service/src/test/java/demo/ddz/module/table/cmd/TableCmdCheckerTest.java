@@ -52,7 +52,7 @@ class TableCmdCheckerTest {
       void thenThrow() {
         assertThatThrownBy(() -> tableCmdChecker.assertExecution(0L, null, DdzPhaseType.IDLE))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.TABLE_NOT_FOUND);
       }
     }
@@ -68,7 +68,7 @@ class TableCmdCheckerTest {
         table.setPhaseType(DdzPhaseType.PLAYING);
         assertThatThrownBy(() -> tableCmdChecker.assertExecution(0L, table, DdzPhaseType.IDLE))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.PHASE_INVALID);
       }
     }
@@ -84,7 +84,7 @@ class TableCmdCheckerTest {
         table.setPhaseType(DdzPhaseType.IDLE);
         assertThatThrownBy(() -> tableCmdChecker.assertExecution(0L, table, DdzPhaseType.IDLE))
             .isInstanceOf(BusinessException.class)
-            .extracting("errorCode")
+            .extracting("code")
             .isEqualTo(ErrorCode.NOT_CURRENT_PLAYER);
       }
     }

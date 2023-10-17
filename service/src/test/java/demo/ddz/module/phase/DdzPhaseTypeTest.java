@@ -16,7 +16,7 @@
 
 package demo.ddz.module.phase;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -58,7 +58,7 @@ class DdzPhaseTypeTest {
       @DisplayName("then return expected enum")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedEnum(int value, DdzPhaseType expected) {
-        assertEquals(expected, DdzPhaseType.fromValue(value));
+        assertThat(DdzPhaseType.fromValue(value)).isEqualTo(expected);
       }
     }
   }
@@ -75,7 +75,7 @@ class DdzPhaseTypeTest {
       @DisplayName("then return expected value")
       @ArgumentsSource(TestArgumentsProvider.class)
       void thenReturnExpectedValue(int expected, DdzPhaseType ddzPhaseType) {
-        assertEquals(expected, ddzPhaseType.getValue());
+        assertThat(ddzPhaseType.getValue()).isEqualTo(expected);
       }
     }
   }

@@ -25,26 +25,24 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-public class ChainedTaskExecutor {
+@RequiredArgsConstructor
+public class OrderedTaskExecutor {
 
-  private final LoadingCache<String, ChainedTaskQueue> queues =
+  private final LoadingCache<String, OrderedTaskQueue> queues =
       Caffeine.newBuilder()
           .maximumSize(20000)
           .expireAfterAccess(5, TimeUnit.MINUTES)
-          .build(key -> new ChainedTaskQueue());
+          .build(key -> new OrderedTaskQueue());
 
   private final ExecutorService executor;
 
-  public ChainedTaskExecutor(ExecutorService executor) {
-    this.executor = executor;
-  }
-
   public <T> Mono<T> publish(String key, Supplier<Mono<T>> supplier) {
-    ChainedTaskQueue queue = queues.get(key);
+    OrderedTaskQueue queue = queues.get(key);
     return Mono.create(
         sink ->
             queue.execute(
@@ -73,7 +71,7 @@ public class ChainedTaskExecutor {
 
   public void executeSync(String key, Runnable task) {
     try {
-      ChainedTaskQueue queue = queues.get(key);
+      OrderedTaskQueue queue = queues.get(key);
       CompletableFuture<Void> future = new CompletableFuture<>();
       Runnable runnable =
           () -> {

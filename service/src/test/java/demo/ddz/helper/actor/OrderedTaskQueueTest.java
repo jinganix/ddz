@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("ChainedTaskQueue")
-class ChainedTaskQueueTest {
+class OrderedTaskQueueTest {
 
   ExecutorService executor() {
     return Executors.newVirtualThreadPerTaskExecutor();
@@ -46,7 +46,7 @@ class ChainedTaskQueueTest {
       @Test
       @DisplayName("then run tasks sequentially")
       void thenRunTasksSequentially() {
-        ChainedTaskQueue taskQueue = new ChainedTaskQueue();
+        OrderedTaskQueue taskQueue = new OrderedTaskQueue();
         ExecutorService executor = executor();
         taskQueue.execute(executor, () -> TestUtils.sleep(100));
         AtomicReference<Long> ref = new AtomicReference<>();
@@ -66,7 +66,7 @@ class ChainedTaskQueueTest {
       @Test
       @DisplayName("then run tasks sequentially")
       void thenRunTasksSequentially() {
-        ChainedTaskQueue taskQueue = new ChainedTaskQueue();
+        OrderedTaskQueue taskQueue = new OrderedTaskQueue();
         taskQueue.execute(executor(), () -> TestUtils.sleep(100));
         AtomicReference<Long> ref = new AtomicReference<>();
         long millis = System.currentTimeMillis();
@@ -85,7 +85,7 @@ class ChainedTaskQueueTest {
       @Test
       @DisplayName("then run tasks sequentially")
       void thenRunTasksSequentially() {
-        ChainedTaskQueue taskQueue = new ChainedTaskQueue();
+        OrderedTaskQueue taskQueue = new OrderedTaskQueue();
         taskQueue.execute(
             executor(),
             () -> {

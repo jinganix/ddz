@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+import "webpb/WebpbExtend.proto";
+
+// global file options
+option (f_opts).java = {
+  annotation: '@Generated'
+  annotation: '@JsonInclude(JsonInclude.Include.NON_NULL)'
+  auto_alias: '@JsonProperty("{{_AUTO_ALIAS_}}")'
+  import: 'com.fasterxml.jackson.annotation.JsonIgnoreProperties'
+  import: 'com.fasterxml.jackson.annotation.JsonInclude'
+  import: 'com.fasterxml.jackson.annotation.JsonProperty'
+  import: 'com.fasterxml.jackson.annotation.JsonTypeInfo'
+  import: 'com.fasterxml.jackson.databind.annotation.JsonDeserialize'
+  import: 'com.fasterxml.jackson.databind.annotation.JsonSerialize'
+  import: 'com.fasterxml.jackson.databind.ser.std.ToStringSerializer'
+  import: 'com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement'
+  import: 'demo.ddz.helper.exception.BusinessErrorCode'
+  import: 'io.github.jinganix.webpb.runtime.enumeration.EnumerationDeserializer'
+  import: 'io.github.jinganix.webpb.runtime.enumeration.EnumerationSerializer'
+  import: 'io.github.jinganix.webpb.runtime.Generated'
+  import: 'jakarta.validation.Valid'
+  import: 'jakarta.validation.constraints.Max'
+  import: 'jakarta.validation.constraints.Min'
+  import: 'jakarta.validation.constraints.NotEmpty'
+  import: 'jakarta.validation.constraints.NotNull'
+  import: 'jakarta.validation.constraints.Pattern'
+  import: 'jakarta.validation.constraints.Size'
+  import: 'org.hibernate.validator.constraints.Length'
+  import: 'org.hibernate.validator.constraints.Range'
+};
+
+option (f_opts).ts = {
+  int64_as_string: false
+  auto_alias: true
+};

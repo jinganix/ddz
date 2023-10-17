@@ -16,7 +16,7 @@
 
 package demo.ddz.helper.phase;
 
-import demo.ddz.helper.actor.ChainedTaskExecutor;
+import demo.ddz.helper.actor.OrderedTaskExecutor;
 import demo.ddz.helper.timer.TaskTimer;
 import demo.ddz.helper.utils.UtilsService;
 import io.netty.util.Timeout;
@@ -33,7 +33,7 @@ public class PhaseExecutors {
 
   private final Map<PhaseType, PhaseExecutor<PhasedContext>> executors = new HashMap<>();
 
-  private final ChainedTaskExecutor chainedTaskExecutor;
+  private final OrderedTaskExecutor orderedTaskExecutor;
 
   private final UtilsService utilsService;
 
@@ -79,7 +79,7 @@ public class PhaseExecutors {
         taskTimer.schedule(
             phase.getDuration(),
             e ->
-                chainedTaskExecutor.executeAsync(
+                orderedTaskExecutor.executeAsync(
                     phase.getContext().getKey(),
                     () -> {
                       if (uid == phase.getUid()) {
