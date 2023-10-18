@@ -16,19 +16,32 @@
 
 package io.github.jinganix.ddz.module.auth;
 
+import io.github.jinganix.ddz.module.auth.model.GrantedRole;
 import io.github.jinganix.ddz.proto.auth.AuthLoginRequest;
 import io.github.jinganix.ddz.proto.auth.AuthTokenRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec;
 import org.springframework.security.config.web.server.ServerHttpSecurity.AuthorizeExchangeSpec;
-import org.springframework.stereotype.Component;
 
-@Component
-public class AuthorizeExchangeCustomizer implements Customizer<AuthorizeExchangeSpec> {
+@Configuration
+public class AuthCustomizeConfiguration {
 
-  @Override
-  public void customize(AuthorizeExchangeSpec spec) {
-    spec.pathMatchers(AuthLoginRequest.WEBPB_METHOD, AuthLoginRequest.WEBPB_PATH).permitAll();
-    spec.pathMatchers(AuthTokenRequest.WEBPB_METHOD, AuthTokenRequest.WEBPB_PATH).permitAll();
-    spec.anyExchange().authenticated();
+  @Bean
+  Customizer<AuthorizeExchangeSpec> authorizeExchangeSpecCustomizer() {
+    return spec -> {
+      spec.pathMatchers(AuthLoginRequest.WEBPB_METHOD, AuthLoginRequest.WEBPB_PATH).permitAll();
+      spec.pathMatchers(AuthTokenRequest.WEBPB_METHOD, AuthTokenRequest.WEBPB_PATH).permitAll();
+      spec.anyExchange().authenticated();
+    };
+  }
+
+  @Bean
+  Customizer<AuthorizePayloadsSpec> authorizePayloadsSpecCustomizer() {
+    return spec -> {
+      spec.setup().hasRole(GrantedRole.PLAYER.getValue());
+      spec.anyExchange().authenticated();
+    };
   }
 }

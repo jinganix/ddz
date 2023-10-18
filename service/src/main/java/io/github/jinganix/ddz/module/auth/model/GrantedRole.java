@@ -47,6 +47,10 @@ public enum GrantedRole implements Enumeration<String> {
     return mapper.fromValue(value);
   }
 
+  public String getAuthorityName() {
+    return authority.getAuthority();
+  }
+
   @Override
   public String getValue() {
     return value;

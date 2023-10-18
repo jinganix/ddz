@@ -90,7 +90,10 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
       void thenResponseError() {
         String randomString = RandomStringUtils.randomAlphabetic(2);
         testHelper
-            .request(UID_1, new AuthLoginRequest(randomString, "aaaaaa"), GrantedRole.PLAYER.name())
+            .request(
+                UID_1,
+                new AuthLoginRequest(randomString, "aaaaaa"),
+                GrantedRole.PLAYER.getAuthorityName())
             .expectStatus()
             .isEqualTo(HttpStatus.BAD_REQUEST)
             .expectBody(ErrorMessage.class)
@@ -107,7 +110,10 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
       void thenResponseError() {
         String randomString = RandomStringUtils.randomAlphabetic(21);
         testHelper
-            .request(UID_1, new AuthLoginRequest(randomString, "aaaaaa"), GrantedRole.PLAYER.name())
+            .request(
+                UID_1,
+                new AuthLoginRequest(randomString, "aaaaaa"),
+                GrantedRole.PLAYER.getAuthorityName())
             .expectStatus()
             .isEqualTo(HttpStatus.BAD_REQUEST)
             .expectBody(ErrorMessage.class)
@@ -140,7 +146,10 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
       void thenResponseError() {
         String randomString = RandomStringUtils.randomAlphabetic(5);
         testHelper
-            .request(UID_1, new AuthLoginRequest("aaa", randomString), GrantedRole.PLAYER.name())
+            .request(
+                UID_1,
+                new AuthLoginRequest("aaa", randomString),
+                GrantedRole.PLAYER.getAuthorityName())
             .expectStatus()
             .isEqualTo(HttpStatus.BAD_REQUEST)
             .expectBody(ErrorMessage.class)
@@ -157,7 +166,10 @@ class AuthLoginControllerTest extends SpringIntegrationWithSpiedBeansTests {
       void thenResponseError() {
         String randomString = RandomStringUtils.randomAlphabetic(21);
         testHelper
-            .request(UID_1, new AuthLoginRequest("aaa", randomString), GrantedRole.PLAYER.name())
+            .request(
+                UID_1,
+                new AuthLoginRequest("aaa", randomString),
+                GrantedRole.PLAYER.getAuthorityName())
             .expectStatus()
             .isEqualTo(HttpStatus.BAD_REQUEST)
             .expectBody(ErrorMessage.class)

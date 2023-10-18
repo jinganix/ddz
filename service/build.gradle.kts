@@ -52,6 +52,7 @@ dependencies {
   testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
   testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
   testCompileOnly("org.projectlombok:lombok:1.18.30")
+  testImplementation("com.tngtech.archunit:archunit:1.1.0")
   testImplementation("io.projectreactor:reactor-test:3.5.11")
   testImplementation("org.assertj:assertj-core:3.24.2")
   testImplementation("org.awaitility:awaitility:4.2.0")
@@ -70,6 +71,8 @@ tasks.test {
   finalizedBy(tasks.jacocoTestReport)
 }
 
+val jacocoExcludes = listOf("io/github/jinganix/ddz/module/utils/BusinessErrorCodeMapperImpl.class")
+
 tasks.jacocoTestReport {
   dependsOn(tasks.test)
 
@@ -80,9 +83,7 @@ tasks.jacocoTestReport {
 
   // TODO: exclude with mapstruct 1.6 @AnnotateWith(Generated.class)
   classDirectories.setFrom(classDirectories.files.map {
-    fileTree(it).matching {
-      exclude("io/github/jinganix/ddz/setup/exception/ErrorCodeMapperImpl.class")
-    }
+    fileTree(it).matching { exclude(jacocoExcludes) }
   })
 }
 
@@ -98,9 +99,7 @@ tasks.jacocoTestCoverageVerification {
 
   // TODO: exclude with mapstruct 1.6 @AnnotateWith(Generated.class)
   classDirectories.setFrom(classDirectories.files.map {
-    fileTree(it).matching {
-      exclude("io/github/jinganix/ddz/setup/exception/ErrorCodeMapperImpl.class")
-    }
+    fileTree(it).matching { exclude(jacocoExcludes) }
   })
 }
 

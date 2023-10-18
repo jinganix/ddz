@@ -107,7 +107,7 @@ public class TestHelper implements ApplicationContextAware {
   public RSocketRequester rsocketRequester(Long playerId, MessageListener messageListener) {
     String token =
         tokenService.generate(
-            playerId, UUID.randomUUID().toString(), GrantedRole.PLAYER.getValue());
+            playerId, UUID.randomUUID().toString(), GrantedRole.PLAYER.getAuthorityName());
 
     SocketAcceptor responder =
         RSocketMessageHandler.responder(RSocketStrategies.create(), messageListener);
