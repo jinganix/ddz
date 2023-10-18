@@ -29,7 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @DisplayName("DdzApplication")
-class ApplicationTests {
+class ApplicationTest {
 
   @Nested
   @DisplayName("when load context")

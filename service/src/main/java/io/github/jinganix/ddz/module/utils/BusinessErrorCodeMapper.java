@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.jinganix.ddz.setup.exception;
+package io.github.jinganix.ddz.module.utils;
 
 import io.github.jinganix.ddz.helper.exception.BusinessErrorCode;
 import io.github.jinganix.ddz.proto.error.ErrorCode;
+import io.github.jinganix.ddz.setup.exception.ErrorCodeMapper;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
 
-public interface ErrorCodeMapper {
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface BusinessErrorCodeMapper extends ErrorCodeMapper {
 
-  ErrorCode map(BusinessErrorCode errorCode);
+  ErrorCode mapErrorCode(io.github.jinganix.ddz.module.utils.ErrorCode errorCode);
+
+  default ErrorCode map(BusinessErrorCode errorCode) {
+    if (errorCode instanceof io.github.jinganix.ddz.module.utils.ErrorCode) {
+      return mapErrorCode((io.github.jinganix.ddz.module.utils.ErrorCode) errorCode);
+    }
+    return ErrorCode.ERROR;
+  }
 }

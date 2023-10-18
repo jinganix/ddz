@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package io.github.jinganix.ddz.helper.auth.token.authenticator;
+package io.github.jinganix.ddz.helper.auth.token;
 
 import io.github.jinganix.ddz.helper.auth.authenticator.Authenticator;
-import io.github.jinganix.ddz.helper.auth.token.JwtToken;
-import io.github.jinganix.ddz.helper.auth.token.JwtTokenService;
-import io.github.jinganix.ddz.helper.auth.token.PlayerAuthenticationToken;
-import io.github.jinganix.ddz.module.auth.model.GrantedRole;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -48,8 +45,6 @@ public class JwtTokenAuthenticator implements Authenticator {
     }
     return new PlayerAuthenticationToken(
         jwt.getPlayerId(),
-        jwt.getAuthorities().stream()
-            .map(v -> GrantedRole.fromValue(v).getAuthority())
-            .collect(Collectors.toSet()));
+        jwt.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
   }
 }

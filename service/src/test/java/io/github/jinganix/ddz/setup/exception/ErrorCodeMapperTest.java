@@ -38,22 +38,6 @@ class ErrorCodeMapperTest extends SpringIntegrationTests {
   @Autowired ErrorCodeMapper errorCodeMapper;
 
   @Nested
-  @DisplayName("mapErrorCode")
-  class MapErrorCode {
-
-    @Nested
-    @DisplayName("when error code is null")
-    class WhenErrorCodeIsNull {
-
-      @Test
-      @DisplayName("then return null")
-      void thenReturnNull() {
-        Assertions.assertThat(errorCodeMapper.mapErrorCode(null)).isNull();
-      }
-    }
-  }
-
-  @Nested
   @DisplayName("map")
   class Map {
 

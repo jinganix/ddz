@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 linqu.tech, All Rights Reserved.
+ * Copyright (c) 2020 https://github.com/jinganix/ddz, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ public class AuthService {
   public AuthTokenResponse createAuthTokenResponse(Long playerId) {
     GrantedRole grantedRole = GrantedRole.PLAYER;
     String accessToken =
-        tokenService.generate(playerId, utilsService.uuid(true), grantedRole.getValue());
+        tokenService.generate(playerId, utilsService.uuid(true), grantedRole.getAuthorityName());
     String refreshToken = utilsService.uuid(true);
 
     long millis = utilsService.currentTimeMillis();

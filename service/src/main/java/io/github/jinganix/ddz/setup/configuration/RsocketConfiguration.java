@@ -16,7 +16,6 @@
 
 package io.github.jinganix.ddz.setup.configuration;
 
-import io.github.jinganix.ddz.module.auth.model.GrantedRole;
 import io.github.jinganix.ddz.setup.argument.messaging.PlayerIdArgumentResolver;
 import java.util.List;
 import lombok.Getter;
@@ -37,6 +36,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.rsocket.EnableRSocketSecurity;
 import org.springframework.security.config.annotation.rsocket.RSocketSecurity;
+import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec;
 import org.springframework.security.rsocket.core.PayloadSocketAcceptorInterceptor;
 import reactor.core.publisher.Mono;
 
@@ -87,16 +87,9 @@ public class RsocketConfiguration {
   }
 
   @Bean
-  PayloadSocketAcceptorInterceptor rsocketInterceptor(RSocketSecurity rsocket) {
-    rsocket
-        .authorizePayload(
-            authorize ->
-                authorize
-                    .setup()
-                    .hasRole(GrantedRole.PLAYER.getValue())
-                    .anyExchange()
-                    .authenticated())
-        .simpleAuthentication(Customizer.withDefaults());
+  PayloadSocketAcceptorInterceptor rsocketInterceptor(
+      RSocketSecurity rsocket, Customizer<AuthorizePayloadsSpec> customizer) {
+    rsocket.authorizePayload(customizer).simpleAuthentication(Customizer.withDefaults());
     return rsocket.build();
   }
 
