@@ -53,7 +53,7 @@ dependencies {
   testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
   testCompileOnly("org.projectlombok:lombok:1.18.30")
   testImplementation("com.tngtech.archunit:archunit:1.2.0")
-  testImplementation("io.projectreactor:reactor-test:3.5.11")
+  testImplementation("io.projectreactor:reactor-test:3.6.0")
   testImplementation("org.assertj:assertj-core:3.24.2")
   testImplementation("org.awaitility:awaitility:4.2.0")
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.1")
