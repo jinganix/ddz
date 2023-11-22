@@ -34,7 +34,7 @@ dependencies {
   implementation("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
   implementation("io.github.jinganix.webpb:webpb-proto:0.0.1-SNAPSHOT")
   implementation("io.github.jinganix.webpb:webpb-runtime:0.0.1-SNAPSHOT")
-  implementation("org.apache.commons:commons-lang3:3.13.0")
+  implementation("org.apache.commons:commons-lang3:3.14.0")
   implementation("org.mapstruct:mapstruct:1.5.5.Final")
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-aop")
