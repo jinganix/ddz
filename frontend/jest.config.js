@@ -47,9 +47,9 @@ module.exports = {
     "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}",
   ],
   transform: {
-    "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/jest/fileTransform.js",
-    "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/jest/babelTransform.js",
-    "^.+\\.css$": "<rootDir>/jest/cssTransform.js",
+    "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/jest/file.transform.js",
+    "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/jest/babel.transform.js",
+    "^.+\\.css$": "<rootDir>/jest/css.transform.js",
   },
   transformIgnorePatterns: [
     "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
