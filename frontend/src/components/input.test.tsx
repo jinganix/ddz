@@ -1,12 +1,12 @@
 import React from "react";
 import { act, render, screen } from "@testing-library/react";
-import App from "./app";
+import { Input } from "./input";
 
-describe("App", () => {
+describe("Input", () => {
   describe("when render", () => {
     it("then the element exists", async () => {
-      await act(() => render(<App />));
-      const element = screen.getByTestId("test-app");
+      await act(() => render(<Input data-testid="test-button" />));
+      const element = screen.getByTestId("test-button");
       expect(element).toBeInTheDocument();
     });
   });

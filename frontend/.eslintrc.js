@@ -4,9 +4,13 @@ module.exports = {
     jest: true,
     node: true,
   },
-  extends: ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+  extends: [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+  ],
   parser: "@typescript-eslint/parser",
-  plugins: ["import", "import-quotes", "no-null", "sort-keys-fix"],
+  plugins: ["import", "import-quotes", "no-null", "sort-keys-fix", "react"],
   root: true,
   rules: {
     "@typescript-eslint/camelcase": "off",

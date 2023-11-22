@@ -1,6 +1,8 @@
 "use strict";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require("path");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const camelcase = require("camelcase");
 
 // This is a custom Jest transformer turning file imports into filenames.
@@ -35,6 +37,6 @@ module.exports = {
       };`;
     }
 
-    return `module.exports = ${assetFilename};`;
+    return { code: `module.exports = ${assetFilename};` };
   },
 };

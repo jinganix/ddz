@@ -9,6 +9,8 @@ module.exports = {
     return "cssTransform";
   },
   process() {
-    return "module.exports = {};";
+    return {
+      code: "module.exports = {};",
+    };
   },
 };
