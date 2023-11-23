@@ -1,5 +1,26 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import * as path from "path";
-import { Configuration as WebpackConfiguration, ProvidePlugin, RuleSetUseItem } from "webpack";
+import {
+  Configuration as WebpackConfiguration,
+  DefinePlugin,
+  ProvidePlugin,
+  RuleSetUseItem,
+} from "webpack";
 import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import ESLintWebpackPlugin from "eslint-webpack-plugin";
@@ -8,6 +29,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { WebpackManifestPlugin } from "webpack-manifest-plugin";
 import TerserPlugin from "terser-webpack-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
+import { Environment } from "./env/environment";
 
 interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
@@ -21,6 +43,10 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 const common = (env: string | { dev: boolean }): Configuration => {
   const isDev: boolean = typeof env === "string" ? env !== "prod" : env.dev;
   const isProd = !isDev;
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { environment }: { environment: Environment } = require(
+    path.resolve(`./webpack/env/${isDev ? "dev" : "prod"}.env.ts`),
+  );
 
   const getStyleLoaders = (
     cssOptions: Record<string, unknown>,
@@ -235,6 +261,9 @@ const common = (env: string | { dev: boolean }): Configuration => {
           };
         },
         publicPath: "./public",
+      }),
+      new DefinePlugin({
+        "process.env": JSON.stringify(environment),
       }),
       new ProvidePlugin({
         Buffer: ["buffer", "Buffer"],

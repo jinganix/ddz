@@ -1,12 +1,15 @@
+import com.google.protobuf.gradle.id
+import com.google.protobuf.gradle.remove
 import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
+  id("com.google.protobuf") version "0.9.4"
   java
 }
 
 repositories {
-  mavenLocal()
   mavenCentral()
+  maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots") }
 }
 
 val npm = if (Os.isFamily(Os.FAMILY_WINDOWS)) "npm.cmd" else "npm"
@@ -35,4 +38,38 @@ task<Exec>("npmCheck") {
 
 tasks.check {
   dependsOn("npmCheck")
+}
+
+dependencies {
+  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1-SNAPSHOT")
+  protobuf(project(":proto"))
+}
+
+tasks.clean {
+  enabled = false
+}
+
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.25.1"
+  }
+  plugins {
+    id("ts") {
+      artifact = "io.github.jinganix.webpb:webpb-protoc-ts:0.0.1-SNAPSHOT:all@jar"
+    }
+  }
+  generateProtoTasks {
+    ofSourceSet("main").forEach {
+      it.doFirst {
+        delete(it.outputBaseDir)
+      }
+      it.builtins {
+        remove("java")
+      }
+      it.plugins {
+        id("ts")
+      }
+    }
+  }
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { Environment } from "./environment";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export const environment: Environment = {
+  apiHost: "http://localhost:8080",
+  env: "dev",
+};

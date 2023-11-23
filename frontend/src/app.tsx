@@ -1,24 +1,28 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { FC } from "react";
-import { ToastContainer } from "react-toastify";
-import { LoginPage } from "./login.page";
-import "react-toastify/dist/ReactToastify.css";
+import { Notifier } from "@/components/notifier";
+import { LoginPage } from "@/pages/login.page";
 import "./app.scss";
 
 const App: FC = () => (
   <div data-testid="test-app">
     <LoginPage />
-    <ToastContainer
-      position="top-right"
-      autoClose={3000}
-      hideProgressBar
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss={false}
-      draggable={false}
-      pauseOnHover
-      theme="dark"
-    />
+    <Notifier />
   </div>
 );
 

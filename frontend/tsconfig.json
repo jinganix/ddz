@@ -15,7 +15,8 @@
     "noUnusedParameters": true,
     "outDir": "dist",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@proto/*": ["build/generated/source/proto/main/ts/*"]
     },
     "pretty": true,
     "removeComments": true,

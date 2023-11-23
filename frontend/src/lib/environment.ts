@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { Environment } from "../../webpack/env/environment";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export const environment = process.env as unknown as Environment;

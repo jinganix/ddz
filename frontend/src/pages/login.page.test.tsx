@@ -1,7 +1,25 @@
+/*
+ * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { toast } from "react-toastify";
-import { LoginPage } from "@/login.page";
+import { LoginPage } from "./login.page";
+import { container } from "tsyringe";
+import { AuthService } from "@/lib/service/auth.service";
 
 describe("LoginPage", () => {
   describe("when render", () => {
@@ -19,10 +37,10 @@ describe("LoginPage", () => {
       it("then show error toast", async () => {
         await act(() => render(<LoginPage />));
 
-        const toastError = jest.spyOn(toast, "error");
+        const toastSpy = jest.spyOn(toast, "error");
         fireEvent.click(screen.getByText("SignIn or SignUp"));
 
-        expect(toastError).toHaveBeenCalledWith("Please enter a username");
+        expect(toastSpy).toHaveBeenCalledWith("Please enter a username");
       });
     });
 
@@ -33,10 +51,10 @@ describe("LoginPage", () => {
           fireEvent.input(screen.getByPlaceholderText("Username"), { target: { value: "aa" } }),
         );
 
-        const toastError = jest.spyOn(toast, "error");
+        const toastSpy = jest.spyOn(toast, "error");
         fireEvent.click(screen.getByText("SignIn or SignUp"));
 
-        expect(toastError).toHaveBeenCalledWith("The minimum username length is 3 characters");
+        expect(toastSpy).toHaveBeenCalledWith("The minimum username length is 3 characters");
       });
     });
 
@@ -49,10 +67,10 @@ describe("LoginPage", () => {
           }),
         );
 
-        const toastError = jest.spyOn(toast, "error");
+        const toastSpy = jest.spyOn(toast, "error");
         fireEvent.click(screen.getByText("SignIn or SignUp"));
 
-        expect(toastError).toHaveBeenCalledWith("The maximum username length is 20 characters");
+        expect(toastSpy).toHaveBeenCalledWith("The maximum username length is 20 characters");
       });
     });
 
@@ -63,10 +81,10 @@ describe("LoginPage", () => {
           fireEvent.input(screen.getByPlaceholderText("Username"), { target: { value: "aaa" } }),
         );
 
-        const toastError = jest.spyOn(toast, "error");
+        const toastSpy = jest.spyOn(toast, "error");
         fireEvent.click(screen.getByText("SignIn or SignUp"));
 
-        expect(toastError).toHaveBeenCalledWith("Please enter a password");
+        expect(toastSpy).toHaveBeenCalledWith("Please enter a password");
       });
     });
 
@@ -80,10 +98,10 @@ describe("LoginPage", () => {
           fireEvent.input(screen.getByPlaceholderText("Password"), { target: { value: "aaaaa" } }),
         );
 
-        const toastError = jest.spyOn(toast, "error");
+        const toastSpy = jest.spyOn(toast, "error");
         fireEvent.click(screen.getByText("SignIn or SignUp"));
 
-        expect(toastError).toHaveBeenCalledWith("The minimum password length is 6 characters");
+        expect(toastSpy).toHaveBeenCalledWith("The minimum password length is 6 characters");
       });
     });
 
@@ -99,17 +117,17 @@ describe("LoginPage", () => {
           }),
         );
 
-        const toastError = jest.spyOn(toast, "error");
+        const toastSpy = jest.spyOn(toast, "error");
         fireEvent.click(screen.getByText("SignIn or SignUp"));
 
-        expect(toastError).toHaveBeenCalledWith("The maximum password length is 20 characters");
+        expect(toastSpy).toHaveBeenCalledWith("The maximum password length is 20 characters");
       });
     });
   });
 
   describe("when input is valid", () => {
     it("then submit the form", async () => {
-      const logSpy = jest.spyOn(console, "log");
+      const authSpy = jest.spyOn(container.resolve(AuthService), "auth").mockResolvedValue();
 
       await act(() => render(<LoginPage />));
       await act(() =>
@@ -120,7 +138,7 @@ describe("LoginPage", () => {
       );
 
       await act(() => fireEvent.click(screen.getByText("SignIn or SignUp")));
-      expect(logSpy).toHaveBeenCalledWith(["aaa", "aaaaaa"]);
+      expect(authSpy).toHaveBeenCalledWith("aaa", "aaaaaa");
     });
   });
 });

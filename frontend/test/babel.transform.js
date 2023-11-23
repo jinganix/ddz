@@ -14,9 +14,33 @@
  * limitations under the License.
  */
 
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+"use strict";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const babelJest = require("babel-jest").default;
+
+const hasJsxRuntime = (() => {
+  if (process.env.DISABLE_NEW_JSX_TRANSFORM === "true") {
+    return false;
+  }
+
+  try {
+    require.resolve("react/jsx-runtime");
+    return true;
+  } catch (e) {
+    return false;
+  }
+})();
+
+module.exports = babelJest.createTransformer({
+  babelrc: false,
+  configFile: false,
+  presets: [
+    [
+      require.resolve("babel-preset-react-app"),
+      {
+        runtime: hasJsxRuntime ? "automatic" : "classic",
+      },
+    ],
+  ],
+});

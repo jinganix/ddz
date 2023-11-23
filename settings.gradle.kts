@@ -1,4 +1,4 @@
 rootProject.name = "ddz"
 include(":frontend")
-include(":proto:")
+include(":proto")
 include(":service")
