@@ -2,7 +2,7 @@ import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.remove
 
 plugins {
-  id("com.diffplug.spotless") version "6.22.0"
+  id("com.diffplug.spotless") version "6.23.0"
   id("com.github.kt3k.coveralls") version "2.12.2"
   id("com.google.protobuf") version "0.9.4"
   id("io.spring.dependency-management") version "1.1.4"
