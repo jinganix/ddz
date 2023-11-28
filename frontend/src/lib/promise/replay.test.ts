@@ -17,6 +17,29 @@
 import { Replay } from "@/lib/promise/replay";
 
 describe("Replay", () => {
+  describe("constructor", () => {
+    describe("when value is undefined", () => {
+      it("then resolved is false", () => {
+        const replay = new Replay<number>();
+        expect(replay.resolved).toBeFalsy();
+      });
+    });
+
+    describe("when value is null", () => {
+      it("then resolved is false", () => {
+        const replay = new Replay<number>(null);
+        expect(replay.resolved).toBeFalsy();
+      });
+    });
+
+    describe("when value is 1", () => {
+      it("then resolved is true", () => {
+        const replay = new Replay<number>(1);
+        expect(replay.resolved).toBeTruthy();
+      });
+    });
+  });
+
   describe("resolve", () => {
     describe("when keys are same", () => {
       it("then return first", async () => {
@@ -55,6 +78,20 @@ describe("Replay", () => {
   });
 
   describe("resolved", () => {
+    describe("when promise is rejected", () => {
+      it("then return false", async () => {
+        const replay = new Replay<number>();
+        try {
+          await replay.resolve(() => {
+            throw new Error("error");
+          });
+        } catch (err) {
+          expect(err).toEqual(new Error("error"));
+          expect(replay.resolved).toBeFalsy();
+        }
+      });
+    });
+
     describe("when replay is not resolved", () => {
       it("then return false", async () => {
         expect(new Replay<number>().resolved).toBeFalsy();

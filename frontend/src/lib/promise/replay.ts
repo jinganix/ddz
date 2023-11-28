@@ -23,20 +23,29 @@ export class Replay<T> {
 
   private key = "";
 
-  constructor(value: T | null) {
-    if (value) {
+  constructor(value?: T | null) {
+    if (value !== undefined && value !== null) {
       this.deferred = new Deferred<T>();
       this.deferred.resolve(value);
+      this.resolvedAt = Date.now();
     }
   }
 
   async resolve(promise: () => Promise<T>, key = ""): Promise<T> {
-    if (!this.deferred || this.key != key) {
+    if (!this.deferred || (this.key != key && this.resolved)) {
       this.key = key;
-      this.deferred = new Deferred<T>();
-      const value = await promise();
-      this.deferred.resolve(value);
-      this.resolvedAt = Date.now();
+      const deferred = new Deferred<T>();
+      this.deferred = deferred;
+      this.resolvedAt = 0;
+      try {
+        const value = await promise();
+        this.resolvedAt = Date.now();
+        deferred.resolve(value);
+      } catch (err) {
+        this.deferred = null;
+        deferred.reject(err);
+        return deferred.promise;
+      }
     }
     return this.deferred.promise;
   }

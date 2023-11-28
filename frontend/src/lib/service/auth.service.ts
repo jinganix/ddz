@@ -50,10 +50,12 @@ export class AuthService {
   }
 
   async checkRefresh(): Promise<void> {
-    const token = await this.replay.value();
-    if (token && token.isExpired()) {
-      await this.refresh(token.refreshToken);
-    }
+    try {
+      const token = await this.replay.value();
+      if (token && token.isExpired()) {
+        await this.refresh(token.refreshToken);
+      }
+    } catch (_err) {}
   }
 
   async auth(username: string, password: string): Promise<void> {
