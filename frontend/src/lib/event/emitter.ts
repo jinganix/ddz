@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { ToastContent } from "react-toastify";
+import { createNanoEvents } from "@/lib/event/events";
+import { AuthToken } from "@/lib/token";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+export type NotifierVariant = "info" | "error" | "success";
+
+export interface Emitter {
+  loading: (loading: boolean, type: string) => void;
+  notifier: (variant: NotifierVariant, cont: string | ToastContent) => void;
+  token: (token: AuthToken | null) => void;
 }
+
+export const emitter = createNanoEvents<Emitter>();
