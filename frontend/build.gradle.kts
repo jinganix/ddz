@@ -1,14 +1,13 @@
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.remove
 import org.apache.tools.ant.taskdefs.condition.Os
+import utils.Vers.versionProtobuf
+import utils.Vers.versionWebpb
 
 plugins {
-  id("com.google.protobuf") version "0.9.4"
+  id("com.google.protobuf")
+  id("conventions.common")
   java
-}
-
-repositories {
-  mavenCentral()
 }
 
 val npm = if (Os.isFamily(Os.FAMILY_WINDOWS)) "npm.cmd" else "npm"
@@ -40,7 +39,7 @@ tasks.check {
 }
 
 dependencies {
-  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1")
+  implementation("io.github.jinganix.webpb:webpb-proto:${versionWebpb}")
   protobuf(project(":proto"))
 }
 
@@ -48,14 +47,13 @@ tasks.clean {
   enabled = false
 }
 
-
 protobuf {
   protoc {
-    artifact = "com.google.protobuf:protoc:3.25.1"
+    artifact = "com.google.protobuf:protoc:$versionProtobuf"
   }
   plugins {
     id("ts") {
-      artifact = "io.github.jinganix.webpb:webpb-protoc-ts:0.0.1:all@jar"
+      artifact = "io.github.jinganix.webpb:webpb-protoc-ts:$versionWebpb:all@jar"
     }
   }
   generateProtoTasks {
