@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-  annotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1-SNAPSHOT")
+  annotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1")
   annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
   annotationProcessor("org.projectlombok:lombok:1.18.30")
   compileOnly("org.projectlombok:lombok:1.18.30")
@@ -48,7 +48,7 @@ dependencies {
   implementation("org.springframework.security:spring-security-rsocket")
 
   protobuf(project(":proto"))
-  testAnnotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1-SNAPSHOT")
+  testAnnotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1")
   testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
   testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
   testCompileOnly("org.projectlombok:lombok:1.18.30")
