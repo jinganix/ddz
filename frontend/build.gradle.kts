@@ -41,7 +41,7 @@ tasks.check {
 }
 
 dependencies {
-  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1-SNAPSHOT")
+  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1")
   protobuf(project(":proto"))
 }
 
