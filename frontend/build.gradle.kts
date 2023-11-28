@@ -9,7 +9,6 @@ plugins {
 
 repositories {
   mavenCentral()
-  maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots") }
 }
 
 val npm = if (Os.isFamily(Os.FAMILY_WINDOWS)) "npm.cmd" else "npm"
@@ -41,7 +40,7 @@ tasks.check {
 }
 
 dependencies {
-  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1-SNAPSHOT")
+  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1")
   protobuf(project(":proto"))
 }
 
@@ -56,7 +55,7 @@ protobuf {
   }
   plugins {
     id("ts") {
-      artifact = "io.github.jinganix.webpb:webpb-protoc-ts:0.0.1-SNAPSHOT:all@jar"
+      artifact = "io.github.jinganix.webpb:webpb-protoc-ts:0.0.1:all@jar"
     }
   }
   generateProtoTasks {

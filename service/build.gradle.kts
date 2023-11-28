@@ -20,11 +20,10 @@ java {
 
 repositories {
   mavenCentral()
-  maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots") }
 }
 
 dependencies {
-  annotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1-SNAPSHOT")
+  annotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1")
   annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
   annotationProcessor("org.projectlombok:lombok:1.18.30")
   compileOnly("org.projectlombok:lombok:1.18.30")
@@ -32,8 +31,8 @@ dependencies {
   implementation("com.auth0:java-jwt:4.4.0")
   implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
   implementation("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
-  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1-SNAPSHOT")
-  implementation("io.github.jinganix.webpb:webpb-runtime:0.0.1-SNAPSHOT")
+  implementation("io.github.jinganix.webpb:webpb-proto:0.0.1")
+  implementation("io.github.jinganix.webpb:webpb-runtime:0.0.1")
   implementation("org.apache.commons:commons-lang3:3.14.0")
   implementation("org.mapstruct:mapstruct:1.5.5.Final")
   implementation("org.springframework.boot:spring-boot-starter")
@@ -48,7 +47,7 @@ dependencies {
   implementation("org.springframework.security:spring-security-rsocket")
 
   protobuf(project(":proto"))
-  testAnnotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1-SNAPSHOT")
+  testAnnotationProcessor("io.github.jinganix.webpb:webpb-processor:0.0.1")
   testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
   testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
   testCompileOnly("org.projectlombok:lombok:1.18.30")
@@ -137,7 +136,7 @@ protobuf {
   }
   plugins {
     id("webpb") {
-      artifact = "io.github.jinganix.webpb:webpb-protoc-java:0.0.1-SNAPSHOT:all@jar"
+      artifact = "io.github.jinganix.webpb:webpb-protoc-java:0.0.1:all@jar"
     }
   }
   generateProtoTasks {
