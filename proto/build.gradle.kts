@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-  compileOnly("io.github.jinganix.webpb:webpb-proto:0.0.1")
+  compileOnly("io.github.jinganix.webpb:webpb-proto:0.0.3")
 }
