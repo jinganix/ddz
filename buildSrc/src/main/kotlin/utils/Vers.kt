@@ -38,6 +38,7 @@ object Vers {
   lateinit var versionLombok: String
   lateinit var versionMapstruct: String
   lateinit var versionMockitoCore: String
+  lateinit var versionPeashooter: String
   lateinit var versionProtobuf: String
   lateinit var versionProtobufGradlePlugin: String
   lateinit var versionReactorTest: String

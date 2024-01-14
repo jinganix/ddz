@@ -16,7 +16,7 @@
 
 package io.github.jinganix.ddz.module.table.cmd;
 
-import io.github.jinganix.ddz.helper.actor.OrderedTaskExecutor;
+import io.github.jinganix.ddz.helper.actor.OrderedTraceExecutor;
 import io.github.jinganix.ddz.helper.exception.BusinessException;
 import io.github.jinganix.ddz.module.cmd.Cmd;
 import io.github.jinganix.ddz.module.cmd.CmdDispatcher;
@@ -40,7 +40,7 @@ public class TableCmdDispatcher implements CmdDispatcher {
 
   private final Map<CmdType, TableCmdExecutor<Cmd>> executors = new HashMap<>();
 
-  private final OrderedTaskExecutor orderedTaskExecutor;
+  private final OrderedTraceExecutor orderedTraceExecutor;
 
   private final PlayerRepository playerRepository;
 
@@ -68,6 +68,6 @@ public class TableCmdDispatcher implements CmdDispatcher {
       throw BusinessException.of(ErrorCode.TABLE_NOT_FOUND);
     }
     TableCmdExecutor<Cmd> executor = executors.get(cmd.getCmdType());
-    orderedTaskExecutor.executeSync(tableId, () -> executor.execute(tableId, cmds, cmd));
+    orderedTraceExecutor.executeSync(tableId, () -> executor.execute(tableId, cmds, cmd));
   }
 }

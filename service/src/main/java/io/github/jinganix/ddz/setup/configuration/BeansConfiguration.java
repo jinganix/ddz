@@ -16,10 +16,11 @@
 
 package io.github.jinganix.ddz.setup.configuration;
 
-import io.github.jinganix.ddz.helper.actor.OrderedTaskExecutor;
 import io.github.jinganix.ddz.helper.actor.VirtualThreadExecutor;
 import io.github.jinganix.ddz.helper.timer.MultiLevelWheelTimer;
 import io.github.jinganix.ddz.helper.timer.TaskTimer;
+import io.github.jinganix.peashooter.DefaultTracer;
+import io.github.jinganix.peashooter.Tracer;
 import java.util.concurrent.Executors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -36,8 +37,8 @@ public class BeansConfiguration {
   }
 
   @Bean
-  OrderedTaskExecutor chainedTaskExecutor() {
-    return new OrderedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor());
+  Tracer tracer() {
+    return new DefaultTracer();
   }
 
   @Bean

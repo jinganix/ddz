@@ -12,6 +12,7 @@ import utils.Vers.versionJwt
 import utils.Vers.versionLombok
 import utils.Vers.versionMapstruct
 import utils.Vers.versionMockitoCore
+import utils.Vers.versionPeashooter
 import utils.Vers.versionProtobuf
 import utils.Vers.versionProtobufGradlePlugin
 import utils.Vers.versionReactorTest
@@ -32,7 +33,7 @@ group = "io.github.jinganix.ddz"
 version = "${versionWebpb}-SNAPSHOT"
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_20
+  sourceCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
@@ -44,14 +45,15 @@ dependencies {
   implementation("com.auth0:java-jwt:${versionJwt}")
   implementation("com.github.ben-manes.caffeine:caffeine:${versionCaffeine}")
   implementation("com.google.protobuf:protobuf-gradle-plugin:${versionProtobufGradlePlugin}")
+  implementation("io.github.jinganix.peashooter:peashooter:${versionPeashooter}")
   implementation("io.github.jinganix.webpb:webpb-proto:${versionWebpb}")
   implementation("io.github.jinganix.webpb:webpb-runtime:${versionWebpb}")
   implementation("org.apache.commons:commons-lang3:${versionCommonsLang3}")
   implementation("org.mapstruct:mapstruct:${versionMapstruct}")
+  implementation("org.mapstruct:mapstruct:${versionMapstruct}")
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-aop")
   implementation("org.springframework.boot:spring-boot-starter-rsocket")
-  implementation("org.mapstruct:mapstruct:${versionMapstruct}")
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-webflux")

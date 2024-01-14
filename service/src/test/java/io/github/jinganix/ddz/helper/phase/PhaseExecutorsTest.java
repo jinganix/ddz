@@ -27,14 +27,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import io.github.jinganix.ddz.helper.actor.OrderedTaskExecutor;
+import io.github.jinganix.ddz.helper.actor.CachedTaskQueueProvider;
+import io.github.jinganix.ddz.helper.actor.OrderedTraceExecutor;
+import io.github.jinganix.ddz.helper.actor.VirtualTraceExecutor;
 import io.github.jinganix.ddz.helper.timer.MultiLevelWheelTimer;
 import io.github.jinganix.ddz.helper.timer.TaskTimer;
 import io.github.jinganix.ddz.helper.utils.UtilsService;
 import io.github.jinganix.ddz.tests.TestConst;
+import io.github.jinganix.peashooter.DefaultTracer;
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.Executors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -44,8 +46,10 @@ import org.mockito.Mockito;
 @DisplayName("PhaseExecutors")
 class PhaseExecutorsTest {
 
-  OrderedTaskExecutor orderedTaskExecutor =
-      spy(new OrderedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
+  OrderedTraceExecutor orderedTaskExecutor =
+      spy(
+          new OrderedTraceExecutor(
+              new CachedTaskQueueProvider(), new VirtualTraceExecutor(new DefaultTracer())));
 
   UtilsService utilsService = mock(UtilsService.class);
 
@@ -157,12 +161,12 @@ class PhaseExecutorsTest {
         }
 
         @Nested
-        @DisplayName("when chained task triggered")
-        class WhenChainedTaskTriggered {
+        @DisplayName("when ordered task triggered")
+        class WhenOrderedTaskTriggered {
 
           @Test
-          @DisplayName("then execute chained task")
-          void thenExecuteChainedTask() {
+          @DisplayName("then execute ordered task")
+          void thenExecuteOrderedTask() {
             phaseExecutors.execute(scheduledPhase, phaseType);
 
             await()

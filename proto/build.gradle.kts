@@ -1,3 +1,5 @@
+import utils.Vers.versionWebpb
+
 plugins {
   java
 }
@@ -7,5 +9,5 @@ repositories {
 }
 
 dependencies {
-  compileOnly("io.github.jinganix.webpb:webpb-proto:0.0.1")
+  compileOnly("io.github.jinganix.webpb:webpb-proto:${versionWebpb}")
 }
