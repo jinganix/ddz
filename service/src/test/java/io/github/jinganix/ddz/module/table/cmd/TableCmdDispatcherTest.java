@@ -24,7 +24,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import io.github.jinganix.ddz.helper.actor.OrderedTaskExecutor;
+import io.github.jinganix.ddz.helper.actor.CachedTaskQueueProvider;
+import io.github.jinganix.ddz.helper.actor.OrderedTraceExecutor;
+import io.github.jinganix.ddz.helper.actor.VirtualTraceExecutor;
 import io.github.jinganix.ddz.helper.exception.BusinessException;
 import io.github.jinganix.ddz.module.cmd.CmdType;
 import io.github.jinganix.ddz.module.cmd.Cmds;
@@ -35,8 +37,8 @@ import io.github.jinganix.ddz.module.table.repository.TableRepository;
 import io.github.jinganix.ddz.module.utils.ErrorCode;
 import io.github.jinganix.ddz.tests.SpringIntegrationTests;
 import io.github.jinganix.ddz.tests.TestConst;
+import io.github.jinganix.peashooter.DefaultTracer;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -94,8 +96,10 @@ class TableCmdDispatcherTest {
   @ExtendWith(MockitoExtension.class)
   class Dispatch {
 
-    OrderedTaskExecutor orderedTaskExecutor =
-        spy(new OrderedTaskExecutor(Executors.newVirtualThreadPerTaskExecutor()));
+    OrderedTraceExecutor orderedTaskExecutor =
+        spy(
+            new OrderedTraceExecutor(
+                new CachedTaskQueueProvider(), new VirtualTraceExecutor(new DefaultTracer())));
 
     @Mock PlayerRepository playerRepository;
 

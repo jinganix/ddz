@@ -16,7 +16,7 @@
 
 package io.github.jinganix.ddz.helper.phase;
 
-import io.github.jinganix.ddz.helper.actor.OrderedTaskExecutor;
+import io.github.jinganix.ddz.helper.actor.OrderedTraceExecutor;
 import io.github.jinganix.ddz.helper.timer.TaskTimer;
 import io.github.jinganix.ddz.helper.utils.UtilsService;
 import io.netty.util.Timeout;
@@ -33,7 +33,7 @@ public class PhaseExecutors {
 
   private final Map<PhaseType, PhaseExecutor<PhasedContext>> executors = new HashMap<>();
 
-  private final OrderedTaskExecutor orderedTaskExecutor;
+  private final OrderedTraceExecutor orderedTraceExecutor;
 
   private final UtilsService utilsService;
 
@@ -79,7 +79,7 @@ public class PhaseExecutors {
         taskTimer.schedule(
             phase.getDuration(),
             e ->
-                orderedTaskExecutor.executeAsync(
+                orderedTraceExecutor.executeAsync(
                     phase.getContext().getKey(),
                     () -> {
                       if (uid == phase.getUid()) {

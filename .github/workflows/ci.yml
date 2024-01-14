@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        jdk: [20]
+        jdk: [21]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
@@ -54,6 +54,6 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 20
+          java-version: 21
       - name: Update Coveralls
         run: ./gradlew clean service:jacocoTestReport service:coveralls

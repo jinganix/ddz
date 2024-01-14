@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 jinganix@qq.com, All Rights Reserved.
+ * Copyright (c) 2020 The Peashooter Authors, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,36 +12,33 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * https://github.com/jinganix/peashooter
  */
 
 package io.github.jinganix.ddz.helper.actor;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import io.github.jinganix.peashooter.TaskQueue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("DirectExecutor")
-class DirectExecutorTest {
+@DisplayName("CachedTaskQueueProvider")
+class CachedTaskQueueProviderTest {
 
   @Nested
-  @DisplayName("execute")
-  class Execute {
+  @DisplayName("when remove the key")
+  class WhenRemoveTheKey {
 
-    @Nested
-    @DisplayName("when called")
-    class WhenCalled {
-
-      @Test
-      @DisplayName("then task is run")
-      void thenTaskIsRun() {
-        Runnable runnable = mock(Runnable.class);
-        DirectExecutor.INSTANCE.execute(runnable);
-        verify(runnable, times(1)).run();
-      }
+    @Test
+    @DisplayName("then get the new queue")
+    void thenReturnNull() {
+      CachedTaskQueueProvider queues = new CachedTaskQueueProvider();
+      TaskQueue queue = queues.get("a");
+      queues.remove("a");
+      assertThat(queues.get("a")).isNotEqualTo(queue);
     }
   }
 }
