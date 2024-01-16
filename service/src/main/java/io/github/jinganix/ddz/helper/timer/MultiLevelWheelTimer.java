@@ -42,8 +42,8 @@ public class MultiLevelWheelTimer implements TaskTimer {
 
   @Override
   public Timeout schedule(long delay, TimerTask task) {
-    if (timers.size() == 1 || delay < timers.get(0).getWheelDuration()) {
-      return timers.get(0).newTimeout(task, delay, MILLISECONDS);
+    if (timers.size() == 1 || delay < timers.getFirst().getWheelDuration()) {
+      return timers.getFirst().newTimeout(task, delay, MILLISECONDS);
     }
     WheelTimer timer = MultiLevelWheelTimerTask.resolve(timers, delay);
     long millis = System.currentTimeMillis();

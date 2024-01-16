@@ -1,6 +1,7 @@
 import utils.Vers
 
 plugins {
+  id("conventions.versioning")
   idea
 }
 
