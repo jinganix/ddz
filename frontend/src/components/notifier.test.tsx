@@ -26,7 +26,7 @@ describe("Notifier", () => {
       const toastSpy = jest.spyOn(toast, "info");
       await act(() => render(<Notifier />));
 
-      await emitter.emit("notifier", "info", "Hello world");
+      await act(() => emitter.emit("notifier", "info", "Hello world"));
       expect(toastSpy).toHaveBeenCalledWith("Hello world", {});
       await waitFor(() => expect(screen.getByText("Hello world")).toBeInTheDocument());
     });
@@ -37,7 +37,7 @@ describe("Notifier", () => {
       const toastSpy = jest.spyOn(toast, "error");
       await act(() => render(<Notifier />));
 
-      await emitter.emit("notifier", "error", "Hello world");
+      await act(() => emitter.emit("notifier", "error", "Hello world"));
       expect(toastSpy).toHaveBeenCalledWith("Hello world", {});
       await waitFor(() => expect(screen.getByText("Hello world")).toBeInTheDocument());
     });
@@ -48,7 +48,7 @@ describe("Notifier", () => {
       const toastSpy = jest.spyOn(toast, "success");
       await act(() => render(<Notifier />));
 
-      await emitter.emit("notifier", "success", "Hello world");
+      await act(() => emitter.emit("notifier", "success", "Hello world"));
       expect(toastSpy).toHaveBeenCalledWith("Hello world", {});
       await waitFor(() => expect(screen.getByText("Hello world")).toBeInTheDocument());
     });
