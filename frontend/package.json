@@ -39,7 +39,7 @@
     "tsyringe": "^4.8.0",
     "url-join": "^5.0.0",
     "uuid": "^9.0.1",
-    "webpb": "^0.0.16",
+    "webpb": "^0.0.17",
     "yup": "^1.3.3"
   },
   "devDependencies": {
