@@ -24,7 +24,6 @@ import io.github.jinganix.ddz.helper.exception.ApiException;
 import io.github.jinganix.ddz.helper.exception.BusinessException;
 import io.github.jinganix.ddz.proto.error.ErrorCode;
 import io.github.jinganix.ddz.proto.error.ErrorMessage;
-import io.github.jinganix.ddz.proto.error.ValidationErrorMessage;
 import io.github.jinganix.ddz.tests.SpringIntegrationTests;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.DisplayName;
@@ -62,8 +61,7 @@ class GlobalExceptionHandlerTest extends SpringIntegrationTests {
         MethodParameter parameter = mock(MethodParameter.class);
         MethodArgumentNotValidException exception =
             new MethodArgumentNotValidException(parameter, result);
-        ValidationErrorMessage message =
-            globalExceptionHandler.handleValidationException(exception);
+        ErrorMessage message = globalExceptionHandler.handleValidationException(exception);
         assertThat(message.getErrors()).hasSize(1);
       }
     }

@@ -6,7 +6,9 @@ import "webpb/WebpbExtend.proto";
 option (f_opts).java = {
   annotation: '@Generated'
   annotation: '@JsonInclude(JsonInclude.Include.NON_NULL)'
-  auto_alias: '@JsonProperty("{{_AUTO_ALIAS_}}")'
+  field_annotation: '@JsonAlias("{{_FIELD_NAME_}}")'
+  field_annotation: '@JsonProperty("{{_ALIAS_}}")'
+  import: 'com.fasterxml.jackson.annotation.JsonAlias'
   import: 'com.fasterxml.jackson.annotation.JsonIgnoreProperties'
   import: 'com.fasterxml.jackson.annotation.JsonInclude'
   import: 'com.fasterxml.jackson.annotation.JsonProperty'
