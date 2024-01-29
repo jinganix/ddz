@@ -56,7 +56,7 @@ public class TestRequester {
         .route(request.webpbMeta().getPath())
         .data(request)
         .retrieveMono(String.class)
-        .map(str -> new ErrorMessage(ErrorCode.OK, "Unexpected success: " + str))
+        .map(str -> new ErrorMessage(ErrorCode.OK, "Unexpected success: " + str, null))
         .onErrorResume(
             throwable -> {
               try {

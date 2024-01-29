@@ -20,7 +20,6 @@ import io.github.jinganix.ddz.helper.exception.ApiException;
 import io.github.jinganix.ddz.helper.exception.BusinessException;
 import io.github.jinganix.ddz.proto.error.ErrorCode;
 import io.github.jinganix.ddz.proto.error.ErrorMessage;
-import io.github.jinganix.ddz.proto.error.ValidationErrorMessage;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +50,7 @@ public class GlobalExceptionHandler {
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ValidationErrorMessage handleValidationException(MethodArgumentNotValidException ex) {
+  public ErrorMessage handleValidationException(MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
     ex.getBindingResult()
         .getAllErrors()
@@ -61,7 +60,7 @@ public class GlobalExceptionHandler {
               String errorMessage = error.getDefaultMessage();
               errors.put(fieldName, errorMessage);
             });
-    return new ValidationErrorMessage(errors);
+    return new ErrorMessage(ErrorCode.BAD_REQUEST, null, errors);
   }
 
   /**
@@ -98,7 +97,7 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.FORBIDDEN)
   @ExceptionHandler(AccessDeniedException.class)
   public ErrorMessage handleAccessDeniedException(AccessDeniedException ex) {
-    return new ErrorMessage(ErrorCode.ERROR, ex.getMessage());
+    return new ErrorMessage(ErrorCode.ERROR, ex.getMessage(), null);
   }
 
   /**
@@ -125,6 +124,6 @@ public class GlobalExceptionHandler {
   public ResponseEntity<?> handleGenericException(Exception ex) {
     log.error("Generic exception", ex);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(new ErrorMessage(ErrorCode.ERROR, ex.getMessage()));
+        .body(new ErrorMessage(ErrorCode.ERROR, ex.getMessage(), null));
   }
 }
